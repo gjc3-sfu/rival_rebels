@@ -27,16 +27,9 @@ public class RenderPlasmaCannon extends ItemRenderBase {
         if(type != ItemCameraTransforms.TransformType.GUI) {
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glPushMatrix();
-            GL11.glTranslatef(-0.1f, 0f, 0f);
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             GL11.glPushMatrix();
-            if(type == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
-                GL11.glTranslatef(0.5f, 0.2f, -0.03f);
-                GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(180f, 0, 1, 0);
-                GL11.glRotatef(90f, 0, 0, 1);
-            }
-                GL11.glScalef(0.03125f, 0.03125f, 0.03125f);
+            GL11.glScalef(0.03125f, 0.03125f, 0.03125f);
 
             GL11.glPushMatrix();
 
@@ -47,12 +40,6 @@ public class RenderPlasmaCannon extends ItemRenderBase {
 
             Minecraft.getMinecraft().renderEngine.bindTexture(RenderHydrogenRod.texture);
             GL11.glPushMatrix();
-            if(type == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
-                GL11.glTranslatef(0.5f, 0.2f, -0.03f);
-                GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(180f, 0, 1, 0);
-                GL11.glRotatef(90f, 0, 0, 1);
-            }
             GL11.glPushMatrix();
             GL11.glRotatef(225, 0.0F, 0.0F, 1.0F);
             GL11.glTranslatef(-0.5f, 0.5f, 0.0f);
@@ -62,12 +49,6 @@ public class RenderPlasmaCannon extends ItemRenderBase {
             GL11.glPopMatrix();
 
             GL11.glPushMatrix();
-            if(type == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
-                GL11.glTranslatef(0.5f, 0.2f, -0.03f);
-                GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(180f, 0, 1, 0);
-                GL11.glRotatef(90f, 0, 0, 1);
-            }
             GL11.glPushMatrix();
             GL11.glRotatef(247.5f, 0.0F, 0.0F, 1.0F);
             GL11.glTranslatef(-0.175f, 0.1f, 0.0f);
