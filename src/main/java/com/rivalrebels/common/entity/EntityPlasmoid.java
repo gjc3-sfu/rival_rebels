@@ -219,6 +219,7 @@ public class EntityPlasmoid extends Entity {
         }
     }
 
+    // trying to fix the bug 
     protected void explodex() {
         if (!world.isRemote) {
             setDead();

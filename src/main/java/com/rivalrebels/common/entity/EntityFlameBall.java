@@ -30,6 +30,7 @@ public abstract class EntityFlameBall extends Entity {
 	public EntityFlameBall(World world, EntityPlayer player, float speed)
 	{
 		this(world);
+        this.owner = player;
 		setPosition(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		motionX = -MathHelper.sin(player.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(player.rotationPitch / 180.0F * (float) Math.PI);

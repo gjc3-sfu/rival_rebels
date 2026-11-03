@@ -31,6 +31,9 @@ public class RivalRebels {
     public static List<Item> other_items = new ArrayList<>();
     public static List<Block> other_blocks = new ArrayList<>();
 
+    // temp TODO: make this to config:
+    public static int teslaDecay = 250;
+
     @SuppressWarnings(value = "unused")
     @Mod.EventHandler
     public void preLoad(FMLPreInitializationEvent event) {

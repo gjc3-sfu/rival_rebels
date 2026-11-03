@@ -33,6 +33,7 @@ public class RRItems {
     public static Item rocket;
     public static Item knife;
     public static Item flamethrower;
+    public static Item tesla;
     //Item blocks go below here
     public static Item i_loader;
     public static Item i_mine;
@@ -59,6 +60,7 @@ public class RRItems {
         rocket = new RRItem("rocket").setModelName(ModInfo.modid + ":rocket").setCreativeTab(nuclear_rr);
         knife = new Cuchillo("knife").setCreativeTab(nuclear_rr).setFull3D();
         flamethrower = new FlameThrower("flamethrower").setModelName(ModInfo.modid + ":flamethrower").setCreativeTab(nuclear_rr).setMaxStackSize(1);
+        tesla = new Tesla("tesla").setModelName(ModInfo.modid + ":tesla").setCreativeTab(nuclear_rr).setMaxStackSize(1);
         gas_grenade = new GasGrenade("gas_grenade").setModelName(ModInfo.modid + ":gas_grenade").setCreativeTab(nuclear_rr);
 
         /* ------------------------------------ Item-Blocks ----------------------------------------------- */

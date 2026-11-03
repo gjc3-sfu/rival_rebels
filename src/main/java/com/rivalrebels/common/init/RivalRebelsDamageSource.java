@@ -7,6 +7,7 @@ public class RivalRebelsDamageSource {
     public static DamageSource cuchillo = new DamageSource("cuchillo");
     public static DamageSource charge = new DamageSource("charge");
     public static DamageSource cooked = new DamageSource("cooked").setFireDamage();
+    public static DamageSource electricity = new DamageSource("electricity");
     public static DamageSource flare = new DamageSource("flare");
     public static DamageSource gas = new DamageSource("gas");
     public static DamageSource radiation = new DamageSource("radiation");

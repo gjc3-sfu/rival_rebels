@@ -168,6 +168,12 @@ public class ModEventHandler {
             flamethrower_renderer.renderByItem(new ItemStack(RRItems.flamethrower));
             swapModelsNoGui(RRItems.flamethrower, event.getModelRegistry());
         }
+
+        TileEntityItemStackRenderer tesla_renderer = RRItems.tesla.getTileEntityItemStackRenderer();
+        if (tesla_renderer instanceof RenderTesla) {
+            tesla_renderer.renderByItem(new ItemStack(RRItems.tesla));
+            swapModelsNoGui(RRItems.tesla, event.getModelRegistry());
+        }
     }
 
     public static void swapModelsNoGui(Item item, IRegistry<ModelResourceLocation, IBakedModel> reg) {

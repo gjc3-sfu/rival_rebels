@@ -50,5 +50,9 @@
   "flamethrower_fire": {
     "category": "ambient",
     "sounds": [{"name": "rivalrebels:flamethrower/b"}]
+  },
+  "tesla_fire": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:tesla/fire"}, "rivalrebels:tesla/fire1", "rivalrebels:tesla/fire2", "rivalrebels:tesla/fire3", "rivalrebels:tesla/fire4"]
   }
 }

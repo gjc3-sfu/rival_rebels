@@ -54,7 +54,7 @@ public class FlameThrower extends RRItem {
             }*/
         }else if (!world.isRemote)
         {
-            player.sendStatusMessage(new TextComponentString("§cOut of fuel".substring(1)), false);
+            player.sendStatusMessage(new TextComponentString("§cOut of fuel".substring(1)), true);
         }
         if (message && world.isRemote)
         {
@@ -154,6 +154,7 @@ public class FlameThrower extends RRItem {
         }
 
 
+        // Play ambient sound
         if (entity instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) entity;
