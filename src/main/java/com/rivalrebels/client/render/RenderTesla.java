@@ -84,7 +84,7 @@ public class RenderTesla extends ItemRenderBase {
                 this.spin = (int)(this.spin + (5.0F + degree / 36.0F));
                 GL11.glTranslatef(0.5f, 0.1f, 0.2f);
                 GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(0.2f, 0.2f, 0.2f);
+                GL11.glScalef(0.12F, 0.12F, 0.12F);
                 this.teslaModell.renderAll();
 
 
