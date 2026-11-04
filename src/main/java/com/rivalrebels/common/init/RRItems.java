@@ -46,7 +46,7 @@ public class RRItems {
     public static void initItems() {
         rod = new RRItem("rod").setModelName(ModInfo.modid + ":rod").setCreativeTab(nuclear_rr);
         nuclear_rod = new ItemRodNuclear("nuke_rod").setModelName(ModInfo.modid + ":nuke_rod").setCreativeTab(nuclear_rr).setContainerItem(rod).setMaxStackSize(1);
-        hydro_rod = new RRItem("hydrogen_rod").setModelName(ModInfo.modid + ":hydrogen_rod").setContainerItem(rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
+        hydro_rod = new RRItemRod("hydrogen_rod").setModelName(ModInfo.modid + ":hydrogen_rod").setContainerItem(rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
         redstone_rod = new RRItem("redstone_rod").setModelName(ModInfo.modid + ":redstone_rod").setContainerItem(rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
         battery = new BatteryItem("battery").setModelName(ModInfo.modid + ":" + "battery").setCreativeTab(nuclear_rr);
         lord_vertice_lemonade = new VerticeLemonade("vertice_lemonade").setModelName(ModInfo.modid + ":lemonade").setCreativeTab(nuclear_rr);

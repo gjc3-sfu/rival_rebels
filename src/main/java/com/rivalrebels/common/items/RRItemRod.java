@@ -17,6 +17,14 @@ public class RRItemRod extends RRToolItem {
       this.setCreativeTab(RRItems.nuclear_rr);
    }
 
+   public RRItemRod(String name, int max_durability) {
+      super(name, ToolMaterial.DIAMOND, new HashSet<Block>());
+      this.maxStackSize = 1;
+      this.setMaxDamage(max_durability);
+      
+      this.setCreativeTab(RRItems.nuclear_rr);
+   }
+
    public boolean isItemTool(ItemStack is) {
       return true;
    }

@@ -41,36 +41,36 @@ public class EntityPlasmoid extends Entity {
         size = 3;
     }
 
-    public EntityPlasmoid(World world, EntityPlayer thrower, EntityLiving par3EntityLiving, float par4, float par5) {
+    public EntityPlasmoid(World world, EntityPlayer thrower, EntityLiving target, float speed, float inaccuracy) {
         super(world);
         this.thrower = thrower;
 
         posY = thrower.posY + thrower.getEyeHeight() - 0.10000000149011612D;
-        double deltaX = par3EntityLiving.posX - thrower.posX;
-        double deltaY = par3EntityLiving.posY + par3EntityLiving.getEyeHeight() - 0.699999988079071D - posY;
-        double deltaZ = par3EntityLiving.posZ - thrower.posZ;
+        double deltaX = target.posX - thrower.posX;
+        double deltaY = target.posY + target.getEyeHeight() - 0.699999988079071D - posY;
+        double deltaZ = target.posZ - thrower.posZ;
         double horizontalDistance = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
 
         if (horizontalDistance >= 1.0E-7D) {
-            float targetYaw = (float) (Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI) - 90.0F;
-            float targetPitch = (float) (-(Math.atan2(deltaY, horizontalDistance) * 180.0D / Math.PI));
+            float yaw = (float) (Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI) - 90.0F;
+            float pitch = (float) (-(Math.atan2(deltaY, horizontalDistance) * 180.0D / Math.PI));
             double normalizedX = deltaX / horizontalDistance;
             double normalizedZ = deltaZ / horizontalDistance;
-            setLocationAndAngles(thrower.posX + normalizedX, posY, thrower.posZ + normalizedZ, targetYaw, targetPitch);
+            setLocationAndAngles(thrower.posX + normalizedX, posY, thrower.posZ + normalizedZ, yaw, pitch);
             setRenderYawOffset(0.0F);
-            float var20 = (float) horizontalDistance * 0.2F;
-            setAccurateHeading(deltaX, deltaY + var20, deltaZ, par4, par5);
+            float verticalLead = (float) horizontalDistance * 0.2F;
+            setAccurateHeading(deltaX, deltaY + verticalLead, deltaZ, speed, inaccuracy);
         }
         size = 3;
     }
 
-    public EntityPlasmoid(World par1World, EntityPlayer par2EntityLiving, float par3, boolean drop) {
-        super(par1World);
-        par3 *= (gravity ? 3 : 1);
+    public EntityPlasmoid(World world, EntityPlayer thrower, float speed, boolean drop) {
+        super(world);
+        speed *= (gravity ? 3 : 1);
         gravity = drop;
-        thrower = par2EntityLiving;
+        this.thrower = thrower;
         setSize(0.5F, 0.5F);
-        setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
+        setLocationAndAngles(thrower.posX, thrower.posY + thrower.getEyeHeight(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch);
         posX -= (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
         posY -= 0.0D;
         posZ -= (MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
@@ -79,38 +79,38 @@ public class EntityPlasmoid extends Entity {
         motionX = (-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
         motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
         motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
-        setAccurateHeading(motionX, motionY, motionZ, par3 * 1.5F, 1.0F);
+        setAccurateHeading(motionX, motionY, motionZ, speed * 1.5F, 1.0F);
     }
 
-    public EntityPlasmoid(World world, double px, double py, double pz, double x, double y, double z, float d) {
+    public EntityPlasmoid(World world, double originX, double originY, double originZ, double directionX, double directionY, double directionZ, float speed) {
         super(world);
         setSize(0.5F, 0.5F);
-        double f = d/MathHelper.sqrt(x*x+y*y+z*z);
-        setPosition(px+x*f, py+y*f, pz+z*f);
+        double motionScale = speed / MathHelper.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
+        setPosition(originX + directionX * motionScale, originY + directionY * motionScale, originZ + directionZ * motionScale);
         setRenderYawOffset(0.0F);
         size = 3;
-        motionX = x;
-        motionY = y;
-        motionZ = z;
-        float var10 = MathHelper.sqrt(x * x + z * z);
-        prevRotationYaw = rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
-        prevRotationPitch = rotationPitch = (float) (Math.atan2(y, var10) * 180.0D / Math.PI);
+        motionX = directionX;
+        motionY = directionY;
+        motionZ = directionZ;
+        float horizontalMotion = MathHelper.sqrt(directionX * directionX + directionZ * directionZ);
+        prevRotationYaw = rotationYaw = (float) (Math.atan2(directionX, directionZ) * 180.0D / Math.PI);
+        prevRotationPitch = rotationPitch = (float) (Math.atan2(directionY, horizontalMotion) * 180.0D / Math.PI);
     }
 
-    public void setAccurateHeading(double par1, double par3, double par5, float par7, float par8) {
-        float var9 = MathHelper.sqrt(par1 * par1 + par3 * par3 + par5 * par5);
-        par1 /= var9;
-        par3 /= var9;
-        par5 /= var9;
-        par1 *= par7;
-        par3 *= par7;
-        par5 *= par7;
-        motionX = par1;
-        motionY = par3;
-        motionZ = par5;
-        float var10 = MathHelper.sqrt(par1 * par1 + par5 * par5);
-        prevRotationYaw = rotationYaw = (float) (Math.atan2(par1, par5) * 180.0D / Math.PI);
-        prevRotationPitch = rotationPitch = (float) (Math.atan2(par3, var10) * 180.0D / Math.PI);
+    public void setAccurateHeading(double directionX, double directionY, double directionZ, float speed, float inaccuracy) {
+        float directionLength = MathHelper.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
+        directionX /= directionLength;
+        directionY /= directionLength;
+        directionZ /= directionLength;
+        directionX *= speed;
+        directionY *= speed;
+        directionZ *= speed;
+        motionX = directionX;
+        motionY = directionY;
+        motionZ = directionZ;
+        float horizontalMotion = MathHelper.sqrt(directionX * directionX + directionZ * directionZ);
+        prevRotationYaw = rotationYaw = (float) (Math.atan2(directionX, directionZ) * 180.0D / Math.PI);
+        prevRotationPitch = rotationPitch = (float) (Math.atan2(directionY, horizontalMotion) * 180.0D / Math.PI);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class EntityPlasmoid extends Entity {
     }
 
     @Override
-    public boolean isInRangeToRenderDist(double par1) {
+    public boolean isInRangeToRenderDist(double distance) {
         return true;
     }
 
@@ -134,6 +134,7 @@ public class EntityPlasmoid extends Entity {
     @Override
     public void onUpdate() {
         super.onUpdate();
+        System.out.println("Ylevel: "+ posY);
         if (ticksExisted == 0) {
             rotation = world.rand.nextInt(360);
             slide = world.rand.nextInt(21) - 10;
@@ -146,25 +147,25 @@ public class EntityPlasmoid extends Entity {
         slide *= 0.9;
         if (ticksExisted >= RRConfigOptions.plasmoid_decay * (gravity ? 3 : 1)) explode();
 
-        Vec3d vec31 = new Vec3d(posX, posY, posZ);
-        Vec3d vec3 = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
-        RayTraceResult mop = world.rayTraceBlocks(vec31, vec3, false, true, false);
-        vec31 = new Vec3d(posX, posY, posZ);
+        Vec3d startVec = new Vec3d(posX, posY, posZ);
+        Vec3d endVec = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
+        RayTraceResult mop = world.rayTraceBlocks(startVec, endVec, false, true, false);
+        startVec = new Vec3d(posX, posY, posZ);
 
-        if (mop != null) vec3 = new Vec3d(mop.hitVec.x, mop.hitVec.y, mop.hitVec.z);
+        if (mop != null) endVec = new Vec3d(mop.hitVec.x, mop.hitVec.y, mop.hitVec.z);
 
-        else vec3 = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
+        else endVec = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
 
-        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().contract(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
-        double d0 = Double.MAX_VALUE;
-        for (Entity entity : list) {
+        List<Entity> nearbyEntities = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().contract(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+        double closestHitDistance = Double.MAX_VALUE;
+        for (Entity entity : nearbyEntities) {
             if (entity.canBeCollidedWith() && (entity != thrower || ticksExisted >= 5)) {
-                RayTraceResult mop1 = entity.getEntityBoundingBox().expand(0.5f, 0.5f, 0.5f).calculateIntercept(vec31, vec3);
+                RayTraceResult mop1 = entity.getEntityBoundingBox().expand(0.5f, 0.5f, 0.5f).calculateIntercept(startVec, endVec);
                 if (mop1 != null) {
-                    double d1 = vec31.squareDistanceTo(mop1.hitVec);
-                    if (d1 < d0) {
+                    double hitDistance = startVec.squareDistanceTo(mop1.hitVec);
+                    if (hitDistance < closestHitDistance) {
                         mop = new RayTraceResult(entity, mop1.hitVec);
-                        d0 = d1;
+                        closestHitDistance = hitDistance;
                     }
                 }
             }
@@ -174,10 +175,10 @@ public class EntityPlasmoid extends Entity {
         posX += motionX;
         posY += motionY;
         posZ += motionZ;
-        float var16 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
+        float horizontalMotion = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
         rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
 
-        for (rotationPitch = (float) (Math.atan2(motionY, var16) * 180.0D / Math.PI); rotationPitch - prevRotationPitch < -180.0F; prevRotationPitch -= 360.0F) {
+        for (rotationPitch = (float) (Math.atan2(motionY, horizontalMotion) * 180.0D / Math.PI); rotationPitch - prevRotationPitch < -180.0F; prevRotationPitch -= 360.0F) {
         }
 
         while (rotationPitch - prevRotationPitch >= 180.0F)
@@ -198,7 +199,7 @@ public class EntityPlasmoid extends Entity {
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+    public void writeEntityToNBT(NBTTagCompound compound) {
 
     }
 
@@ -206,7 +207,7 @@ public class EntityPlasmoid extends Entity {
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+    public void readEntityFromNBT(NBTTagCompound compound) {
 
     }
 
