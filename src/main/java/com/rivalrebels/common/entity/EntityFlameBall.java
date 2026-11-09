@@ -19,12 +19,14 @@ public abstract class EntityFlameBall extends Entity {
 		super(world);
 		setSize(0.5F, 0.5F);
 		initializeRotation();
+		this.isImmuneToFire = true;
 	}
 
 	public EntityFlameBall(World world, double x, double y, double z)
 	{
 		this(world);
 		setPosition(x, y, z);
+		this.isImmuneToFire = true;
 	}
 
 	public EntityFlameBall(World world, EntityPlayer player, float speed)
@@ -43,6 +45,7 @@ public abstract class EntityFlameBall extends Entity {
 		motionX *= speed;
 		motionY *= speed;
 		motionZ *= speed;
+		this.isImmuneToFire = true;
 	}
 
 	public EntityFlameBall(World world, double x, double y, double z, double motionX, double motionY, double motionZ)
@@ -51,6 +54,7 @@ public abstract class EntityFlameBall extends Entity {
 		this.motionX = motionX;
 		this.motionY = motionY;
 		this.motionZ = motionZ;
+		this.isImmuneToFire = true;
 	}
 
 	private void initializeRotation()

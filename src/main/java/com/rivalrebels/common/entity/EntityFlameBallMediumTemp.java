@@ -100,10 +100,11 @@ public class EntityFlameBallMediumTemp extends EntityFlameBall {
         {
             fire();
             setDead();
-            if (mop.entityHit != null && (hasLeftOwner || mop.entityHit != owner))
+            RivalRebelsDamageSource damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.INCINERATION, this, owner);
+            if (mop.entityHit != null && (hasLeftOwner || mop.entityHit != owner) && !mop.entityHit.isImmuneToFire())
             {
                 mop.entityHit.setFire(3);
-                mop.entityHit.attackEntityFrom(RivalRebelsDamageSource.cooked, 12);
+                mop.entityHit.attackEntityFrom(damage, 12);
                 if (mop.entityHit instanceof EntityPlayer)
                 {
                     EntityPlayer player = (EntityPlayer) mop.entityHit;
@@ -127,15 +128,15 @@ public class EntityFlameBallMediumTemp extends EntityFlameBall {
                     {
                         armorSlots[i].damageItem(44, entityPlayerHit);
                     }
-                    entityPlayerHit.attackEntityFrom(RivalRebelsDamageSource.cooked, 250 / ((int) mop.entityHit.getDistance(this) + 1));
+                    entityPlayerHit.attackEntityFrom(damage, 250 / ((int) mop.entityHit.getDistance(this) + 1));
                 }
                 /*else if (mop.entityHit instanceof EntityB2Spirit)
                 {
-                    mop.entityHit.attackEntityFrom(RivalRebelsDamageSource.cooked, 250 / ((int) mop.entityHit.getDistanceToEntity(this) + 1));
+                    mop.entityHit.attackEntityFrom(damage, 250 / ((int) mop.entityHit.getDistanceToEntity(this) + 1));
                 }*/
                 else if (mop.entityHit.canBeAttackedWithItem())
                 {
-                    mop.entityHit.attackEntityFrom(RivalRebelsDamageSource.cooked, 250 / ((int) mop.entityHit.getDistance(this) + 1));
+                    mop.entityHit.attackEntityFrom(damage, 250 / ((int) mop.entityHit.getDistance(this) + 1));
                 }
             }
         }
@@ -168,7 +169,7 @@ public class EntityFlameBallMediumTemp extends EntityFlameBall {
                     for (int z = -1; z < 2; z++)
                     {
                         Block id = world.getBlockState(new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z)).getBlock();
-                        if (id == Blocks.AIR || id == Blocks.SNOW || id == Blocks.ICE) world.setBlockState(new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z), Blocks.FIRE.getDefaultState());
+                        if (id == Blocks.AIR || id == Blocks.SNOW || id == Blocks.SNOW_LAYER || id == Blocks.ICE) world.setBlockState(new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z), Blocks.FIRE.getDefaultState());
                         else if (id == Blocks.LEAVES || id == Blocks.LEAVES2) world.setBlockState(new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z), Blocks.FIRE.getDefaultState());
                         else if (id == Blocks.GRASS && world.rand.nextInt(5) == 0) world.setBlockState(new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z), Blocks.DIRT.getDefaultState());
                         else if (id == RRBlocks.flare) RRBlocks.flare.onBlockDestroyedByPlayer(world, new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z), RRBlocks.flare.getDefaultState());

@@ -110,10 +110,11 @@ public class EntityFlameBallLowTemp extends EntityFlameBall {
         {
             fire();
             setDead();
-            if (mop.entityHit != null && (hasLeftOwner || mop.entityHit != owner))
+            if (mop.entityHit != null && (hasLeftOwner || mop.entityHit != owner) && !mop.entityHit.isImmuneToFire())
             {
                 mop.entityHit.setFire(3);
-                mop.entityHit.attackEntityFrom(RivalRebelsDamageSource.cooked, 12);
+                RivalRebelsDamageSource damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.INCINERATION, this, owner);
+                mop.entityHit.attackEntityFrom(damage, 12);
                 if (mop.entityHit != null && mop.entityHit instanceof EntityPlayer)
                 {
                     EntityPlayer player = (EntityPlayer) mop.entityHit;
@@ -155,7 +156,7 @@ public class EntityFlameBallLowTemp extends EntityFlameBall {
                     for (int z = -1; z < 2; z++)
                     {
                         Block id = world.getBlockState(new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z)).getBlock();
-                        if (id == Blocks.AIR || id == Blocks.SNOW || id == Blocks.ICE || id == Blocks.LEAVES || id == Blocks.LEAVES2) world.setBlockState(new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z), Blocks.FIRE.getDefaultState());
+                        if (id == Blocks.AIR || id == Blocks.SNOW || id == Blocks.SNOW_LAYER || id == Blocks.ICE || id == Blocks.LEAVES || id == Blocks.LEAVES2) world.setBlockState(new BlockPos((int) posX + x, (int) posY + y, (int) posZ + z), Blocks.FIRE.getDefaultState());
                     }
                 }
             }

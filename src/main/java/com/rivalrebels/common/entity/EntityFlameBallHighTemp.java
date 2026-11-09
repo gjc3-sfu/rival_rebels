@@ -3,6 +3,8 @@ package com.rivalrebels.common.entity;
 import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RivalRebelsDamageSource;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStoneSlab;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -129,10 +131,11 @@ public class EntityFlameBallHighTemp extends EntityFlameBall {
             posY += 0.5f;
             posZ += 0.5f;
             setDead();
-            if (mop.entityHit != null && (hasLeftOwner || mop.entityHit != owner))
+            if (mop.entityHit != null && (hasLeftOwner || mop.entityHit != owner) && !mop.entityHit.isImmuneToFire())
             {
                 mop.entityHit.setFire(3);
-                mop.entityHit.attackEntityFrom(RivalRebelsDamageSource.cooked, 12);
+                RivalRebelsDamageSource damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.INCINERATION, this, owner);
+                mop.entityHit.attackEntityFrom(damage, 12);
                 if (mop.entityHit != null && mop.entityHit instanceof EntityPlayer)
                 {
                     EntityPlayer player = (EntityPlayer) mop.entityHit;
@@ -170,18 +173,39 @@ public class EntityFlameBallHighTemp extends EntityFlameBall {
         if (!world.isRemote)
         {
             Block id = world.getBlockState(new BlockPos((int) posX, (int) posY, (int) posZ)).getBlock();
+            IBlockState state = world.getBlockState(new BlockPos((int) posX, (int) posY, (int) posZ));
             // Instamelts:
-            if (id == Blocks.AIR || id == Blocks.SNOW || id == Blocks.ICE) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            if (id == Blocks.AIR || id == Blocks.SNOW || id == Blocks.SNOW_LAYER || id == Blocks.ICE) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
             else if (id == Blocks.LEAVES || id == Blocks.LEAVES2) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
             else if (id == Blocks.GRASS || id == Blocks.MYCELIUM) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.DIRT.getDefaultState());
             else if (id == Blocks.DIRT) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
             else if (id == Blocks.WOOL) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
             else if (id == Blocks.WEB) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.TRIPWIRE) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
             else if (id == Blocks.LAVA) world.setBlockToAir(new BlockPos((int) posX, (int) posY, (int) posZ));
 
             // Tissue
             else if (id == Blocks.RED_MUSHROOM_BLOCK && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
             else if (id == Blocks.BROWN_MUSHROOM_BLOCK && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.SPONGE && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.MELON_BLOCK && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.PUMPKIN && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.LIT_PUMPKIN && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+
+            // Wood
+            else if (id == Blocks.CRAFTING_TABLE && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.NOTEBLOCK && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.JUKEBOX && world.rand.nextInt(20) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.BED && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.OAK_DOOR && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.SPRUCE_DOOR && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.BIRCH_DOOR && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.JUNGLE_DOOR && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.ACACIA_DOOR && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+            else if (id == Blocks.DARK_OAK_DOOR && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.FIRE.getDefaultState());
+
+            // Redstone components
+            else if (id == Blocks.OBSERVER && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
 
             // Sand and glass
             else if (id == Blocks.SAND && world.rand.nextInt(60) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.GLASS.getDefaultState());
@@ -189,21 +213,64 @@ public class EntityFlameBallHighTemp extends EntityFlameBall {
             else if (id == Blocks.STAINED_GLASS && world.rand.nextInt(120) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.OBSIDIAN.getDefaultState());
 
             else if (id == Blocks.OBSIDIAN && world.rand.nextInt(90) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.ENCHANTING_TABLE && world.rand.nextInt(180) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.ENDER_CHEST && world.rand.nextInt(180) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+
             // Stone
-            else if ((id == Blocks.STONE || id == Blocks.COBBLESTONE) && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
-            else if (id == Blocks.STONEBRICK && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
-            else if (id == Blocks.STONE_SLAB2 && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if ((id == Blocks.STONE || id == Blocks.COBBLESTONE || id == Blocks.MOSSY_COBBLESTONE) && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if ((id == Blocks.STONEBRICK) && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if ((id == Blocks.MONSTER_EGG) && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.STONE_STAIRS && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.STONE_BRICK_STAIRS && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.COBBLESTONE_WALL && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.STONE_SLAB && world.rand.nextInt(30) == 0) {
+                if ((state.getValue(BlockStoneSlab.VARIANT) != BlockStoneSlab.EnumType.NETHERBRICK) && (state.getValue(BlockStoneSlab.VARIANT) != BlockStoneSlab.EnumType.QUARTZ)) {
+                    world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+                }
+            } else if (id == Blocks.STONE_SLAB2 && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.DOUBLE_STONE_SLAB && world.rand.nextInt(30) == 0) {
+                if ((state.getValue(BlockStoneSlab.VARIANT) != BlockStoneSlab.EnumType.NETHERBRICK) && (state.getValue(BlockStoneSlab.VARIANT) != BlockStoneSlab.EnumType.QUARTZ)) {
+                    world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+                }
+            } else if (id == Blocks.DOUBLE_STONE_SLAB2 && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
             else if (id == Blocks.IRON_ORE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.REDSTONE_ORE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.LIT_REDSTONE_ORE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
             else if (id == Blocks.COAL_ORE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
             else if (id == Blocks.GOLD_ORE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
             else if (id == Blocks.LAPIS_ORE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.EMERALD_ORE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.DIAMOND_ORE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.BRICK_BLOCK && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.BRICK_STAIRS && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+
+            //Glazed terracotta
+            else if (id == Blocks.RED_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.ORANGE_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.YELLOW_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.LIME_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.GREEN_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.CYAN_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.BLUE_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.PURPLE_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.MAGENTA_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.PINK_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.BROWN_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.WHITE_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.SILVER_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.GRAY_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.BLACK_GLAZED_TERRACOTTA && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+
 
             else if (id == Blocks.GRAVEL && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
-            else if (id == Blocks.SANDSTONE && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if ((id == Blocks.SANDSTONE || id == Blocks.RED_SANDSTONE) && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if ((id == Blocks.SANDSTONE_STAIRS || id == Blocks.RED_SANDSTONE_STAIRS) && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
             else if (id == Blocks.CLAY && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.STAINED_HARDENED_CLAY.getDefaultState());
             else if (id == Blocks.STAINED_HARDENED_CLAY && world.rand.nextInt(30) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
             else if (id == Blocks.ANVIL && world.rand.nextInt(50) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
             else if (id == Blocks.IRON_BLOCK && world.rand.nextInt(50) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
+            else if (id == Blocks.GOLD_BLOCK && world.rand.nextInt(50) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.LAVA.getDefaultState());
             else if (id == Blocks.BEDROCK && world.rand.nextInt(500) == 0) world.setBlockState(new BlockPos((int) posX, (int) posY, (int) posZ), Blocks.OBSIDIAN.getDefaultState());
             
 
