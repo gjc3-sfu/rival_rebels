@@ -7,13 +7,18 @@ import net.minecraft.block.material.Material;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RRBlock extends Block {
+import com.rivalrebels.common.init.RRBlocks;
+
+public class RRBlock extends Block implements IRRBlock {
     public static List<Block> list = new ArrayList<>();
+
+
     public RRBlock(String name, Material material){
         super(material);
         setUnlocalizedName(name);
         setRegistryName(name);
         list.add(this);
+        RRBlocks.blockListx.add(this);
     }
 
     @Override

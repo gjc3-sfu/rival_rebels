@@ -1,7 +1,7 @@
 package com.rivalrebels.common.packet;
 
-import com.rivalrebels.common.items.FlameThrower;
-import com.rivalrebels.common.items.Tesla;
+import com.rivalrebels.common.items.weapons.FlameThrower;
+import com.rivalrebels.common.items.weapons.Tesla;
 
 import io.netty.buffer.ByteBuf;
 

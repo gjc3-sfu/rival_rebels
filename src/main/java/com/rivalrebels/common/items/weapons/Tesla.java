@@ -1,4 +1,4 @@
-package com.rivalrebels.common.items;
+package com.rivalrebels.common.items.weapons;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -20,11 +20,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 
 import com.rivalrebels.RivalRebels;
+import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.entity.EntityElectricityRaytrace;
 import com.rivalrebels.common.init.RRConfigOptions;
 import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.init.RivalRebelsDamageSource;
+import com.rivalrebels.common.items.RRItem;
 
 public class Tesla extends RRItem {
     boolean message = true;
@@ -55,7 +57,7 @@ public class Tesla extends RRItem {
         ItemStack stack = player.getHeldItem(hand);
         int degree = this.getDegree(stack);
         float rate = Math.abs(degree - 90) / 90.0F;
-        if (!player.capabilities.isCreativeMode && !player.inventory.hasItemStack(new ItemStack(RRItems.battery)) && !RRConfigOptions.infinite_ammo) {
+        if (!player.capabilities.isCreativeMode && !player.inventory.hasItemStack(new ItemStack(RRItems.battery)) && !RRConfigx.infinite_ammo) {
             if (!world.isRemote) {
                 player.sendStatusMessage(new TextComponentString("§cOut of batteries".substring(1)), true);
             }
@@ -122,7 +124,7 @@ public class Tesla extends RRItem {
             EntityPlayer player = (EntityPlayer) entity;
 
             if (!player.capabilities.isCreativeMode
-                    && !RRConfigOptions.infinite_ammo) {
+                    && !RRConfigx.infinite_ammo) {
 
                 int degree = getDegree(stack);
                 float rate = Math.abs(degree - 90) / 90.0F;

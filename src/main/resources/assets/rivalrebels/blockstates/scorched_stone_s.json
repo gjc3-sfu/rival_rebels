@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "scorch=0": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=1": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=2": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=3": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=4": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=5": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=6": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=7": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=8": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=9": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=10": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=11": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=12": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=13": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=14": { "model": "rivalrebels:scorched_stone_s" },
+    "scorch=15": { "model": "rivalrebels:scorched_stone_s" }
+  }
+}

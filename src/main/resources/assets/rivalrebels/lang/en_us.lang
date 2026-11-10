@@ -1,8 +1,14 @@
 item.rod.name=Rod
 item.nuke_rod.name=Nuclear Rod
 item.hydrogen_rod.name=Hydrogen Rod
+item.redstone_rod.name=Redstone Rod
+item.fuel.name=Fuel
 item.battery.name=Battery
 item.pliers.name=Pliers
+item.antennae.name=Antennae
+item.detonator.name=Detonator
+item.rocket.name=Rocket
+item.fuse.name=Fuse
 RivalRebels.Orders=§7[§4Orders§7]§c
 tile.nuke_crate_bottom.name=Nuke Crate Bottom
 tile.nuke_crate_top.name=Nuke Crate Top
@@ -11,10 +17,34 @@ RivalRebels.message.use=Use
 tile.nuke.name=Nuke
 tile.steel.name=Steel
 tile.toaster.name=Toaster
-item.fuel.name=Fuel
+tile.reactive.name=Reactive
+tile.plastic_explosives.name=Plastic Explosives
+item.gas_grenade.name=Gas Grenade
+item.knife.name=Cuchillo
 item.plasma_cannon.name=Plasma Cannon
 item.flamethrower.name=Flamethrower
 item.tesla.name=Tesla
 itemGroup.rival_rebels=Rival Rebels
 itemGroup.rival_rebels2=Rival Rebels Armor and Flags
 item.lol.name=LOL
+item.vertice_lemonade.name=Vertice Lemonade
+item.nuclear_lemonade.name=Nuclear Lemonade
+item.copper_core.name=Cu-Core
+item.tungsten_core.name=W-Core
+item.titanium_core.name=Ti-Core
+
+death.attack.cooked=%1$s was incinerated
+death.attack.cooked.player=%1$s was incinerated by %2$s
+
+death.attack.electricity=%1$s was electrocuted to death
+death.attack.electricity.player=%1$s was electrocuted to death by %2$s
+death.attack.electricity.player.item=%1$s was electrocuted to death by %2$s using [item]
+
+death.attack.plasma=%1$s blew up
+death.attack.plasma.player=%1$s was blown up by %2$s
+
+death.attack.gas=%1$s suffocated in toxic gas
+death.attack.gas.player=%1$s suffocated in toxic gas while trying to escape %2$s
+
+death.attack.radiation=%1$s died from radiation poisoning
+death.attack.radiation.player=%1$s died from radiation poisoning while trying to escape %2$s

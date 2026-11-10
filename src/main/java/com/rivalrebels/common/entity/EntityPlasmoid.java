@@ -1,8 +1,10 @@
 package com.rivalrebels.common.entity;
 
+import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.core.BlackList;
 import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RRConfigOptions;
+import com.rivalrebels.common.tileentity.TileEntityPlasmaExplosion;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -10,6 +12,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -134,7 +137,6 @@ public class EntityPlasmoid extends Entity {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        System.out.println("Ylevel: "+ posY);
         if (ticksExisted == 0) {
             rotation = world.rand.nextInt(360);
             slide = world.rand.nextInt(21) - 10;
@@ -145,7 +147,7 @@ public class EntityPlasmoid extends Entity {
         ++ticksExisted;
         rotation += (int) slide;
         slide *= 0.9;
-        if (ticksExisted >= RRConfigOptions.plasmoid_decay * (gravity ? 3 : 1)) explode();
+        if (ticksExisted >= RRConfigx.plasmoid_decay * (gravity ? 3 : 1)) explode();
 
         Vec3d startVec = new Vec3d(posX, posY, posZ);
         Vec3d endVec = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
@@ -212,11 +214,19 @@ public class EntityPlasmoid extends Entity {
     }
 
     protected void explode() {
+        BlockPos explosionPos = new BlockPos(posX, posY, posZ);
         if (!world.isRemote) {
             setDead();
             int i = -1;
 
             world.setBlockState(new BlockPos(posX, posY, posZ), RRBlocks.plasma_explosion.getDefaultState());
+        }
+
+        // Owner attribution
+        TileEntity tile = world.getTileEntity(explosionPos);
+
+        if (tile instanceof TileEntityPlasmaExplosion) {
+            ((TileEntityPlasmaExplosion) tile).setShooter(thrower);
         }
     }
 
@@ -241,14 +251,14 @@ public class EntityPlasmoid extends Entity {
             }
 
             BlockPos explosionPos = new BlockPos(
-                    posX - motionX * distance,
-                    posY - motionY * distance,
-                    posZ - motionZ * distance
+                posX - motionX * distance,
+                posY - motionY * distance,
+                posZ - motionZ * distance
             );
 
             world.setBlockState(
-                    explosionPos,
-                    RRBlocks.plasma_explosion.getDefaultState()
+                explosionPos,
+                RRBlocks.plasma_explosion.getDefaultState()
             );
         }
     }

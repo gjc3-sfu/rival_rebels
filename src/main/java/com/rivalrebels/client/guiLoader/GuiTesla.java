@@ -5,7 +5,7 @@ import com.rivalrebels.RivalRebels;
 import com.rivalrebels.client.guihelper.GuiKnob;
 import com.rivalrebels.client.oldstuff.Tessellator;
 import com.rivalrebels.common.init.RRConfigOptions;
-import com.rivalrebels.common.items.Tesla;
+import com.rivalrebels.common.items.weapons.Tesla;
 import com.rivalrebels.common.packet.ItemUpdate;
 import com.rivalrebels.common.packet.PacketDispatcher;
 

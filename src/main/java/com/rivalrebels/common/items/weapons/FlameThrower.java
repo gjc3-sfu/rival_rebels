@@ -1,6 +1,7 @@
-package com.rivalrebels.common.items;
+package com.rivalrebels.common.items.weapons;
 
 import com.rivalrebels.RivalRebels;
+import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.entity.EntityFlameBallHighTemp;
 import com.rivalrebels.common.entity.EntityFlameBallLowTemp;
 import com.rivalrebels.common.entity.EntityFlameBallMediumTemp;
@@ -8,6 +9,7 @@ import com.rivalrebels.common.entity.EntityFlameBallMediumTemp;
 import com.rivalrebels.common.init.RRConfigOptions;
 import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.init.RRSounds;
+import com.rivalrebels.common.items.RRItem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -44,7 +46,7 @@ public class FlameThrower extends RRItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if (player.capabilities.isCreativeMode || player.inventory.hasItemStack(new ItemStack(RRItems.fuel)) || RRConfigOptions.infinite_ammo)
+        if (player.capabilities.isCreativeMode || player.inventory.hasItemStack(new ItemStack(RRItems.fuel)) || RRConfigx.infinite_ammo)
         {
             player.setActiveHand(hand);
 
@@ -76,7 +78,7 @@ public class FlameThrower extends RRItem {
             EntityPlayer player = (EntityPlayer) entity;
 
             if (!player.capabilities.isCreativeMode
-                    && !RRConfigOptions.infinite_ammo) {
+                    && !RRConfigx.infinite_ammo) {
 
                 int mode = getMode(item);
 

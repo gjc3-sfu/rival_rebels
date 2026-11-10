@@ -5,7 +5,9 @@ import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.init.RivalRebelsDamageSource;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -13,11 +15,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
+import java.util.UUID;
 
 public class TileEntityPlasmaExplosion extends TileEntity implements ITickable {
     public float	size		= 0;
     float			increment	= 0.3f;
     float			prevsize	= 0;
+    private UUID shooterUUID = null;
 
     public TileEntityPlasmaExplosion()
     {
@@ -49,7 +53,14 @@ public class TileEntityPlasmaExplosion extends TileEntity implements ITickable {
             double var19 = e.posZ - pos.getZ();
             double dist = 0.5f / (MathHelper.sqrt(var15 * var15 + var17 * var17 + var19 * var19) + 0.01f);
             if (/*dist <= 0.5f && !(e instanceof EntityNuclearBlast) && */!(e instanceof EntityPlasmoid) /*&& !(e instanceof EntityTsarBlast) && !(e instanceof EntityRhodes)*/) {
-                e.attackEntityFrom(RivalRebelsDamageSource.plasmaexplosion, 2);
+                RivalRebelsDamageSource damage;
+                if (shooterUUID == null) {
+                    damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.PLASMA, null, null);
+                } else {
+                    damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.PLASMA, null, world.getPlayerEntityByUUID(shooterUUID));
+                }
+                
+                e.attackEntityFrom(damage, 2);
                 e.motionX += var15 * dist;
                 e.motionY += var17 * dist;
                 e.motionZ += var19 * dist;
@@ -73,6 +84,33 @@ public class TileEntityPlasmaExplosion extends TileEntity implements ITickable {
         IBlockState block = world.getBlockState(this.getPos());
         if(block != null){
             world.setBlockState(this.getPos(), block);
+        }
+    }
+
+    public void setShooter(Entity shooter) {
+        if (shooter != null) {
+            shooterUUID = shooter.getUniqueID();
+            markDirty();
+        }
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+
+        if (shooterUUID != null) {
+            compound.setUniqueId("ShooterUUID", shooterUUID);
+        }
+
+        return compound;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+
+        if (compound.hasUniqueId("ShooterUUID")) {
+            shooterUUID = compound.getUniqueId("ShooterUUID");
         }
     }
 }

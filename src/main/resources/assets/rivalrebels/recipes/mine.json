@@ -6,7 +6,8 @@
   ],
   "key": {
     "d": {
-      "item": "minecraft:dirt"
+      "item": "minecraft:dirt",
+      "data": 32767
     },
     "b": {
       "item": "rivalrebels:battery"

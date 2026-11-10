@@ -1,7 +1,11 @@
 package com.rivalrebels;
 
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import com.rivalrebels.common.tileentity.ReactorTileEntity;
 
 public class CommonProxy {
     public void registerRenderStuff(FMLPreInitializationEvent event){}

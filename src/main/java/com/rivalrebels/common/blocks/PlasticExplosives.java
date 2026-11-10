@@ -14,9 +14,9 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class Explosives extends RRBlock{
+public class PlasticExplosives extends RRBlock{
     public AxisAlignedBB bounds = new AxisAlignedBB(0.0625, 0, 0.0625, 1 - 0.0625, 0.5, 1 - 0.0625);
-    public Explosives(String name, Material material) {
+    public PlasticExplosives(String name, Material material) {
         super(name, material);
         setTickRandomly(true);
 

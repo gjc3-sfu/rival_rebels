@@ -194,7 +194,7 @@ public class EntityElectricityRaytrace extends Entity {
                             );
                     }
                 }
-                } else if (!BlackList.tesla(hitBlock) && randomValue <= this.c) {
+            } else if (!BlackList.tesla(hitBlock) && randomValue <= this.c) {
                 if (!this.world.isRemote) {
                     this.world.setBlockState(new BlockPos(MOP_block_x, MOP_block_y, MOP_block_z), Blocks.AIR.getDefaultState());
                 }
@@ -214,26 +214,28 @@ public class EntityElectricityRaytrace extends Entity {
                 }
             } else {
                 if (!this.world.isRemote) {
-                this.world.spawnEntity(new EntityElectricityLink(this.world, this, this.getDistance(MOP.entityHit)));
+                    this.world.spawnEntity(new EntityElectricityLink(this.world, this, this.getDistance(MOP.entityHit)));
                 }
 
+                RivalRebelsDamageSource damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.ELECTRICITY, this, this.shootingEntity);
+
                 if (MOP.entityHit instanceof EntityPlayer) {
-                EntityPlayer entityPlayerHit = (EntityPlayer)MOP.entityHit;
-                NonNullList<ItemStack> armorSlots = entityPlayerHit.inventory.armorInventory;
-                int armorSlotIndex = this.world.rand.nextInt(4);
-                if (!armorSlots.get(armorSlotIndex).isEmpty()) {
-                    armorSlots.get(armorSlotIndex).damageItem(14, entityPlayerHit);
-                    entityPlayerHit.attackEntityFrom(RivalRebelsDamageSource.electricity, 1.0F);
-                } else {
-                    entityPlayerHit.attackEntityFrom(
-                        RivalRebelsDamageSource.electricity, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1) / (armorSlotIndex + 1)
-                    );
-                }
+                    EntityPlayer entityPlayerHit = (EntityPlayer)MOP.entityHit;
+                    NonNullList<ItemStack> armorSlots = entityPlayerHit.inventory.armorInventory;
+                    int armorSlotIndex = this.world.rand.nextInt(4);
+                    if (!armorSlots.get(armorSlotIndex).isEmpty()) {
+                        armorSlots.get(armorSlotIndex).damageItem(14, entityPlayerHit);
+                        entityPlayerHit.attackEntityFrom(damage, 1.0F);
+                    } else {
+                        entityPlayerHit.attackEntityFrom(
+                            damage, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1) / (armorSlotIndex + 1)
+                        );
+                    }
                 } else if (false/*MOP.entityHit instanceof EntityB2Spirit*/) {
-                MOP.entityHit
-                    .attackEntityFrom(RivalRebelsDamageSource.electricity, RivalRebels.teslaDecay / 1.5F / ((int)MOP.entityHit.getDistance(this) + 1));
+                    MOP.entityHit
+                    .attackEntityFrom(damage, RivalRebels.teslaDecay / 1.5F / ((int)MOP.entityHit.getDistance(this) + 1));
                 } else {
-                MOP.entityHit.attackEntityFrom(RivalRebelsDamageSource.electricity, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1));
+                    MOP.entityHit.attackEntityFrom(damage, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1));
                 }
             }
         } else if (!this.world.isRemote) {

@@ -7,6 +7,10 @@ import com.rivalrebels.ModInfo;
 import com.rivalrebels.common.creativetabs.HydroRR;
 import com.rivalrebels.common.creativetabs.NuclearRR;
 import com.rivalrebels.common.items.*;
+import com.rivalrebels.common.items.weapons.FlameThrower;
+import com.rivalrebels.common.items.weapons.PlasmaCannonItem;
+import com.rivalrebels.common.items.weapons.Tesla;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -16,7 +20,7 @@ public class RRItems {
 
     public static List<Item> itemListx = new ArrayList<>();
 
-    public static Item rod;
+    public static Item empty_rod;
     public static Item nuclear_rod;
     public static Item battery;
     public static Item hydro_rod;
@@ -34,6 +38,10 @@ public class RRItems {
     public static Item knife;
     public static Item flamethrower;
     public static Item tesla;
+    public static Item copper_core;
+    public static Item tungsten_core;
+    public static Item titanium_core;
+
     //Item blocks go below here
     public static Item i_loader;
     public static Item i_mine;
@@ -44,10 +52,10 @@ public class RRItems {
 
 
     public static void initItems() {
-        rod = new RRItem("rod").setModelName(ModInfo.modid + ":rod").setCreativeTab(nuclear_rr);
-        nuclear_rod = new ItemRodNuclear("nuke_rod").setModelName(ModInfo.modid + ":nuke_rod").setCreativeTab(nuclear_rr).setContainerItem(rod).setMaxStackSize(1);
-        hydro_rod = new RRItemRod("hydrogen_rod").setModelName(ModInfo.modid + ":hydrogen_rod").setContainerItem(rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
-        redstone_rod = new RRItem("redstone_rod").setModelName(ModInfo.modid + ":redstone_rod").setContainerItem(rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
+        empty_rod = new RRItem("rod").setModelName(ModInfo.modid + ":rod").setCreativeTab(nuclear_rr);
+        nuclear_rod = new ItemRodNuclear("nuke_rod").setModelName(ModInfo.modid + ":nuke_rod").setCreativeTab(nuclear_rr).setContainerItem(empty_rod).setMaxStackSize(1);
+        hydro_rod = new RRItemRod("hydrogen_rod").setModelName(ModInfo.modid + ":hydrogen_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
+        redstone_rod = new RRItem("redstone_rod").setModelName(ModInfo.modid + ":redstone_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
         battery = new BatteryItem("battery").setModelName(ModInfo.modid + ":" + "battery").setCreativeTab(nuclear_rr);
         lord_vertice_lemonade = new VerticeLemonade("vertice_lemonade").setModelName(ModInfo.modid + ":lemonade").setCreativeTab(nuclear_rr);
         nuclear_lemonade = new RRItem("nuclear_lemonade").setModelName(ModInfo.modid + ":nuke_lemon").setCreativeTab(nuclear_rr);
@@ -62,6 +70,10 @@ public class RRItems {
         flamethrower = new FlameThrower("flamethrower").setModelName(ModInfo.modid + ":flamethrower").setCreativeTab(nuclear_rr).setMaxStackSize(1);
         tesla = new Tesla("tesla").setModelName(ModInfo.modid + ":tesla").setCreativeTab(nuclear_rr).setMaxStackSize(1);
         gas_grenade = new GasGrenade("gas_grenade").setModelName(ModInfo.modid + ":gas_grenade").setCreativeTab(nuclear_rr);
+
+        copper_core = new RRItemCore("copper_core").setModelName(ModInfo.modid + ":copper_core").setCreativeTab(nuclear_rr);
+        tungsten_core = new RRItemCore("tungsten_core").setModelName(ModInfo.modid + ":tungsten_core").setCreativeTab(nuclear_rr);
+        titanium_core = new RRItemCore("titanium_core").setModelName(ModInfo.modid + ":titanium_core").setCreativeTab(nuclear_rr);
 
         /* ------------------------------------ Item-Blocks ----------------------------------------------- */
 

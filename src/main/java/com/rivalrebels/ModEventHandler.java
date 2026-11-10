@@ -3,8 +3,10 @@ package com.rivalrebels;
 import com.rivalrebels.client.render.*;
 import com.rivalrebels.client.renderhelper.BakedModelNoGui;
 import com.rivalrebels.client.renderhelper.ItemRenderBase;
+import com.rivalrebels.common.blocks.IRRBlock;
 import com.rivalrebels.common.blocks.RRBlock;
 import com.rivalrebels.common.blocks.Reactive;
+import com.rivalrebels.common.blocks.trap.ScorchedStone;
 import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.init.RRSounds;
@@ -53,8 +55,8 @@ public class ModEventHandler {
             }
         }
 
-        for(Block block : RRBlock.list){
-            RRBlock blockIn = (RRBlock) block;
+        for(Block block : RRBlocks.blockListx){
+            Block blockIn = (Block) block;
             if(blockIn != null) {
                 event.getRegistry().register(new RRItemBlock(blockIn, blockIn.getUnlocalizedName().substring(5))
                         .setModelName(Objects.requireNonNull(blockIn.getRegistryName()).toString())
@@ -67,10 +69,9 @@ public class ModEventHandler {
     @SuppressWarnings(value = "unused")
     @SubscribeEvent
     public static void blockRegisterStuff(RegistryEvent.Register<Block> gameRegistry) {
-        for(Block block : RRBlock.list){
-            RRBlock rrBlocks = (RRBlock) block;
-            if(rrBlocks != null){
-                gameRegistry.getRegistry().register(rrBlocks);
+        for(Block block : RRBlocks.blockListx){
+            if(block != null){
+                gameRegistry.getRegistry().register(block);
             }
         }
 
@@ -107,12 +108,12 @@ public class ModEventHandler {
     @SuppressWarnings(value = "unused")
     @SubscribeEvent
     public static void moreModelStuff(ModelBakeEvent event){
-        IBakedModel model = event.getModelRegistry().getObject(new ModelResourceLocation(ModInfo.modid + ":" + RRItems.rod.getRegistryName(), "inventory"));
+        IBakedModel model = event.getModelRegistry().getObject(new ModelResourceLocation(ModInfo.modid + ":" + RRItems.empty_rod.getRegistryName(), "inventory"));
 
-        TileEntityItemStackRenderer rod_renderer = RRItems.rod.getTileEntityItemStackRenderer();
+        TileEntityItemStackRenderer rod_renderer = RRItems.empty_rod.getTileEntityItemStackRenderer();
         if (rod_renderer instanceof RenderRod) {
-            rod_renderer.renderByItem(new ItemStack(RRItems.rod));
-            swapModelsNoGui(RRItems.rod, event.getModelRegistry());
+            rod_renderer.renderByItem(new ItemStack(RRItems.empty_rod));
+            swapModelsNoGui(RRItems.empty_rod, event.getModelRegistry());
         }
 
         TileEntityItemStackRenderer battery_renderer = RRItems.battery.getTileEntityItemStackRenderer();
@@ -209,8 +210,34 @@ public class ModEventHandler {
             assert pos != null;
             return (15 - state.getValue(Reactive.meta)) * 1118481;
             }, RRBlocks.reactive);
+
+        //add scorched stone here
+        event.getBlockColors().registerBlockColorHandler(
+            (state, world, pos, tint) ->
+                state.getValue(ScorchedStone.SCORCH) * 0x111111,
+            RRBlocks.scorched_stone_n
+        );
+    
+        event.getBlockColors().registerBlockColorHandler(
+            (state, world, pos, tint) ->
+                state.getValue(ScorchedStone.SCORCH) * 0x111111,
+            RRBlocks.scorched_stone_e
+        );
+
+        event.getBlockColors().registerBlockColorHandler(
+            (state, world, pos, tint) ->
+                state.getValue(ScorchedStone.SCORCH) * 0x111111,
+            RRBlocks.scorched_stone_s
+        );
+
+        event.getBlockColors().registerBlockColorHandler(
+            (state, world, pos, tint) ->
+                state.getValue(ScorchedStone.SCORCH) * 0x111111,
+            RRBlocks.scorched_stone_w
+        );
     }
 
+    // This is the fork maintainer's easter egg I guess she likes eggs or something
     @SubscribeEvent
     public static void tooltipDraw(ItemTooltipEvent event){
         ItemStack item = event.getItemStack();

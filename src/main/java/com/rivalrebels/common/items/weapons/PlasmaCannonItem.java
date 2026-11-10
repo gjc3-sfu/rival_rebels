@@ -1,11 +1,14 @@
-package com.rivalrebels.common.items;
+package com.rivalrebels.common.items.weapons;
 
 import com.rivalrebels.ModInfo;
 import com.rivalrebels.RivalRebels;
+import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.entity.EntityPlasmoid;
 import com.rivalrebels.common.init.RRConfigOptions;
 import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.init.RRSounds;
+import com.rivalrebels.common.items.IHasModel;
+import com.rivalrebels.common.items.RRItemHydrogen;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,12 +40,15 @@ public class PlasmaCannonItem extends ItemTool implements IHasModel {
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         boolean has_hydrogen = player.inventory.mainInventory.stream().anyMatch(s -> !s.isEmpty() && s.getItem() == RRItems.hydro_rod);
-        if (!player.capabilities.isCreativeMode && !has_hydrogen && !RRConfigOptions.infinite_ammo) {
+        if (!player.capabilities.isCreativeMode && !has_hydrogen && !RRConfigx.infinite_ammo) {
             if (!world.isRemote) {
                 player.sendStatusMessage(new TextComponentString("§cOut of Hydrogen".substring(1)), true);
             }
         } else {
             player.setActiveHand(hand);
+            if(!world.isRemote){
+                world.playSound(null, player.posX, player.posY, player.posZ, RRSounds.plasma_prime, SoundCategory.AMBIENT, 0.25f, 1f);
+            }
         }
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
     }
@@ -59,20 +65,7 @@ public class PlasmaCannonItem extends ItemTool implements IHasModel {
 
     @Override 
     public void onUsingTick(ItemStack stack, EntityLivingBase entity, int count) {
-        World world = entity.world;
 
-        if (!world.isRemote && entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
-
-            if (!player.capabilities.isCreativeMode && !RRConfigOptions.infinite_ammo) {
-
-                if (!consumeHydrogen(player, 1)) {
-                    player.stopActiveHand();
-                    return;
-                }
-            }
-
-        }
     }
 
 
@@ -88,7 +81,7 @@ public class PlasmaCannonItem extends ItemTool implements IHasModel {
 
 
                     player.inventory.decrStackSize(i, 1);
-                    player.inventory.addItemStackToInventory(new ItemStack(RRItems.rod, 1));
+                    player.inventory.addItemStackToInventory(new ItemStack(RRItems.empty_rod, 1));
 
                 } else {
                     stack.setItemDamage(stack.getMetadata() + uses);
@@ -105,16 +98,25 @@ public class PlasmaCannonItem extends ItemTool implements IHasModel {
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft) {
-        if (!player.world.isRemote)
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft) {
+        
+        if (entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entity;
+            boolean has_hydrogen = player.inventory.mainInventory.stream().anyMatch(s -> !s.isEmpty() && s.getItem() == RRItems.hydro_rod);
+            if (has_hydrogen && !RRConfigx.infinite_ammo) {
+                consumeHydrogen(player, 1);
+            }
+        }
+        
+        if (!entity.world.isRemote)
         {
             float charge_power = (getMaxItemUseDuration(stack) - timeLeft) / 20.0F;
             charge_power = (charge_power * charge_power + charge_power * 2) * 0.3333f;
             if (charge_power > 1.0F) charge_power = 1.0F;
             charge_power+=0.2f;
-            worldIn.playSound(null, player.posX, player.posY, player.posZ, RRSounds.plasma_fire, SoundCategory.AMBIENT, 1, 1);
-            Entity entity = new EntityPlasmoid(player.world, (EntityPlayer) player, charge_power+0.5f, false);
-            player.world.spawnEntity(entity);
+            worldIn.playSound(null, entity.posX, entity.posY, entity.posZ, RRSounds.plasma_fire, SoundCategory.AMBIENT, 1, 1);
+            Entity plasma = new EntityPlasmoid(entity.world, (EntityPlayer) entity, charge_power+0.5f, false);
+            entity.world.spawnEntity(plasma);
         }
     }
 

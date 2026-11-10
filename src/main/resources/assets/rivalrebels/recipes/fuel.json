@@ -6,15 +6,17 @@
   ],
   "key": {
     "d": {
-      "item": "minecraft:dirt"
+      "item": "minecraft:dirt",
+      "data": 32767
     },
     "s": {
-      "item": "minecraft:sand"
+      "item": "minecraft:sand",
+      "data": 32767
     },
     "g": {
       "item": "minecraft:gravel"
     },
-    "x": {
+    "c": {
       "item": "minecraft:cobblestone"
     }
   },

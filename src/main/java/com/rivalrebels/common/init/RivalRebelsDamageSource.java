@@ -1,8 +1,16 @@
 package com.rivalrebels.common.init;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+//import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSourceIndirect;
+//import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
-public class RivalRebelsDamageSource {
+public class RivalRebelsDamageSource extends EntityDamageSourceIndirect  {
+
     public static DamageSource plasmaexplosion = new DamageSource("plasma_explosion").setExplosion();
     public static DamageSource cuchillo = new DamageSource("cuchillo");
     public static DamageSource charge = new DamageSource("charge");
@@ -11,4 +19,90 @@ public class RivalRebelsDamageSource {
     public static DamageSource flare = new DamageSource("flare");
     public static DamageSource gas = new DamageSource("gas");
     public static DamageSource radiation = new DamageSource("radiation");
+
+    private float damage_amount;
+
+
+    public static enum RR_damage_sources {
+        PLASMA("plasma"),
+        ELECTRICITY("electricity"),
+        GAS("gas"),
+        RADIATION("radiation"),
+        INCINERATION("cooked");
+
+        private String damage_source_string;
+
+        // Constructor (runs once for each constant above)
+        private RR_damage_sources(String damage_type) {
+            this.damage_source_string = damage_type;
+        }
+
+        public String get_damage_source_string() {
+            return damage_source_string;
+        }
+        
+    }
+
+    
+    public RivalRebelsDamageSource(RR_damage_sources rr_type, Entity cause, Entity shooter) {
+
+        super(rr_type.get_damage_source_string(), cause, shooter);
+        if (rr_type == RR_damage_sources.INCINERATION) {
+            this.setFireDamage();
+        } else if (rr_type == RR_damage_sources.PLASMA) {
+            this.setExplosion();
+        }
+
+
+    }
+
+
+    @Override
+    public ITextComponent getDeathMessage(EntityLivingBase victim) {
+
+        Entity attacker = this.getTrueSource();
+
+        String messageKey;
+
+        switch (this.damageType) {
+
+            case "cooked":
+                messageKey = "death.attack.cooked";
+                break;
+
+            case "electricity":
+                messageKey = "death.attack.electricity";
+                break;
+
+            case "plasma":
+                messageKey = "death.attack.plasma";
+                break;
+
+            case "gas":
+                messageKey = "death.attack.gas";
+                break;
+
+            case "radiation":
+                messageKey = "death.attack.radiation";
+                break;
+
+            default:
+                messageKey = "death.attack.generic";
+                break;
+        }
+
+        if (attacker != null) {
+            return new TextComponentTranslation(
+                messageKey + ".player",
+                victim.getDisplayName(),
+                attacker.getDisplayName()
+            );
+        }
+
+        return new TextComponentTranslation(
+            messageKey,
+            victim.getDisplayName()
+        );
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.rivalrebels.common.items;
 
-import com.rivalrebels.common.blocks.Explosives;
+import com.rivalrebels.common.blocks.PlasticExplosives;
 import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RRSounds;
 import net.minecraft.client.util.ITooltipFlag;
@@ -66,7 +66,9 @@ public class Remote extends RRItem {
                 int z = stack.getTagCompound().getInteger("remotez");
                 if (worldIn.getBlockState(new BlockPos(x, y, z)) == RRBlocks.plastic_explosives.getDefaultState()) {
                     worldIn.playSound(null, x, y, z, RRSounds.weird_noise, SoundCategory.AMBIENT, 1f, 1f);
-                    Explosives.explode(worldIn, new BlockPos(x, y, z));
+                    PlasticExplosives.explode(worldIn, new BlockPos(x, y, z));
+
+                    // also erase the tag here
                 }
             }
         }

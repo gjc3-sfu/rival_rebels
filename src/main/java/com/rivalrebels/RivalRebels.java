@@ -2,6 +2,7 @@ package com.rivalrebels;
 
 import com.rivalrebels.common.command.RRConfig;
 import com.rivalrebels.common.command.RRModelMoveDebug;
+import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.init.*;
 import com.rivalrebels.common.packet.PacketDispatcher;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version)
+@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, guiFactory = "com.rivalrebels.client.config.ConfigGuiFactory")
 public class RivalRebels {
 
     @Mod.Instance(ModInfo.modid)
@@ -37,7 +38,8 @@ public class RivalRebels {
     @SuppressWarnings(value = "unused")
     @Mod.EventHandler
     public void preLoad(FMLPreInitializationEvent event) {
-        RRConfigOptions.makeConfig(event);
+        //RRConfigOptions.makeConfig(event);
+        RRConfigx.init(event.getSuggestedConfigurationFile());
         instance = this;
         RRSounds.init();
         RRBlocks.initBlocks();

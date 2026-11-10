@@ -3,7 +3,9 @@ package com.rivalrebels;
 import com.rivalrebels.client.guiLoader.GuiFlamethrower;
 import com.rivalrebels.client.guiLoader.GuiTesla;
 import com.rivalrebels.client.render.*;
+import com.rivalrebels.common.blocks.trap.ScorchedStone;
 import com.rivalrebels.common.entity.*;
+import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.tileentity.*;
 import net.minecraft.client.Minecraft;
@@ -20,10 +22,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ClientProxy extends CommonProxy{
     @Override
     public void registerRenderStuff(FMLPreInitializationEvent event) {
+        //super.registerRenderStuff(event);
         OBJLoader.INSTANCE.addDomain(ModInfo.modid);
         RRItems.battery.setTileEntityItemStackRenderer(new RenderBattery());
         RRItems.nuclear_rod.setTileEntityItemStackRenderer(new RenderNuclearRod());
-        RRItems.rod.setTileEntityItemStackRenderer(new RenderRod());
+        RRItems.empty_rod.setTileEntityItemStackRenderer(new RenderRod());
         RRItems.redstone_rod.setTileEntityItemStackRenderer(new RenderRedstoneRod());
         RRItems.hydro_rod.setTileEntityItemStackRenderer(new RenderHydrogenRod());
         RRItems.i_loader.setTileEntityItemStackRenderer(new RenderItemLoader());
@@ -32,25 +35,38 @@ public class ClientProxy extends CommonProxy{
         RRItems.fuel.setTileEntityItemStackRenderer(new RenderFuel());
         RRItems.flamethrower.setTileEntityItemStackRenderer(new RenderFlamethrower());
         RRItems.tesla.setTileEntityItemStackRenderer(new RenderTesla());
+
+
         GameRegistry.registerTileEntity(TileNuke.class, new ResourceLocation(ModInfo.modid, "tile_nuke"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileNuke.class, new RenderNuke());
+
         GameRegistry.registerTileEntity(TileLoader.class, new ResourceLocation(ModInfo.modid, "tile_loader"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileLoader.class, new LoaderRenderer());
+
         GameRegistry.registerTileEntity(TileNukeCrate.class, new ResourceLocation(ModInfo.modid, "tile_nuke_crate"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileNukeCrate.class, new NukeCrateRenderer());
+
         GameRegistry.registerTileEntity(TileEntityPlasmaExplosion.class, new ResourceLocation(ModInfo.modid, "plasma_explosion"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlasmaExplosion.class, new PlasmaExplosionRenderer());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPlasmoid.class, RenderPlasmoid::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityDebris.class, RenderDebris::new);
+
         GameRegistry.registerTileEntity(TileEntitySteel.class, new ResourceLocation(ModInfo.modid, "steel"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteel.class, new SteelRenderer());
+
         GameRegistry.registerTileEntity(MineTileEntity.class, new ResourceLocation(ModInfo.modid, "mine"));
         ClientRegistry.bindTileEntitySpecialRenderer(MineTileEntity.class, new MineRenderer());
+
         GameRegistry.registerTileEntity(TileMario.class, new ResourceLocation(ModInfo.modid, "mario"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileMario.class, new RenderMario());
-        RenderingRegistry.registerEntityRenderingHandler(EntityCuchillo.class, RenderCuchillo::new);
+        
         GameRegistry.registerTileEntity(TileQuickSand.class, new ResourceLocation(ModInfo.modid, "quicksand"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileQuickSand.class, new RenderQuicksand());
+
+        GameRegistry.registerTileEntity(ReactorTileEntity.class, new ResourceLocation(ModInfo.modid, "reactor"));
+        ClientRegistry.bindTileEntitySpecialRenderer(ReactorTileEntity.class, new ReactorRenderer());
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityCuchillo.class, RenderCuchillo::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlasmoid.class, RenderPlasmoid::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityDebris.class, RenderDebris::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityFlameBallLowTemp.class, RenderFlameBallLowTemp::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityFlameBallMediumTemp.class, RenderFlameBallMediumTemp::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityFlameBallHighTemp.class, RenderFlameBallHighTemp::new);

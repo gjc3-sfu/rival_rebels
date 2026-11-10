@@ -1,7 +1,10 @@
 package com.rivalrebels.common.init;
 
+import com.rivalrebels.client.guiLoader.GuiReactor;
 import com.rivalrebels.client.guiLoader.LoaderGui;
 import com.rivalrebels.common.container.LoaderContainer;
+import com.rivalrebels.common.container.ReactorContainer;
+import com.rivalrebels.common.tileentity.ReactorTileEntity;
 import com.rivalrebels.common.tileentity.TileLoader;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +23,11 @@ public class RivalRebelsGuiHandler implements IGuiHandler {
             if (tileEntity instanceof TileLoader) {
                 return new LoaderContainer(player.inventory, (TileLoader) tileEntity);
             }
+        } else if (ID == 2) {
+            if (tileEntity instanceof ReactorTileEntity) {
+                return new ReactorContainer(player.inventory, (ReactorTileEntity) tileEntity);
+            }
+
         }
         return null;
     }
@@ -32,6 +40,11 @@ public class RivalRebelsGuiHandler implements IGuiHandler {
             if (tileEntity instanceof TileLoader) {
                 return new LoaderGui(player.inventory, (TileLoader) tileEntity);
             }
+        } else if (ID == 2) {
+            if (tileEntity instanceof ReactorTileEntity) {
+                return new GuiReactor(player.inventory, (ReactorTileEntity) tileEntity);
+            }
+
         }
         return null;
     }

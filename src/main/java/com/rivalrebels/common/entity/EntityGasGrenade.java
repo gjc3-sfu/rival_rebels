@@ -190,7 +190,7 @@ public class EntityGasGrenade extends Entity {
         Entity var5 = null;
         List<Entity> var6 = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().contract(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
         double var7 = 0.0D;
-        Iterator var9 = var6.iterator();
+        Iterator<Entity> var9 = var6.iterator();
 
         if (!world.isRemote)
         {

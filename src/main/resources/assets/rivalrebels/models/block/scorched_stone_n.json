@@ -1,0 +1,11 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "up": "rivalrebels:blocks/petrified_stone_1",
+    "down": "rivalrebels:blocks/petrified_stone_1",
+    "north": "rivalrebels:blocks/petrified_side",
+    "south": "rivalrebels:blocks/petrified_side",
+    "east": "rivalrebels:blocks/petrified_side",
+    "west": "rivalrebels:blocks/petrified_side"
+  }
+}

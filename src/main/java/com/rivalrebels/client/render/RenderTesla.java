@@ -3,15 +3,11 @@ package com.rivalrebels.client.render;
 import org.lwjgl.opengl.GL11;
 
 import com.rivalrebels.ModInfo;
-import com.rivalrebels.RivalRebels;
-import com.rivalrebels.client.objloaders.ModelFromObj;
 import com.rivalrebels.client.oldstuff.AdvancedModelLoader;
 import com.rivalrebels.client.oldstuff.IModelCustom;
 import com.rivalrebels.client.renderhelper.ItemRenderBase;
-import com.rivalrebels.common.items.RRItem;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.ItemStack;
