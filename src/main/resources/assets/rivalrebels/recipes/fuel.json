@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ds",
+    "gc"
+  ],
+  "key": {
+    "d": {
+      "item": "minecraft:dirt"
+    },
+    "s": {
+      "item": "minecraft:sand"
+    },
+    "g": {
+      "item": "minecraft:gravel"
+    },
+    "x": {
+      "item": "minecraft:cobblestone"
+    }
+  },
+  "result": {
+    "item": "rivalrebels:fuel",
+    "count": 16
+  }
+}
