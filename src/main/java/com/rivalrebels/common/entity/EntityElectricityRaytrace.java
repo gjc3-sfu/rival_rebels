@@ -125,7 +125,7 @@ public class EntityElectricityRaytrace extends Entity {
         for (int entityIndex = 0; entityIndex < list.size(); entityIndex++) {
             Entity entity = (Entity)list.get(entityIndex);
             if ((entity.canBeCollidedWith() /*|| entity instanceof EntityRhodes*/) && entity != this.shootingEntity) {
-                RayTraceResult mop1 = entity.getEntityBoundingBox().expand(0.5, 0.5, 0.5).calculateIntercept(rayStart, rayEnd);
+                RayTraceResult mop1 = entity.getEntityBoundingBox().grow(0.5, 0.5, 0.5).calculateIntercept(rayStart, rayEnd);
                 if (mop1 != null) {
                 double candidateHitDistance = rayStart.squareDistanceTo(mop1.hitVec);
                 if (candidateHitDistance < closestHitDistance) {

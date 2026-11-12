@@ -20,6 +20,10 @@ public class RRSounds {
     public static SoundEvent gas_fizz;
     public static SoundEvent flamethrower_fire;
     public static SoundEvent tesla_fire;
+    public static SoundEvent m202_fire;
+    public static SoundEvent m202_rocket_explosion;
+    public static SoundEvent m202_rocket_water_splash;
+    public static SoundEvent m202_rocket_water_explode;
 
     public static void init() {
         gulp = new SoundEvent(new ResourceLocation(ModInfo.modid, "gulp")).setRegistryName("gulp");
@@ -36,5 +40,9 @@ public class RRSounds {
         gas_fizz = new SoundEvent(new ResourceLocation(ModInfo.modid, "gas_fizz")).setRegistryName("gas_fizz");
         flamethrower_fire = new SoundEvent(new ResourceLocation(ModInfo.modid, "flamethrower_fire")).setRegistryName("flamethrower_fire");
         tesla_fire = new SoundEvent(new ResourceLocation(ModInfo.modid, "tesla_fire")).setRegistryName("tesla_fire");
+        m202_fire = new SoundEvent(new ResourceLocation(ModInfo.modid, "m202_fire")).setRegistryName("m202_fire");
+        m202_rocket_explosion = new SoundEvent(new ResourceLocation(ModInfo.modid, "m202_rocket_explosion")).setRegistryName("m202_rocket_explosion");
+        m202_rocket_water_splash = new SoundEvent(new ResourceLocation(ModInfo.modid, "m202_rocket_water_splash")).setRegistryName("m202_rocket_water_splash");
+        m202_rocket_water_explode = new SoundEvent(new ResourceLocation(ModInfo.modid, "m202_rocket_water_explode")).setRegistryName("m202_rocket_water_explode");
     }
 }

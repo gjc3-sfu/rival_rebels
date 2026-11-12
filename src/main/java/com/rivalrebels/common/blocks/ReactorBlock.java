@@ -42,7 +42,7 @@ public class ReactorBlock extends RRBlockContainer {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = playerIn.getHeldItem(hand);
         if(!playerIn.isSneaking()){
-            FMLNetworkHandler.openGui(playerIn, RivalRebels.instance, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            FMLNetworkHandler.openGui(playerIn, RivalRebels.instance, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
         return false;

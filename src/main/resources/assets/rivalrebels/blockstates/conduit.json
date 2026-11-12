@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "alternate=1": { "model": "rivalrebels:conduit_1" },
+    "alternate=2": { "model": "rivalrebels:conduit_2" },
+    "alternate=3": { "model": "rivalrebels:conduit_3" },
+    "alternate=4": { "model": "rivalrebels:conduit_4" },
+    "alternate=5": { "model": "rivalrebels:conduit_5" },
+    "alternate=6": { "model": "rivalrebels:conduit_6" },
+    "alternate=7": { "model": "rivalrebels:conduit_7" },
+    "alternate=8": { "model": "rivalrebels:conduit_8" },
+    "alternate=9": { "model": "rivalrebels:conduit_9" }
+  }
+}

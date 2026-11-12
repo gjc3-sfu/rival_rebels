@@ -13,7 +13,10 @@ public class RRConfigx {
     public static Configuration config;
 
     public static boolean infinite_ammo;
+    public static boolean old_pill_design;
     public static int plasmoid_decay;
+    public static int m202_explosion_size;
+    public static int m202_rocket_decay;
     public static List<BlockTransformation> blockTransformations = new ArrayList<>();
 
     public static void init(File configFile) {
@@ -34,13 +37,37 @@ public class RRConfigx {
             "Enables or disables infinite ammo on all RR guns"
         );
 
+        old_pill_design = config.getBoolean(
+            "old_pill_design",
+            Configuration.CATEGORY_GENERAL,
+            false,
+            "Enables or disables the old pill designs over the new lemonade designs (requires restart)"
+        );
+
         plasmoid_decay = config.getInt(
             "plasmoid_decay",
             Configuration.CATEGORY_GENERAL,
             70,
             20,
             100,
-            "Max lifetime in ticks plasma shots last"
+            "Max lifetime in ticks of plasma shots"
+        );
+
+        m202_explosion_size = config.getInt(
+            "m202_explosion_size",
+            Configuration.CATEGORY_GENERAL,
+            4,
+            1,
+            100,
+            "Explosion power of m202-rr rockets"
+        );
+        m202_rocket_decay = config.getInt(
+            "m202_rocket_decay",
+            Configuration.CATEGORY_GENERAL,
+            200,
+            1,
+            10000000,
+            "Max lifetime in ticks of m202-rr rockets"
         );
 
         String[] transformations = config.getStringList(

@@ -55,13 +55,7 @@ public class RenderTesla extends ItemRenderBase {
                 int degree = this.getDegree(item);
                 this.spin = (int)(this.spin + (5.0F + degree / 36.0F));
 
-
-
-
                 GL11.glScalef(0.12F, 0.12F, 0.12F);
-
-
-                
 
 
                 this.teslaModell.renderAll();
@@ -96,6 +90,8 @@ public class RenderTesla extends ItemRenderBase {
                 Minecraft.getMinecraft().renderEngine.bindTexture(texture);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 GL11.glPushMatrix();
+
+                GL11.glScalef(0.12F, 0.12F, 0.12F);
 
 
                 int degree = this.getDegree(item);

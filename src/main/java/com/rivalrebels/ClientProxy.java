@@ -3,6 +3,7 @@ package com.rivalrebels;
 import com.rivalrebels.client.guiLoader.GuiFlamethrower;
 import com.rivalrebels.client.guiLoader.GuiTesla;
 import com.rivalrebels.client.render.*;
+import com.rivalrebels.client.render.items.RenderRocket;
 import com.rivalrebels.common.blocks.trap.ScorchedStone;
 import com.rivalrebels.common.entity.*;
 import com.rivalrebels.common.init.RRBlocks;
@@ -35,6 +36,7 @@ public class ClientProxy extends CommonProxy{
         RRItems.fuel.setTileEntityItemStackRenderer(new RenderFuel());
         RRItems.flamethrower.setTileEntityItemStackRenderer(new RenderFlamethrower());
         RRItems.tesla.setTileEntityItemStackRenderer(new RenderTesla());
+        RRItems.m202.setTileEntityItemStackRenderer(new RenderM202());
 
 
         GameRegistry.registerTileEntity(TileNuke.class, new ResourceLocation(ModInfo.modid, "tile_nuke"));
@@ -73,6 +75,7 @@ public class ClientProxy extends CommonProxy{
         RenderingRegistry.registerEntityRenderingHandler(EntityGasGrenade.class, RenderGasGrenade::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityElectricityLink.class, RenderElectricityLink::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityElectricityRaytrace.class, RenderElectricityRaytrace::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, RenderRocket::new);
     }
     public void registerModel(Item item, int meta, String variant){
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), variant));

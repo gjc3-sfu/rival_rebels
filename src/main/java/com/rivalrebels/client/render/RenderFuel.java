@@ -27,11 +27,11 @@ public class RenderFuel extends ItemRenderBase {
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glPushMatrix();
-            GL11.glTranslatef(0.5f, 0.5f, 0.5f);
+            //GL11.glTranslatef(0.5f, 0.5f, 0.5f);
             // GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(-90, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(160, 0.0F, 0.0F, 1.0F);
-            GL11.glScalef(0.15f, 0.15f, 0.15f);
+            //GL11.glRotatef(-90, 1.0F, 0.0F, 0.0F);
+            //GL11.glRotatef(160, 0.0F, 0.0F, 1.0F);
+            //GL11.glScalef(0.15f, 0.15f, 0.15f);
             // GL11.glTranslatef(0.3f, 0.05f, -0.1f);
 
             model.renderAll();

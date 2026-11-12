@@ -6,7 +6,7 @@ import com.rivalrebels.client.renderhelper.RenderHelper;
 import com.rivalrebels.client.renderhelper.TextureVertice;
 import com.rivalrebels.client.renderhelper.Vertice;
 
-public class ModelM202 {
+public class ModelRocketLauncherBody {
    float m = 0.3125F;
    float l = 0.4375F;
    float o = 0.5F;
@@ -134,5 +134,4 @@ public class ModelM202 {
       RenderHelper.addFace(this.rlauncher6, this.rlauncher5, this.rlauncher8, this.rlauncher7, this.rs12, this.rs11, this.rs2, this.rs1);
       GL11.glPopMatrix();
    }
-
 }

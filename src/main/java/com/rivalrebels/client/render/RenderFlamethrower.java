@@ -19,7 +19,7 @@ public class RenderFlamethrower extends ItemRenderBase {
         if(type == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND || type == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND){
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glPushMatrix(); 
+            GL11.glPushMatrix();
 
 
             // Good enough transforms
@@ -41,20 +41,7 @@ public class RenderFlamethrower extends ItemRenderBase {
             ModelDebugTransform.apply();
 
 
-            
-
-            //Testing
-            /* 
-            GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-            GL11.glTranslatef(0.7f, 0.1f, 0.2f);
-            GL11.glRotatef(270, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(90, 1.0f, 0.0f, 0.0f);
-            GL11.glRotatef(180, 0.0f, 0.0f, 1.0f);
-            GL11.glScalef(0.18f, 0.18f, 0.18f);
-            GL11.glTranslatef(-2.1f, -0.2f, -0.2f);
-            GL11.glRotatef(-24, 1.0f, 0.0f, 0.0f);
-            */
-
+        
 
             modell.renderAll();
 
@@ -65,8 +52,6 @@ public class RenderFlamethrower extends ItemRenderBase {
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glPushMatrix(); //  x+ is up in fpv
-            GL11.glTranslatef(0.5f, 0.1f, 0.2f);
-            GL11.glScalef(0.3f, 0.3f, 0.3f);
 
             modell.renderAll();
 
@@ -81,13 +66,7 @@ public class RenderFlamethrower extends ItemRenderBase {
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glPushMatrix();
-            GL11.glRotatef(35, 0.0F, 0.0F, 1.0F);
-            GL11.glTranslatef(0.7f, 0.1f, 0.2f);
-            GL11.glRotatef(270, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(90, 1.0f, 0.0f, 0.0f);
-            GL11.glRotatef(180, 0.0f, 0.0f, 1.0f);
-            GL11.glScalef(0.18f, 0.18f, 0.18f);
-            // GL11.glTranslatef(0.3f, 0.05f, -0.1f);
+
 
             modell.renderAll();
 

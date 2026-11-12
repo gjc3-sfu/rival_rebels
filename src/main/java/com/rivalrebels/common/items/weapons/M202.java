@@ -4,7 +4,9 @@ import java.util.HashSet;
 
 import com.rivalrebels.RivalRebels;
 import com.rivalrebels.common.config.RRConfigx;
+import com.rivalrebels.common.entity.EntityRocket;
 import com.rivalrebels.common.init.RRItems;
+import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.items.RRItem;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.util.text.translation.I18n;
@@ -59,10 +62,15 @@ public class M202 extends RRItem {
         {
             player.setActiveHand(hand);
 
-            /*if (stack.isItemEnchanted() && !world.isRemote)
-            {
-                par2World.spawnEntityInWorld(new EntityFlameBallGreen(par2World, par3EntityPlayer, (float) (Math.random() + 1.0f)));
-            }*/
+            world.playSound(null, player.posX, player.posY, player.posZ, RRSounds.m202_fire, SoundCategory.AMBIENT, 0.1f, 1);
+
+            if (!world.isRemote) {
+                if (/*par1ItemStack.getEnchantmentTagList() == null*/ true) {
+                    world.spawnEntity(new EntityRocket(world, player));
+                } else {
+                //world.spawnEntity(new EntityBomb(par2World, par3EntityPlayer, 0.1F));
+                }
+            }
         }else if (!world.isRemote)
         {
             player.sendStatusMessage(new TextComponentString("§cOut of ammunition".substring(1)), true);

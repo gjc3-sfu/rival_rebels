@@ -19,11 +19,13 @@ tile.steel.name=Steel
 tile.toaster.name=Toaster
 tile.reactive.name=Reactive
 tile.plastic_explosives.name=Plastic Explosives
+tile.flare.name=Flare
 item.gas_grenade.name=Gas Grenade
 item.knife.name=Cuchillo
 item.plasma_cannon.name=Plasma Cannon
 item.flamethrower.name=Flamethrower
 item.tesla.name=Tesla
+item.m202.name=M202-RR
 itemGroup.rival_rebels=Rival Rebels
 itemGroup.rival_rebels2=Rival Rebels Armor and Flags
 item.lol.name=LOL
@@ -32,6 +34,7 @@ item.nuclear_lemonade.name=Nuclear Lemonade
 item.copper_core.name=Cu-Core
 item.tungsten_core.name=W-Core
 item.titanium_core.name=Ti-Core
+
 
 death.attack.cooked=%1$s was incinerated
 death.attack.cooked.player=%1$s was incinerated by %2$s

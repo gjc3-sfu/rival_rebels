@@ -54,5 +54,21 @@
   "tesla_fire": {
     "category": "ambient",
     "sounds": [{"name": "rivalrebels:tesla/fire"}, "rivalrebels:tesla/fire1", "rivalrebels:tesla/fire2", "rivalrebels:tesla/fire3", "rivalrebels:tesla/fire4"]
+  },
+  "m202_fire": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:m202/fire"}, "rivalrebels:m202/fire_1", "rivalrebels:m202/fire_2"]
+  },
+  "m202_rocket_explosion": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:m202/explode"}, "rivalrebels:m202/explode_1", "rivalrebels:m202/explode_2"]
+  },
+  "m202_rocket_water_splash": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:m202/water_splash"}, "rivalrebels:m202/rocket_water"]
+  },
+  "m202_rocket_water_explode": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:m202/water_explode"}, "rivalrebels:m202/explode_underwater"]
   }
 }
