@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -62,6 +63,7 @@ public class PlasticExplosives extends RRBlock{
         return false;
     }
 
+    // Strange.. in real life plastic explosives are stable against heat... TODO: decide if this should be removed or not
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 
@@ -76,4 +78,22 @@ public class PlasticExplosives extends RRBlock{
         world.playSound(null, pos, RRSounds.generic_explosion, SoundCategory.AMBIENT, 1f, 1f);
         new RivalRebelsExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 5, false, false, RivalRebelsDamageSource.plasmaexplosion);
     }
+
+    @Override
+    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
+        //TODO: decide if we want to make creative players able to destroy these without exploding
+        explode(world, pos);
+    }
+
+    @Override
+    public void onBlockDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+        explode(world, pos);
+    }
+
+    @Override
+    public int quantityDropped(Random par1Random) {
+        return 0;
+    }
+
+
 }
