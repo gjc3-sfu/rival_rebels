@@ -23,7 +23,7 @@ import net.minecraft.util.text.translation.I18n;
 
 public class M202 extends RRItem {
 
-    boolean message = true;
+    boolean message = true; // bruh this is a singleton
     int shrink;
 
     public M202(String name) {
@@ -61,6 +61,7 @@ public class M202 extends RRItem {
         if (player.capabilities.isCreativeMode || player.inventory.hasItemStack(new ItemStack(RRItems.rocket)) || RRConfigx.infinite_ammo)
         {
             player.setActiveHand(hand);
+            this.consumeRocket(player, 1);
 
             world.playSound(null, player.posX, player.posY, player.posZ, RRSounds.m202_fire, SoundCategory.AMBIENT, 0.1f, 1);
 

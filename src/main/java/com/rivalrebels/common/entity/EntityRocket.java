@@ -166,7 +166,7 @@ public class EntityRocket extends Entity {
             this.explode(null);
         }
 
-        /*Implement later 
+        
         if (this.world.isRemote && this.ticksExisted >= 5 && !this.inWater && this.ticksExisted <= 100) {
             this.world
                 .spawnEntity(
@@ -181,7 +181,7 @@ public class EntityRocket extends Entity {
                 )
                 );
         }
-        */
+        
 
         Vec3d rayStart = new Vec3d(this.posX, this.posY, this.posZ);
         Vec3d rayEnd = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);

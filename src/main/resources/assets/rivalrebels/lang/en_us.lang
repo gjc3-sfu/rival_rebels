@@ -9,7 +9,15 @@ item.antennae.name=Antennae
 item.detonator.name=Detonator
 item.rocket.name=Rocket
 item.fuse.name=Fuse
+item.safe_pill.name=Safe Pill
+item.experimental_pill.name=Experimental Pill
 RivalRebels.Orders=§7[§4Orders§7]§c
+RivalRebels.crate_contents=§7[§2Contents§7]
+RivalRebels.pill.success=§7[§6Status§7]§e Regenerating...
+RivalRebels.experimental_pill.success=§7[§6Status§7]§e The experiment turned out a success.
+RivalRebels.experimental_pill.unexpected_results=§7[§6Status§7]§e Unexpected results have occurred.
+RivalRebels.experimental_pill.super=§7[§6Status§7]§e Begrüßen Sie den Uber-Soldat.
+RivalRebels.experimental_pill.perished=§7[§6Status§7]§e The test subject has perished.
 tile.nuke_crate_bottom.name=Nuke Crate Bottom
 tile.nuke_crate_top.name=Nuke Crate Top
 tile.loader.name=Loader
@@ -20,6 +28,9 @@ tile.toaster.name=Toaster
 tile.reactive.name=Reactive
 tile.plastic_explosives.name=Plastic Explosives
 tile.flare.name=Flare
+tile.smart_camo.name=Smart Camo
+tile.ammo_crate.name=Ammunition
+tile.tower_crate.name=Tower
 item.gas_grenade.name=Gas Grenade
 item.knife.name=Cuchillo
 item.plasma_cannon.name=Plasma Cannon
@@ -41,13 +52,21 @@ death.attack.cooked.player=%1$s was incinerated by %2$s
 
 death.attack.electricity=%1$s was electrocuted to death
 death.attack.electricity.player=%1$s was electrocuted to death by %2$s
-death.attack.electricity.player.item=%1$s was electrocuted to death by %2$s using [item]
+death.attack.electricity.player.item=%1$s was electrocuted to death by %2$s using %3$s
 
 death.attack.plasma=%1$s blew up
 death.attack.plasma.player=%1$s was blown up by %2$s
+death.attack.plasma.player.item=%1$s was blown up by %2$s using %3$s
+
+death.attack.laser=%1$s was killed by laser-dismemeberment
+death.attack.laser.player=%1$s was laser-dismemebered by %2$s
+death.attack.laser.player.item=%1$s was laser-dismemebered by %2$s using %3$s
 
 death.attack.gas=%1$s suffocated in toxic gas
 death.attack.gas.player=%1$s suffocated in toxic gas while trying to escape %2$s
 
 death.attack.radiation=%1$s died from radiation poisoning
 death.attack.radiation.player=%1$s died from radiation poisoning while trying to escape %2$s
+
+death.attack.cyanide=%1$s died from cyanide poisoning
+death.attack.cyanide.player=%1$s died from cyanide poisoning while trying to escape %2$s

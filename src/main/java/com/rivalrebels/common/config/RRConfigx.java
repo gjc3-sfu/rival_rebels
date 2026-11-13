@@ -17,7 +17,11 @@ public class RRConfigx {
     public static int plasmoid_decay;
     public static int m202_explosion_size;
     public static int m202_rocket_decay;
+    public static int bunker_radius;
     public static List<BlockTransformation> blockTransformations = new ArrayList<>();
+    public static List<Block> autobuild_unmutable = new ArrayList<>();
+    private static String[] autobuildIrreplacableBlockIds = new String[0];
+    private static boolean blockRegistryReady;
 
     public static void init(File configFile) {
         if (config == null) {
@@ -68,6 +72,30 @@ public class RRConfigx {
             1,
             10000000,
             "Max lifetime in ticks of m202-rr rockets"
+        );
+    
+        bunker_radius = config.getInt(
+            "bunker_radius",
+            Configuration.CATEGORY_GENERAL,
+            10,
+            5,
+            50,
+            "Radius of bunker deployables"
+        );
+
+        autobuildIrreplacableBlockIds = config.getStringList(
+            "autobuild_irreplacable_blocks",
+            Configuration.CATEGORY_GENERAL,
+            new String[] {
+                //Tough blocks
+                "minecraft:bedrock",
+                "rivalrebels:reactive",
+
+                // Protected blocks
+                "minecraft:chest",
+                "minecraft:trapped_chest"
+            },
+            "List of blocks autobuild is not allowed to overwrite"
         );
 
         String[] transformations = config.getStringList(
@@ -188,7 +216,7 @@ public class RRConfigx {
                 // Bedrock
                 "minecraft:bedrock,minecraft:obsidian,500"
             },
-            "Block transformations: inputBlock,outputBlock,heatResistance"
+            "Flamethrower block transformations: inputBlock,outputBlock,heatResistance"
         );
 
         blockTransformations.clear();
@@ -229,6 +257,38 @@ public class RRConfigx {
 
         if (config.hasChanged()) {
             config.save();
+        }
+
+        if (blockRegistryReady) {
+            resolveAutobuildUnmutable();
+        }
+    }
+
+    public static void onBlockRegistryReady() {
+        blockRegistryReady = true;
+        resolveAutobuildUnmutable();
+    }
+
+    private static void resolveAutobuildUnmutable() {
+        autobuild_unmutable.clear();
+
+        for (String entry : autobuildIrreplacableBlockIds) {
+            try {
+                ResourceLocation id = new ResourceLocation(entry.trim());
+                if (!ForgeRegistries.BLOCKS.containsKey(id)) {
+                    System.err.println(
+                        "[Rival Rebels] Unknown block in autobuild blacklist: " + entry
+                    );
+                    continue;
+                }
+
+                autobuild_unmutable.add(ForgeRegistries.BLOCKS.getValue(id));
+            } catch (IllegalArgumentException e) {
+                System.err.println(
+                    "[Rival Rebels] Invalid block in autobuild blacklist: " + entry
+                );
+                e.printStackTrace();
+            }
         }
     }
 }

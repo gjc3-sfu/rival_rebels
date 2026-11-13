@@ -59,6 +59,12 @@ public class RivalRebels {
 
     @SuppressWarnings(value = "unused")
     @Mod.EventHandler
+    public void loadComplete(FMLLoadCompleteEvent event) {
+        RRConfigx.onBlockRegistryReady();
+    }
+
+    @SuppressWarnings(value = "unused")
+    @Mod.EventHandler
     public void serverStart(FMLServerStartingEvent event) {
         event.registerServerCommand(new RRConfig());
         event.registerServerCommand(new RRModelMoveDebug());

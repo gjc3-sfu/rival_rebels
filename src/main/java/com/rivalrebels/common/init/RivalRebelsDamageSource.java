@@ -19,6 +19,8 @@ public class RivalRebelsDamageSource extends EntityDamageSourceIndirect  {
     public static DamageSource flare = new DamageSource("flare");
     public static DamageSource gas = new DamageSource("gas");
     public static DamageSource radiation = new DamageSource("radiation");
+    public static DamageSource laser = new DamageSource("laser");
+    public static DamageSource cyanide = new DamageSource("cyanide").setDamageAllowedInCreativeMode(); // because it's funny
 
     private float damage_amount;
 
@@ -28,7 +30,9 @@ public class RivalRebelsDamageSource extends EntityDamageSourceIndirect  {
         ELECTRICITY("electricity"),
         GAS("gas"),
         RADIATION("radiation"),
-        INCINERATION("cooked");
+        INCINERATION("cooked"),
+        EVICERATION("laser"),
+        CYANIDE("cyanide");
 
         private String damage_source_string;
 
@@ -51,6 +55,10 @@ public class RivalRebelsDamageSource extends EntityDamageSourceIndirect  {
             this.setFireDamage();
         } else if (rr_type == RR_damage_sources.PLASMA) {
             this.setExplosion();
+        }
+
+        if (rr_type == RR_damage_sources.CYANIDE) {
+            this.setDamageAllowedInCreativeMode(); // because it's funny
         }
 
 
@@ -84,6 +92,14 @@ public class RivalRebelsDamageSource extends EntityDamageSourceIndirect  {
 
             case "radiation":
                 messageKey = "death.attack.radiation";
+                break;
+
+            case "laser":
+                messageKey = "death.attack.laser";
+                break;
+
+            case "cyanide":
+                messageKey = "death.attack.cyanide";
                 break;
 
             default:

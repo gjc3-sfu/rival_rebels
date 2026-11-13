@@ -70,5 +70,22 @@
   "m202_rocket_water_explode": {
     "category": "ambient",
     "sounds": [{"name": "rivalrebels:m202/water_explode"}, "rivalrebels:m202/explode_underwater"]
+  },
+  "einsten_warmup": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:einsten/einsten_warmup"}, "rivalrebels:einsten/warmup"]
+  },
+  "einsten_fire_a": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:einsten/einsten_fire_a"}, "rivalrebels:einsten/laser_fire_a"]
+  },
+  "einsten_fire_b": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:einsten/einsten_fire_b"}, "rivalrebels:einsten/laser_fire_b"]
+  },
+
+  "autobuild_deploy": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:autobuild/deploy"}, "rivalrebels:autobuild/deploy_1", "rivalrebels:autobuild/deploy_2"]
   }
 }

@@ -24,6 +24,10 @@ public class RRSounds {
     public static SoundEvent m202_rocket_explosion;
     public static SoundEvent m202_rocket_water_splash;
     public static SoundEvent m202_rocket_water_explode;
+    public static SoundEvent einsten_warmup;
+    public static SoundEvent einsten_fire_A;
+    public static SoundEvent einsten_fire_B;
+    public static SoundEvent autobuild_deploy;
 
     public static void init() {
         gulp = new SoundEvent(new ResourceLocation(ModInfo.modid, "gulp")).setRegistryName("gulp");
@@ -40,9 +44,16 @@ public class RRSounds {
         gas_fizz = new SoundEvent(new ResourceLocation(ModInfo.modid, "gas_fizz")).setRegistryName("gas_fizz");
         flamethrower_fire = new SoundEvent(new ResourceLocation(ModInfo.modid, "flamethrower_fire")).setRegistryName("flamethrower_fire");
         tesla_fire = new SoundEvent(new ResourceLocation(ModInfo.modid, "tesla_fire")).setRegistryName("tesla_fire");
+
         m202_fire = new SoundEvent(new ResourceLocation(ModInfo.modid, "m202_fire")).setRegistryName("m202_fire");
         m202_rocket_explosion = new SoundEvent(new ResourceLocation(ModInfo.modid, "m202_rocket_explosion")).setRegistryName("m202_rocket_explosion");
         m202_rocket_water_splash = new SoundEvent(new ResourceLocation(ModInfo.modid, "m202_rocket_water_splash")).setRegistryName("m202_rocket_water_splash");
         m202_rocket_water_explode = new SoundEvent(new ResourceLocation(ModInfo.modid, "m202_rocket_water_explode")).setRegistryName("m202_rocket_water_explode");
+
+        einsten_warmup = new SoundEvent(new ResourceLocation(ModInfo.modid, "einsten_warmup")).setRegistryName("einsten_warmup");
+        einsten_fire_A = new SoundEvent(new ResourceLocation(ModInfo.modid, "einsten_fire_a")).setRegistryName("einsten_fire_a");
+        einsten_fire_B = new SoundEvent(new ResourceLocation(ModInfo.modid, "einsten_fire_b")).setRegistryName("einsten_fire_b");
+
+        autobuild_deploy = new SoundEvent(new ResourceLocation(ModInfo.modid, "autobuild_deploy")).setRegistryName("autobuild_deploy");
     }
 }

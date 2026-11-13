@@ -6,6 +6,7 @@
     "north": "rivalrebels:blocks/jumper_side",
     "south": "rivalrebels:blocks/jumper_side",
     "east": "rivalrebels:blocks/jumper_side",
-    "west": "rivalrebels:blocks/jumper_side"
+    "west": "rivalrebels:blocks/jumper_side",
+    "particle": "rivalrebels:blocks/jumper_front"
   }
 }

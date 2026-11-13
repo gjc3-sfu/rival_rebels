@@ -48,6 +48,7 @@ public class RenderM202 extends ItemRenderBase {
         return false;
     }
 
+    //TODO: fix holding out causes other gui items to render wrong bug by setting an exception for gui
     public void renderItem(TransformType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
         GL11.glEnable(2896);

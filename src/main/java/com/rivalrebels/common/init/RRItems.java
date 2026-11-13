@@ -64,11 +64,11 @@ public class RRItems {
         //nuclear_lemonade = new RRItem("nuclear_lemonade").setModelName(ModInfo.modid + ":nuke_lemon").setCreativeTab(nuclear_rr);
          
         if (RRConfigx.old_pill_design) {
-            lord_vertice_lemonade = new VerticeLemonade("safe_pill").setModelName(ModInfo.modid + ":safe_pill").setCreativeTab(nuclear_rr);
-            nuclear_lemonade = new RRItem("experimental_pill").setModelName(ModInfo.modid + ":experimental_pill").setCreativeTab(nuclear_rr);
+            lord_vertice_lemonade = new VerticeLemonade("safe_pill", false).setModelName(ModInfo.modid + ":safe_pill").setCreativeTab(nuclear_rr).setMaxStackSize(6);
+            nuclear_lemonade = new VerticeLemonade("experimental_pill", true).setModelName(ModInfo.modid + ":experimental_pill").setCreativeTab(nuclear_rr).setMaxStackSize(6);
         } else {
-            lord_vertice_lemonade = new VerticeLemonade("vertice_lemonade").setModelName(ModInfo.modid + ":lemonade").setCreativeTab(nuclear_rr);
-            nuclear_lemonade = new RRItem("nuclear_lemonade").setModelName(ModInfo.modid + ":nuke_lemon").setCreativeTab(nuclear_rr);
+            lord_vertice_lemonade = new VerticeLemonade("vertice_lemonade", false).setModelName(ModInfo.modid + ":lemonade").setCreativeTab(nuclear_rr).setMaxStackSize(6);
+            nuclear_lemonade = new VerticeLemonade("nuclear_lemonade", true).setModelName(ModInfo.modid + ":nuke_lemon").setCreativeTab(nuclear_rr).setMaxStackSize(6);
         }
         
         

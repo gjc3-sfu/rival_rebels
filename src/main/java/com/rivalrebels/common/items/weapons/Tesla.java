@@ -29,7 +29,7 @@ import com.rivalrebels.common.init.RivalRebelsDamageSource;
 import com.rivalrebels.common.items.RRItem;
 
 public class Tesla extends RRItem {
-    boolean message = true;
+    boolean message = true; // bruh this is singleton
     
     public Tesla(String name) {
         super(name);
