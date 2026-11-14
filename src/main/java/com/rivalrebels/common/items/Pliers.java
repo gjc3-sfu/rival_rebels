@@ -19,6 +19,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class Pliers extends RRItem{
@@ -83,6 +85,7 @@ public class Pliers extends RRItem{
 
             // Handle block actions & progress feedback
             if (blockType == RRBlocks.plastic_explosives) {
+                player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.defuse") + " " + (session.progress * 100 / clicks_required) + I18n.translateToLocal("RivalRebels.percent")), false);
                 //PacketDispatcher.packetsys.sendTo(new TextPacket("RivalRebels.Defuse " + (session.progress * 100 / clicks_required) + "§7'/."), (EntityPlayerMP)player);
                 if (session.progress >= clicks_required) {
                 EntityItem defused_bomb_entity = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(RRBlocks.plastic_explosives, 1));
@@ -94,6 +97,7 @@ public class Pliers extends RRItem{
             } 
             else if (blockType == RRBlocks.timed_bomb) {
                 //PacketDispatcher.packetsys.sendTo(new TextPacket("RivalRebels.Defuse " + (session.progress * 100 / clicks_required) + "§7'/."), (EntityPlayerMP)player);
+                player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.defuse") + " " + (session.progress * 100 / clicks_required) + I18n.translateToLocal("RivalRebels.percent")), false);
                 if (session.progress >= clicks_required) {
                     EntityItem defused_bomb_entity = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(RRBlocks.timed_bomb, 1));
                     world.spawnEntity(defused_bomb_entity);
@@ -107,6 +111,7 @@ public class Pliers extends RRItem{
                 //PacketDispatcher.packetsys.sendTo(
                 //    new TextPacket("RivalRebels.Status RivalRebels.building " + (session.progress * 100 / clicks_required) + "§7'/."), (EntityPlayerMP)player
                 //);
+                player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.building") + " " + (session.progress * 100 / clicks_required) + I18n.translateToLocal("RivalRebels.percent")), false);
                 if (session.progress >= clicks_required) {
                     world.setBlockToAir(pos);
                     ((BlockAutoBuild) blockType).build(world, pos);

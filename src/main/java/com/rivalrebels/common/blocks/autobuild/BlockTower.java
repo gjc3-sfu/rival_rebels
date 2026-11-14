@@ -1,15 +1,20 @@
 package com.rivalrebels.common.blocks.autobuild;
 
-import com.rivalrebels.RivalRebels;
 import com.rivalrebels.common.init.RRBlocks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockTower extends BlockAutoBuild {
     public BlockTower(String name, Material material) {
         super(name, material);
+    }
+
+    @Override
+    public void build(World world, BlockPos pos) {
+        build(world, pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override

@@ -78,8 +78,8 @@ public class RRConfigx {
             "bunker_radius",
             Configuration.CATEGORY_GENERAL,
             10,
-            5,
-            50,
+            7,
+            15,
             "Radius of bunker deployables"
         );
 

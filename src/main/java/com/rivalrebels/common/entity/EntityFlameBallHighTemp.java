@@ -1,5 +1,6 @@
 package com.rivalrebels.common.entity;
 
+import com.rivalrebels.RivalRebels;
 import com.rivalrebels.common.config.BlockTransformation;
 import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.init.RRBlocks;
@@ -228,10 +229,10 @@ public class EntityFlameBallHighTemp extends EntityFlameBall {
                 world.setBlockToAir(new BlockPos((int) posX, (int) posY, (int) posZ));
                 world.createExplosion(null, posX, posY, posZ, 4, false);
             }
-            /*else if (id == RivalRebels.conduit) worldObj.setBlock((int) posX, (int) posY, (int) posZ, Blocks.fire);
-            else if (id == RivalRebels.reactive && worldObj.rand.nextInt(20) == 0) worldObj.setBlock((int) posX, (int) posY, (int) posZ, Blocks.lava);
-            else if ((id == RivalRebels.camo1 || id == RivalRebels.camo2 || id == RivalRebels.camo3) && worldObj.rand.nextInt(40) == 0) worldObj.setBlock((int) posX, (int) posY, (int) posZ, RivalRebels.steel);
-            else if (id == RivalRebels.steel && worldObj.rand.nextInt(40) == 0) worldObj.setBlock((int) posX, (int) posY, (int) posZ, Blocks.fire);*/
+            else if (block == RRBlocks.conduit) world.setBlockState(burn_pos, Blocks.FIRE.getDefaultState());
+            else if (block == RRBlocks.reactive && world.rand.nextInt(20) == 0) world.setBlockState(burn_pos, Blocks.LAVA.getDefaultState());
+            else if ((block == RRBlocks.green_camo || block == RRBlocks.grey_camo || block == RRBlocks.brown_camo) && world.rand.nextInt(40) == 0) world.setBlockState(burn_pos, RRBlocks.steel.getDefaultState());
+            else if (block == RRBlocks.steel && world.rand.nextInt(40) == 0) world.setBlockState(burn_pos, Blocks.FIRE.getDefaultState());
         }
     }
 }

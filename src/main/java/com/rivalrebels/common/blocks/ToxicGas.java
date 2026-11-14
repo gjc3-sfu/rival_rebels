@@ -14,6 +14,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -93,5 +94,17 @@ public class ToxicGas extends RRBlock {
         int z = pos.getZ();
         w.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + 0.5, y + 0.5, z + 0.5, (r.nextFloat() - 0.5) * 0.1, (r.nextFloat() - 0.5) * 0.1, (r.nextFloat() - 0.5) * 0.1);
         w.spawnParticle(EnumParticleTypes.SPELL, x + 0.5, y + 0.5, z + 0.5, (r.nextFloat() - 0.5) * 0.1, (r.nextFloat() - 0.5) * 0.1, (r.nextFloat() - 0.5) * 0.1);
+    }
+
+    @Override     
+    public int quantityDropped(Random random)
+    {
+        return 0;
+    }
+
+    @Override 
+    public boolean canDropFromExplosion(Explosion explosion)
+    {
+        return false;
     }
 }

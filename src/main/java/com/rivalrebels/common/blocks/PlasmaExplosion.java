@@ -7,8 +7,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -52,6 +55,18 @@ public class PlasmaExplosion extends RRBlock {
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityPlasmaExplosion();
+    }
+
+    @Override     
+    public int quantityDropped(Random random)
+    {
+        return 0;
+    }
+
+    @Override 
+    public boolean canDropFromExplosion(Explosion explosion)
+    {
+        return false;
     }
 
 }

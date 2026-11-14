@@ -33,7 +33,7 @@ public abstract class BlockAutoBuild extends BlockFalling {
     public void build(World world, int x, int y, int z) {
         // Play build sound
         BlockPos pos = new BlockPos(x, y, z);
-        build(world, pos);
+        world.playSound(null, pos, RRSounds.autobuild_deploy, SoundCategory.AMBIENT, 10f, 1f);
     }
 
     public void build(World world, BlockPos pos) {
@@ -45,6 +45,13 @@ public abstract class BlockAutoBuild extends BlockFalling {
         BlockPos place_pos = new BlockPos(x, y, z);
         if (!RRConfigx.autobuild_unmutable.contains(world.getBlockState(place_pos).getBlock())) {
             world.setBlockState(place_pos, block.getDefaultState());
+        }
+    }
+
+    protected void placeBlockCarefully(World world, int x, int y, int z, Block block, int update_flags) {
+        BlockPos place_pos = new BlockPos(x, y, z);
+        if (!RRConfigx.autobuild_unmutable.contains(world.getBlockState(place_pos).getBlock())) {
+            world.setBlockState(place_pos, block.getDefaultState(), update_flags);
         }
     }
 

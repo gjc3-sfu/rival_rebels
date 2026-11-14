@@ -7,6 +7,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class Reactive extends RRBlock {
@@ -43,4 +44,12 @@ public class Reactive extends RRBlock {
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
+
+    @Override
+    public boolean canDropFromExplosion(Explosion explosionIn)
+    {
+        return false;
+    }
+
+    
 }

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rivalrebels.common.blocks.*;
+import com.rivalrebels.common.blocks.autobuild.BlockBastion;
+import com.rivalrebels.common.blocks.autobuild.BlockBunker;
+import com.rivalrebels.common.blocks.autobuild.BlockMarioTrap;
 import com.rivalrebels.common.blocks.autobuild.BlockTower;
 import com.rivalrebels.common.blocks.crate.AmmoCrate;
 import com.rivalrebels.common.blocks.trap.ScorchedStone;
@@ -46,17 +49,23 @@ public class RRBlocks {
     public static Block supply_crate;
 
     public static Block tower_crate;
+    public static Block bunker_crate;
+    public static Block bastion_crate;
+    public static Block mario_trap;
+    public static Block mine_trap;
 
     public static void initBlocks() {
         mario = new Mario("mario", Material.GROUND).setSoundType(SoundType.GROUND).setCreativeTab(RRItems.nuclear_rr).setHardness(0.3f);
         quicksand = new Quicksand("quicksand", Material.SAND).setSoundType(SoundType.SAND).setCreativeTab(RRItems.nuclear_rr).setHardness(0.2f);
 
         // autobuilds:
-        tower_crate = new BlockTower("tower_crate", Material.WOOD).setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
+        tower_crate = new BlockTower("tower_crate", Material.WOOD).setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F);
+        bunker_crate = new BlockBunker("bunker_crate", Material.WOOD).setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F);
+        bastion_crate = new BlockBastion("bastion_crate", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F);
+        mario_trap = new BlockMarioTrap("mario_trap", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F).setResistance(10.0F);
+        mine_trap = new BlockMarioTrap("mine_trap", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F).setResistance(10.0F);
 
-        
-
-        steel = new Steel(Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F).setResistance(2.0F);
+        steel = new Steel(Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(1.0F).setResistance(10.0F);
         nuke = new NukeBlock(Material.IRON).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
         loader = new LoaderBlock(Material.IRON).setResistance(4.0F).setHardness(4.0F).setCreativeTab(RRItems.nuclear_rr);
         nuke_crate_top = new NukeCrate("nuke_crate_top", Material.WOOD).setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
@@ -64,19 +73,19 @@ public class RRBlocks {
         plasma_explosion = new PlasmaExplosion(Material.PORTAL, "plasma_explosion").setLightLevel(1.0F).setBlockUnbreakable();
         toaster = new Toaster("toaster", Material.IRON).setSoundType(SoundType.ANVIL).setCreativeTab(RRItems.nuclear_rr).setHardness(4.0F);
         plastic_explosives = new PlasticExplosives("plastic_explosives", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(3.0F).setResistance(3.0F);
-        green_camo = new PlacedCamo("green_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(6.0F).setResistance(6.0F);
-        brown_camo = new PlacedCamo("brown_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(6.0F).setResistance(6.0F);
-        grey_camo = new PlacedCamo("grey_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(6.0F).setResistance(6.0F);
+        green_camo = new PlacedCamo("green_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(2.0F).setResistance(25.0F);
+        brown_camo = new PlacedCamo("brown_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(2.0F).setResistance(25.0F);
+        grey_camo = new PlacedCamo("grey_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(2.0F).setResistance(25.0F);
         smart_camo = new SmartCamo("smart_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setCreativeTab(RRItems.nuclear_rr).setHardness(6.0F).setResistance(6.0F);
         mine = new Mine("mine", Material.IRON).setCreativeTab(RRItems.nuclear_rr).setHardness(6.0F).setResistance(6.0F);
         
         
-        reactive = new Reactive("reactive", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0f);
+        reactive = new Reactive("reactive", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0f).setResistance(100.0F);
         flare = new Flare("flare", Material.WOOD).setCreativeTab(RRItems.nuclear_rr).setLightLevel(0.5f);
         jumper = new Jumper("jumper", Material.ROCK).setSoundType(SoundType.METAL).setHardness(0.8F).setCreativeTab(RRItems.nuclear_rr);
         toxic_gas = new ToxicGas("toxic_gas", Material.CACTUS).setUnlocalizedName("toxic_gas").setCreativeTab(RRItems.nuclear_rr).setBlockUnbreakable();
         reactor = new ReactorBlock("reactor", Material.IRON).setUnlocalizedName("reactor").setHardness(10.0F).setResistance(10.0F).setLightLevel(1.0F);
-        conduit = new ConduitBlock("conduit", Material.IRON).setUnlocalizedName("conduit").setHardness(10.0F).setResistance(10.0F);
+        conduit = new ConduitBlock("conduit", Material.IRON).setCreativeTab(RRItems.nuclear_rr).setHardness(10.0F).setResistance(10.0F);
         scorched_stone_n = new ScorchedStone("scorched_stone_n", Material.ROCK).setCreativeTab(RRItems.nuclear_rr).setUnlocalizedName("scorched_stone_n").setHardness(1.5F).setResistance(10.0F);
         scorched_stone_e = new ScorchedStone("scorched_stone_e", Material.ROCK).setCreativeTab(RRItems.nuclear_rr).setUnlocalizedName("scorched_stone_e").setHardness(1.5F).setResistance(10.0F);
         scorched_stone_s = new ScorchedStone("scorched_stone_s", Material.ROCK).setCreativeTab(RRItems.nuclear_rr).setUnlocalizedName("scorched_stone_s").setHardness(1.5F).setResistance(10.0F);

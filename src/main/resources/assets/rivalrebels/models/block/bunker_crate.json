@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "up": "rivalrebels:blocks/crate_top",
+    "north": "rivalrebels:blocks/bunker_crate_side",
+    "west": "rivalrebels:blocks/bunker_crate_side",
+    "south": "rivalrebels:blocks/bunker_crate_side",
+    "east": "rivalrebels:blocks/bunker_crate_side",
+    "down": "rivalrebels:blocks/crate",
+    "particle": "rivalrebels:blocks/crate"
+  }
+}
