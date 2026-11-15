@@ -19,6 +19,8 @@ public class RREntities {
         EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "electricity_link"), EntityElectricityLink.class, "electricity_link", 8, RivalRebels.instance, 1000, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "rocket"), EntityRocket.class, "rocket", 9, RivalRebels.instance, 1000, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "fx_propulsion"), EntityPropulsionFX.class, "fx_propulsion", 10, RivalRebels.instance, 1000, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "laser_burst"), EntityLaserBurst.class, "laser_burst", 11, RivalRebels.instance, 1000, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "gore"), EntityGore.class, "gore", 12, RivalRebels.instance, 1000, 1, true);
 
     }
 }

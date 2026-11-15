@@ -27,6 +27,7 @@ public class RRSounds {
     public static SoundEvent einsten_warmup;
     public static SoundEvent einsten_fire_A;
     public static SoundEvent einsten_fire_B;
+    public static SoundEvent einsten_pop;
     public static SoundEvent autobuild_deploy;
 
     public static void init() {
@@ -53,6 +54,7 @@ public class RRSounds {
         einsten_warmup = new SoundEvent(new ResourceLocation(ModInfo.modid, "einsten_warmup")).setRegistryName("einsten_warmup");
         einsten_fire_A = new SoundEvent(new ResourceLocation(ModInfo.modid, "einsten_fire_a")).setRegistryName("einsten_fire_a");
         einsten_fire_B = new SoundEvent(new ResourceLocation(ModInfo.modid, "einsten_fire_b")).setRegistryName("einsten_fire_b");
+        einsten_pop = new SoundEvent(new ResourceLocation(ModInfo.modid, "einsten_pop")).setRegistryName("einsten_pop");
 
         autobuild_deploy = new SoundEvent(new ResourceLocation(ModInfo.modid, "autobuild_deploy")).setRegistryName("autobuild_deploy");
     }

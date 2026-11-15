@@ -20,7 +20,9 @@ public class RRConfigx {
     public static int bunker_radius;
     public static List<BlockTransformation> blockTransformations = new ArrayList<>();
     public static List<Block> autobuild_unmutable = new ArrayList<>();
+    public static List<Block> explosion_unmovable = new ArrayList<>();
     private static String[] autobuildIrreplacableBlockIds = new String[0];
+    private static String[] explosionUnmovableBlockIds = new String[0];
     private static boolean blockRegistryReady;
 
     public static void init(File configFile) {
@@ -96,6 +98,15 @@ public class RRConfigx {
                 "minecraft:trapped_chest"
             },
             "List of blocks autobuild is not allowed to overwrite"
+        );
+
+        explosionUnmovableBlockIds = config.getStringList(
+            "explosion_unmovable",
+            Configuration.CATEGORY_GENERAL,
+            new String[] {
+                "minecraft:bedrock"
+            },
+            "List of blocks Rival Rebels displacing explosions cannot move"
         );
 
         String[] transformations = config.getStringList(
@@ -261,12 +272,14 @@ public class RRConfigx {
 
         if (blockRegistryReady) {
             resolveAutobuildUnmutable();
+            resolveExplosionUnmovable();
         }
     }
 
     public static void onBlockRegistryReady() {
         blockRegistryReady = true;
         resolveAutobuildUnmutable();
+        resolveExplosionUnmovable();
     }
 
     private static void resolveAutobuildUnmutable() {
@@ -286,6 +299,29 @@ public class RRConfigx {
             } catch (IllegalArgumentException e) {
                 System.err.println(
                     "[Rival Rebels] Invalid block in autobuild blacklist: " + entry
+                );
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void resolveExplosionUnmovable() {
+        explosion_unmovable.clear();
+
+        for (String entry : explosionUnmovableBlockIds) {
+            try {
+                ResourceLocation id = new ResourceLocation(entry.trim());
+                if (!ForgeRegistries.BLOCKS.containsKey(id)) {
+                    System.err.println(
+                        "[Rival Rebels] Unknown block in explosion unmovable list: " + entry
+                    );
+                    continue;
+                }
+
+                explosion_unmovable.add(ForgeRegistries.BLOCKS.getValue(id));
+            } catch (IllegalArgumentException e) {
+                System.err.println(
+                    "[Rival Rebels] Invalid block in explosion unmovable list: " + entry
                 );
                 e.printStackTrace();
             }

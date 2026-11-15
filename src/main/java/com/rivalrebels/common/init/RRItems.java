@@ -8,6 +8,7 @@ import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.creativetabs.HydroRR;
 import com.rivalrebels.common.creativetabs.NuclearRR;
 import com.rivalrebels.common.items.*;
+import com.rivalrebels.common.items.weapons.Einsten;
 import com.rivalrebels.common.items.weapons.FlameThrower;
 import com.rivalrebels.common.items.weapons.M202;
 import com.rivalrebels.common.items.weapons.PlasmaCannonItem;
@@ -41,9 +42,11 @@ public class RRItems {
     public static Item flamethrower;
     public static Item tesla;
     public static Item m202;
+    public static Item einsten;
     public static Item copper_core;
     public static Item tungsten_core;
     public static Item titanium_core;
+    public static Item chip;
 
     //Item blocks go below here
     public static Item i_loader;
@@ -58,7 +61,7 @@ public class RRItems {
         empty_rod = new RRItem("rod").setModelName(ModInfo.modid + ":rod").setCreativeTab(nuclear_rr);
         nuclear_rod = new ItemRodNuclear("nuke_rod").setModelName(ModInfo.modid + ":nuke_rod").setCreativeTab(nuclear_rr).setContainerItem(empty_rod).setMaxStackSize(1);
         hydro_rod = new RRItemRod("hydrogen_rod").setModelName(ModInfo.modid + ":hydrogen_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
-        redstone_rod = new RRItem("redstone_rod").setModelName(ModInfo.modid + ":redstone_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
+        redstone_rod = new RRItemRod("redstone_rod").setModelName(ModInfo.modid + ":redstone_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
         battery = new BatteryItem("battery").setModelName(ModInfo.modid + ":" + "battery").setCreativeTab(nuclear_rr);
         //lord_vertice_lemonade = new VerticeLemonade("vertice_lemonade").setModelName(ModInfo.modid + ":lemonade").setCreativeTab(nuclear_rr);
         //nuclear_lemonade = new RRItem("nuclear_lemonade").setModelName(ModInfo.modid + ":nuke_lemon").setCreativeTab(nuclear_rr);
@@ -78,16 +81,19 @@ public class RRItems {
         detonator = new Remote("detonator").setModelName(ModInfo.modid + ":detonator").setCreativeTab(nuclear_rr);
         fuel = new RRItem("fuel").setModelName(ModInfo.modid + ":fuel").setCreativeTab(nuclear_rr);
         rocket = new RRItem("rocket").setModelName(ModInfo.modid + ":rocket").setCreativeTab(nuclear_rr);
-        knife = new Cuchillo("knife").setCreativeTab(nuclear_rr).setFull3D();
+        knife = new Cuchillo("knife").setCreativeTab(nuclear_rr).setFull3D().setMaxStackSize(5);
         plasma_cannon = new PlasmaCannonItem("plasma_cannon").setCreativeTab(nuclear_rr).setFull3D();
         flamethrower = new FlameThrower("flamethrower").setModelName(ModInfo.modid + ":flamethrower").setCreativeTab(nuclear_rr).setMaxStackSize(1);
         tesla = new Tesla("tesla").setModelName(ModInfo.modid + ":tesla").setCreativeTab(nuclear_rr).setMaxStackSize(1);
         m202 = new M202("m202").setModelName(ModInfo.modid + ":m202").setCreativeTab(nuclear_rr).setMaxStackSize(1);
-        gas_grenade = new GasGrenade("gas_grenade").setModelName(ModInfo.modid + ":gas_grenade").setCreativeTab(nuclear_rr);
+        einsten = new Einsten("einsten").setModelName(ModInfo.modid + ":einsten").setCreativeTab(nuclear_rr).setMaxStackSize(1);
+        gas_grenade = new GasGrenade("gas_grenade").setModelName(ModInfo.modid + ":gas_grenade").setCreativeTab(nuclear_rr).setMaxStackSize(6);
 
         copper_core = new RRItemCore("copper_core").setModelName(ModInfo.modid + ":copper_core").setCreativeTab(nuclear_rr);
         tungsten_core = new RRItemCore("tungsten_core").setModelName(ModInfo.modid + ":tungsten_core").setCreativeTab(nuclear_rr);
         titanium_core = new RRItemCore("titanium_core").setModelName(ModInfo.modid + ":titanium_core").setCreativeTab(nuclear_rr);
+
+        chip = new ChipItem("chip").setModelName(ModInfo.modid + ":chip").setCreativeTab(nuclear_rr);
 
         /* ------------------------------------ Item-Blocks ----------------------------------------------- */
 
@@ -96,6 +102,6 @@ public class RRItems {
 
         /* --------------------------------------- Armour ------------------------------------------------- */
 
-        troll_helmet = new ItemTrollHelmet("troll_helmet").setModelName(ModInfo.modid + ":troll").setCreativeTab(hydro_rr);
+        troll_helmet = new ItemTrollHelmet("troll_helmet").setModelName(ModInfo.modid + ":troll_helmet").setCreativeTab(hydro_rr);
     }
 }

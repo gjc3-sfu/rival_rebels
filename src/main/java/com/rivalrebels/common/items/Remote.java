@@ -66,9 +66,10 @@ public class Remote extends RRItem {
                 int z = stack.getTagCompound().getInteger("remotez");
                 if (worldIn.getBlockState(new BlockPos(x, y, z)) == RRBlocks.plastic_explosives.getDefaultState()) {
                     worldIn.playSound(null, x, y, z, RRSounds.weird_noise, SoundCategory.AMBIENT, 1f, 1f);
-                    PlasticExplosives.explode(worldIn, new BlockPos(x, y, z));
+                    PlasticExplosives.explode(worldIn, new BlockPos(x, y, z), playerIn);
 
                     // also erase the tag here
+                    stack.setTagCompound(null);;
                 }
             }
         }

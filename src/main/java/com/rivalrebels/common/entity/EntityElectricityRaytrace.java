@@ -156,7 +156,7 @@ public class EntityElectricityRaytrace extends Entity {
                 Block hitBlock = this.world.getBlockState(new BlockPos(MOP_block_x, MOP_block_y, MOP_block_z)).getBlock();
                 float randomValue = this.world.rand.nextFloat();
                 
-                if (false/*hitBlock == RivalRebels.camo1 || hitBlock == RivalRebels.camo2 || hitBlock == RivalRebels.camo3*/) {
+                if (hitBlock == RRBlocks.green_camo || hitBlock == RRBlocks.brown_camo || hitBlock == RRBlocks.grey_camo) {
                     if (randomValue * 10.0F <= this.c) {
                         if (!this.world.isRemote) {
                             this.world.setBlockState(new BlockPos(MOP_block_x, MOP_block_y, MOP_block_z), Blocks.AIR.getDefaultState());

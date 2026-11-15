@@ -6,18 +6,33 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TileMario extends TileEntity {
     public IBlockState getBlock(){
+        IBlockState block = findBlock(new HashSet<BlockPos>());
+        return block == null ? Blocks.GRAVEL.getDefaultState() : block;
+    }
+
+    private IBlockState findBlock(Set<BlockPos> visited) {
+        if (pos == null || world == null || !visited.add(pos)) return null;
+
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
+        BlockPos[] neighborPos = new BlockPos[] {
+                new BlockPos(x + 1, y, z),
+                new BlockPos(x - 1, y, z),
+                new BlockPos(x, y + 1, z),
+                new BlockPos(x, y - 1, z),
+                new BlockPos(x, y, z + 1),
+                new BlockPos(x, y, z - 1)
+        };
         IBlockState[] n = new IBlockState[6];
-        n[0] = world.getBlockState(new BlockPos(x + 1, y, z));
-        n[1] = world.getBlockState(new BlockPos(x - 1, y, z));
-        n[2] = world.getBlockState(new BlockPos(x, y + 1, z));
-        n[3] = world.getBlockState(new BlockPos(x, y - 1, z));
-        n[4] = world.getBlockState(new BlockPos(x, y, z + 1));
-        n[5] = world.getBlockState(new BlockPos(x, y, z - 1));
+        for (int i = 0; i < neighborPos.length; i++) {
+            n[i] = world.getBlockState(neighborPos[i]);
+        }
 
         int popularity1 = 0;
         int popularity2 = 0;
@@ -36,6 +51,16 @@ public class TileMario extends TileEntity {
             }
             popularity1 = 0;
         }
-        return mode;
+        if (popularity2 > 0) return mode;
+
+        for (int i = 0; i < n.length; i++) {
+            if (n[i].getBlock() != RRBlocks.mario) continue;
+            TileEntity neighbor = world.getTileEntity(neighborPos[i]);
+            if (neighbor instanceof TileMario) {
+                IBlockState neighborBlock = ((TileMario) neighbor).findBlock(visited);
+                if (neighborBlock != null) return neighborBlock;
+            }
+        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.rivalrebels.client.renderhelper.RenderHelper;
 import com.rivalrebels.client.renderhelper.Vertice;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class ModelEinstenBlasterBody {
     Vertice vx = new Vertice(1.0F, 0.0F, 0.0F).normalize();
@@ -27,7 +28,7 @@ public class ModelEinstenBlasterBody {
         GL11.glColor4f(red, green, blue, alpha);
         GL11.glScalef(size, size, size);
         GL11.glDisable(3553);
-        GL11.glDisable(2896);
+        GlStateManager.disableLighting();
 
         for (int p = 0; p < 4; p++) {
             GL11.glPushMatrix();
@@ -51,7 +52,7 @@ public class ModelEinstenBlasterBody {
             GL11.glPopMatrix();
         }
 
-        GL11.glEnable(2896);
+        GlStateManager.enableLighting();
         GL11.glEnable(3553);
         GL11.glPopMatrix();
     }

@@ -5,7 +5,11 @@ import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.init.RivalRebelsDamageSource;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -75,8 +79,23 @@ public class PlasticExplosives extends RRBlock{
 
     public static void explode(World world, BlockPos pos){
         world.setBlockToAir(pos);
+        DamageSource damage = new EntityDamageSource(
+            "explosion",
+            null
+        ).setExplosion();
         world.playSound(null, pos, RRSounds.generic_explosion, SoundCategory.AMBIENT, 1f, 1f);
-        new RivalRebelsExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 5, false, false, RivalRebelsDamageSource.plasmaexplosion);
+        new RivalRebelsExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 5, false, false, damage);
+    }
+
+    public static void explode(World world, BlockPos pos, Entity igniter){
+        world.setBlockToAir(pos);
+
+        DamageSource damage = new EntityDamageSource(
+            "explosion",
+            igniter
+        ).setExplosion();
+        world.playSound(null, pos, RRSounds.generic_explosion, SoundCategory.AMBIENT, 1f, 1f);
+        new RivalRebelsExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 5, false, false, damage);
     }
 
     @Override

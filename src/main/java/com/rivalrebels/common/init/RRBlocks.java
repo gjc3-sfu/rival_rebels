@@ -7,6 +7,8 @@ import com.rivalrebels.common.blocks.*;
 import com.rivalrebels.common.blocks.autobuild.BlockBastion;
 import com.rivalrebels.common.blocks.autobuild.BlockBunker;
 import com.rivalrebels.common.blocks.autobuild.BlockMarioTrap;
+import com.rivalrebels.common.blocks.autobuild.BlockMineTrap;
+import com.rivalrebels.common.blocks.autobuild.BlockQuicksandTrap;
 import com.rivalrebels.common.blocks.autobuild.BlockTower;
 import com.rivalrebels.common.blocks.crate.AmmoCrate;
 import com.rivalrebels.common.blocks.trap.ScorchedStone;
@@ -53,6 +55,10 @@ public class RRBlocks {
     public static Block bastion_crate;
     public static Block mario_trap;
     public static Block mine_trap;
+    public static Block quicksand_trap;
+
+    // Flags:
+    public static Block flag_troll;
 
     public static void initBlocks() {
         mario = new Mario("mario", Material.GROUND).setSoundType(SoundType.GROUND).setCreativeTab(RRItems.nuclear_rr).setHardness(0.3f);
@@ -63,7 +69,8 @@ public class RRBlocks {
         bunker_crate = new BlockBunker("bunker_crate", Material.WOOD).setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F);
         bastion_crate = new BlockBastion("bastion_crate", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F);
         mario_trap = new BlockMarioTrap("mario_trap", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F).setResistance(10.0F);
-        mine_trap = new BlockMarioTrap("mine_trap", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F).setResistance(10.0F);
+        mine_trap = new BlockMineTrap("mine_trap", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F).setResistance(10.0F);
+        quicksand_trap = new BlockQuicksandTrap("quicksand_trap", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(0.5F).setResistance(10.0F);
 
         steel = new Steel(Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(1.0F).setResistance(10.0F);
         nuke = new NukeBlock(Material.IRON).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
@@ -93,6 +100,9 @@ public class RRBlocks {
 
         // crates:
         ammo_crate = new AmmoCrate("ammo_crate", Material.WOOD).setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
+
+        // Flags:
+        flag_troll = new BlockFlag("flag_troll", Material.CLOTH).setSoundType(SoundType.CLOTH).setCreativeTab(RRItems.hydro_rr).setHardness(0.0F);
 
 
     }

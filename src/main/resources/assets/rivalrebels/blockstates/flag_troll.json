@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "rivalrebels:flag_troll",
+      "y": 0
+    },
+    "facing=south": {
+      "model": "rivalrebels:flag_troll",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "rivalrebels:flag_troll",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "rivalrebels:flag_troll",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "rivalrebels:flag_troll"
+    }
+  }
+}

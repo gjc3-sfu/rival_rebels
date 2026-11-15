@@ -1,6 +1,7 @@
 package com.rivalrebels;
 
 import com.rivalrebels.client.render.*;
+import com.rivalrebels.client.render.items.RenderEinsten;
 import com.rivalrebels.client.renderhelper.BakedModelNoGui;
 import com.rivalrebels.client.renderhelper.ItemRenderBase;
 import com.rivalrebels.common.blocks.IRRBlock;
@@ -180,6 +181,12 @@ public class ModEventHandler {
         if (m202_renderer instanceof RenderM202) {
             m202_renderer.renderByItem(new ItemStack(RRItems.m202));
             swapModelsNoGui(RRItems.m202, event.getModelRegistry());
+        }
+
+        TileEntityItemStackRenderer einsten_renderer = RRItems.einsten.getTileEntityItemStackRenderer();
+        if (einsten_renderer instanceof RenderEinsten) {
+            einsten_renderer.renderByItem(new ItemStack(RRItems.einsten));
+            swapModelsNoGui(RRItems.einsten, event.getModelRegistry());
         }
     }
 

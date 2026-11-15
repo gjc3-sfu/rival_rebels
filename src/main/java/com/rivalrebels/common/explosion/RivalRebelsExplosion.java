@@ -1,5 +1,7 @@
 package com.rivalrebels.common.explosion;
 
+import com.rivalrebels.RivalRebels;
+import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.entity.EntityDebris;
 import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RRSounds;
@@ -97,8 +99,7 @@ public class RivalRebelsExplosion {
                         if (dist <= delete && block == RRBlocks.green_camo && block == RRBlocks.brown_camo && block == RRBlocks.grey_camo)
                         {
                             world.setBlockToAir(new BlockPos(xx, yy, zz));
-                        } else if (dist < radius)
-                        {
+                        } else if (dist < radius) {
                             int varrand = 1 + dist - halfradius;
                             if (dist < halfradius)
                             {
@@ -128,34 +129,45 @@ public class RivalRebelsExplosion {
     private void breakBlock(World world, int xx, int yy, int zz, int strength, double x, double y, double z)
     {
         Block block = world.getBlockState(new BlockPos(xx, yy, zz)).getBlock();
-        EntityDebris e = new EntityDebris(world, xx, yy, zz); // air debris
-        double xmo = x - xx;
-        double ymo = y - yy;
-        double zmo = z - zz;
-        e.addVelocity(xmo * 0.2f, ymo * 0.2f, zmo * 0.2f);
-        world.spawnEntity(e);
-        if (block == RRBlocks.plastic_explosives)
-        {
+        if (RRConfigx.explosion_unmovable.contains(block)) {
+            // immune blocks
+            return;
+        } else if (block == RRBlocks.plastic_explosives) {
+            // Explosive
             world.setBlockToAir(new BlockPos(xx, yy, zz));
             world.playSound(null, xx, yy, zz, RRSounds.generic_explosion, SoundCategory.AMBIENT, 0.5f, 0.3f);
             new RivalRebelsExplosion(world, x + 0.5f, y + 0.5f, z + 0.5f, 5, false, false, RivalRebelsDamageSource.charge);
             return;
-        }
-        if (/*block == RivalRebels.toxicgas ||*/ block == Blocks.CHEST || block == Blocks.VINE || block == Blocks.TALLGRASS /*|| block == RivalRebels.flare || block == RivalRebels.light || block == RivalRebels.light2 || block == RivalRebels.reactive || block == RivalRebels.timedbomb*/)
-        {
+        } else if (block == Blocks.TNT) {
+            // Explosive 2
+            world.setBlockToAir(new BlockPos((int) xx, (int) yy, (int) zz));
+            world.createExplosion(null, xx, yy, zz, 4, false);
+        } else if (block == RRBlocks.toxic_gas || block == Blocks.CHEST || block == Blocks.VINE || block == Blocks.TALLGRASS || block == RRBlocks.flare  || block == RRBlocks.reactive/* || block == RivalRebels.timedbomb*/) {
+            // Breaks/damaged with no debris
             world.setBlockState(new BlockPos(xx, yy, zz), Blocks.AIR.getDefaultState());
             return;
+        } else if (block == RRBlocks.grey_camo || block == RRBlocks.brown_camo || block == RRBlocks.green_camo || block == RRBlocks.conduit) {
+            //Creates debris with a chance (resistant but not immune)
+
+            if (world.rand.nextInt(20) == 0) {
+                EntityDebris e = new EntityDebris(world, xx, yy, zz); // air debris
+                double xmo = x - xx;
+                double ymo = y - yy;
+                double zmo = z - zz;
+                e.addVelocity(xmo * 0.2f, ymo * 0.2f, zmo * 0.2f);
+                world.spawnEntity(e);
+            }
+        } else {
+            // Creates debris
+            EntityDebris e = new EntityDebris(world, xx, yy, zz); // air debris
+            double xmo = x - xx;
+            double ymo = y - yy;
+            double zmo = z - zz;
+            e.addVelocity(xmo * 0.2f, ymo * 0.2f, zmo * 0.2f);
+            world.spawnEntity(e);
         }
-        if (block == Blocks.OAK_STAIRS || block == Blocks.ACACIA_STAIRS || block == Blocks.DARK_OAK_STAIRS || block == Blocks.BIRCH_STAIRS) world.setBlockState(new BlockPos(xx, yy, zz), Blocks.PLANKS.getDefaultState());
-        /*if (block == RivalRebels.camo1 || block == RivalRebels.camo2 || block == RivalRebels.camo3 || block == RivalRebels.conduit)
-        {
-            if (world.rand.nextInt(20) != 0) return;
-        }*/
-        //TODO: create the rival rebels blackList class
-        /*if (BlackList.explosion(block))
-        {
-            return;
-        }*/
+            
+
     }
 
     private void pushAndHurtEntities(World world, double x, double y, double z, int radius, DamageSource dmgsrc) {

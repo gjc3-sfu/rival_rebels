@@ -83,9 +83,14 @@
     "category": "ambient",
     "sounds": [{"name": "rivalrebels:einsten/einsten_fire_b"}, "rivalrebels:einsten/laser_fire_b"]
   },
+  "einsten_pop": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:einsten/einsten_pop"}, "rivalrebels:einsten/pop_1", "rivalrebels:einsten/pop_2", "rivalrebels:einsten/pop_3"]
+  },
 
   "autobuild_deploy": {
     "category": "ambient",
     "sounds": [{"name": "rivalrebels:autobuild/deploy"}, "rivalrebels:autobuild/deploy_1", "rivalrebels:autobuild/deploy_2"]
   }
+  
 }

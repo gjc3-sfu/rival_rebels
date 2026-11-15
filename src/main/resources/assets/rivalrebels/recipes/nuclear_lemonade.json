@@ -12,6 +12,12 @@
     "t": {
       "item": "rivalrebels:troll_helmet"
     },
+    "g": {
+      "item": "rivalrebels:gas_grenade"
+    },
+    "r": {
+      "item": "rivalrebels:rocket"
+    },
     "m": {
       "item": "minecraft:milk_bucket"
     },

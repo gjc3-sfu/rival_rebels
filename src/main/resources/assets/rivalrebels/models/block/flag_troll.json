@@ -1,0 +1,21 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "rivalrebels:blocks/troll",
+    "flag": "rivalrebels:blocks/troll"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 1],
+      "faces": {
+        "north": {
+          "texture": "#flag"
+        },
+        "south": {
+          "texture": "#flag"
+        }
+      }
+    }
+  ]
+}

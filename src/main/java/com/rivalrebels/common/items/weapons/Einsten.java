@@ -8,6 +8,7 @@ import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.items.RRItem;
 import com.rivalrebels.common.items.RRItemHydrogen;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -53,6 +54,7 @@ public class Einsten extends RRItem {
         if (player.capabilities.isCreativeMode || has_redstone || RRConfigx.infinite_ammo)
         {
             player.setActiveHand(hand);
+            world.playSound(null, player.posX, player.posY, player.posZ, RRSounds.einsten_warmup, SoundCategory.AMBIENT, 0.7F, 0.7F);
 
 
         } else if (!world.isRemote) {
@@ -62,34 +64,44 @@ public class Einsten extends RRItem {
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
     }
 
-    private boolean consumeRedstone(EntityPlayer player, int uses) {
-        for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-            ItemStack stack = player.inventory.mainInventory.get(i);
+    private boolean consumeRedstone(EntityLivingBase entity, int uses) {
 
-            if (!stack.isEmpty() && stack.getItem() == RRItems.redstone_rod) {
-                int durability_left = RRItemHydrogen.MAX_DURABILITY - stack.getMetadata();
-                if (durability_left < uses) {
-                    uses = uses - durability_left;
+        if (entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entity;
+
+            for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+                ItemStack stack = player.inventory.mainInventory.get(i);
+
+                if (!stack.isEmpty() && stack.getItem() == RRItems.redstone_rod) {
+                    int durability_left = RRItemHydrogen.MAX_DURABILITY - stack.getMetadata();
+                    if (durability_left < uses) {
+                        uses = uses - durability_left;
 
 
-                    player.inventory.decrStackSize(i, 1);
-                    player.inventory.addItemStackToInventory(new ItemStack(RRItems.empty_rod, 1));
+                        player.inventory.decrStackSize(i, 1);
+                        player.inventory.addItemStackToInventory(new ItemStack(RRItems.empty_rod, 1));
 
-                } else {
-                    stack.setItemDamage(stack.getMetadata() + uses);
-                    uses = 0;
+                    } else {
+                        stack.setItemDamage(stack.getMetadata() + uses);
+                        uses = 0;
+                    }
+                }
+
+                if (uses <= 0) {
+                    return true;
                 }
             }
 
-            if (uses <= 0) {
-                return true;
-            }
+
         }
+
+
 
         return false;
     }
 
-    public void onUsingTick(ItemStack is, EntityPlayer player, int count) {
+    @Override
+    public void onUsingTick(ItemStack is, EntityLivingBase player, int count) {
         if (count < 71980 && !player.world.isRemote) {
             consumeRedstone(player, 1);
             if (this.sound_alternate) {
@@ -101,7 +113,8 @@ public class Einsten extends RRItem {
             }
 
             this.sound_alternate = !this.sound_alternate;
-            player.world.spawnEntity(new EntityLaserBurst(player.world, player, is.getEnchantmentTagList() != null && is.getEnchantmentTagList().tagCount() > 0));
+            boolean is_enchanted = is.getEnchantmentTagList() != null && is.getEnchantmentTagList().tagCount() > 0;
+            player.world.spawnEntity(new EntityLaserBurst(player.world, player, is_enchanted));
         } else if (player.world.isRemote) {
             is.setRepairCost(2000 - count + 1);
         }

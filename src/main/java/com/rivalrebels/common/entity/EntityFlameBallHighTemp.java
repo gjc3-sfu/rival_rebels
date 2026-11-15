@@ -227,7 +227,7 @@ public class EntityFlameBallHighTemp extends EntityFlameBall {
             else if (block == Blocks.TNT)
             {
                 world.setBlockToAir(new BlockPos((int) posX, (int) posY, (int) posZ));
-                world.createExplosion(null, posX, posY, posZ, 4, false);
+                world.createExplosion(owner, posX, posY, posZ, 4, false);
             }
             else if (block == RRBlocks.conduit) world.setBlockState(burn_pos, Blocks.FIRE.getDefaultState());
             else if (block == RRBlocks.reactive && world.rand.nextInt(20) == 0) world.setBlockState(burn_pos, Blocks.LAVA.getDefaultState());

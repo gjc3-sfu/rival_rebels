@@ -2,26 +2,14 @@ package com.rivalrebels.common.entity;
 
 import java.util.List;
 
-import com.rivalrebels.RivalRebels;
-import com.rivalrebels.client.oldstuff.Vec3;
-import com.rivalrebels.common.entity.EntityGore.Model_Type;
 import com.rivalrebels.common.init.RRBlocks;
+import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.init.RivalRebelsDamageSource;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntityMagmaCube;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
@@ -31,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -42,12 +31,17 @@ public class EntityLaserBurst extends Entity {
 
     private Entity shooter;
 
-    public EntityLaserBurst(World world, EntityPlayer player) {
+    public EntityLaserBurst(World world) {
+        super(world);
+        this.setSize(0.5F, 0.5F);
+    }
+
+    public EntityLaserBurst(World world, EntityLivingBase player) {
         this(world, player, false);
         // check if this constructor matches original as I replaced it with a function overload
     }
 
-    public EntityLaserBurst(World par1World, EntityPlayer player, boolean accurate) {
+    public EntityLaserBurst(World par1World, EntityLivingBase player, boolean accurate) {
         super(par1World);
         this.shooter = player;
         this.setSize(0.5F, 0.5F);
@@ -178,8 +172,10 @@ public class EntityLaserBurst extends Entity {
                 entity.attackEntityFrom(damage, 6.0F);
                 if (entity.getHealth() < 3.0F) {
 
-                    entity.setDead(); // True damage execute
-                    //RivalRebelsSoundPlayer.playSound(this, 2, 1, 4.0F);
+                    entity.attackEntityFrom(damage, 2000000.0F); // execute
+                    entity.setDead(); // Remove
+
+                    world.playSound(null, MOP.entityHit.posX, MOP.entityHit.posY, MOP.entityHit.posZ, RRSounds.einsten_pop, SoundCategory.AMBIENT, 4.0F, 1.0F);
 
                     this.spawn_gore(entity);
 
