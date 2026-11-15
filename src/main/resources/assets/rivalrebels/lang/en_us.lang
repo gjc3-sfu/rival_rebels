@@ -22,6 +22,10 @@ RivalRebels.experimental_pill.perished=§7[§6Status§7]§e The test subject has
 RivalRebels.defuse=§7[§6Defuse§7]§e
 RivalRebels.building=§7[§6Constructing§7]§e
 RivalRebels.percent=§7'/.
+tile_scorched_stone_n.name=Scorched Stone
+tile_scorched_stone_e.name=Scorched Stone
+tile_scorched_stone_s.name=Scorched Stone
+tile_scorched_stone_w.name=Scorched Stone
 tile.nuke_crate_bottom.name=Nuke Crate Bottom
 tile.nuke_crate_top.name=Nuke Crate Top
 tile.loader.name=Loader
@@ -49,6 +53,7 @@ item.gas_grenade.name=Gas Grenade
 item.knife.name=Cuchillo
 item.plasma_cannon.name=Plasma Cannon
 item.flamethrower.name=Flamethrower
+item.einsten.name=Ein-Sten
 item.tesla.name=Tesla
 item.m202.name=M202-RR
 itemGroup.rival_rebels=Rival Rebels
@@ -59,6 +64,7 @@ item.nuclear_lemonade.name=Nuclear Lemonade
 item.copper_core.name=Cu-Core
 item.tungsten_core.name=W-Core
 item.titanium_core.name=Ti-Core
+item.chip.name=Chip
 
 
 death.attack.cooked=%1$s was incinerated

@@ -4,15 +4,20 @@
     "layer0": "rivalrebels:items/flamethrower"
   },
 "display": {
+    "firstperson_lefthand": {
+        "rotation": [ 335, 90, 0 ],
+        "translation": [ 1.13, 3.20, 1.13 ],
+        "scale": [ 0.68, 0.68, 0.68 ]
+    },
     "thirdperson_righthand": {
         "rotation": [ 180, 184, 180 ],
         "translation": [ 1.25, 3.75, 2.75 ],
         "scale": [ 0.18, 0.18, 0.18 ]
     },
     "thirdperson_lefthand": {
-        "rotation": [ 0, 0, 0 ],
-        "translation": [ -0.75, 3.00, 2.75 ],
-        "scale": [ 0.18, 0.18, 0.18 ]
+        "rotation": [ 335, 90, 0 ],
+        "translation": [ 1.13, 3.20, 1.13 ],
+        "scale": [ 0.68, 0.68, 0.68 ]
     },
     "gui": {
         "rotation": [ 0, 0, 0 ],
@@ -31,7 +36,7 @@
     },
     "ground": {
         "rotation": [ 30, 0, 0 ],
-        "translation": [ 0.75, 10.75, 1.75 ],
+        "translation": [ 0.75, 6.75, 1.75 ],
         "scale": [ 0.10, 0.10, 0.10 ]
     }
 }

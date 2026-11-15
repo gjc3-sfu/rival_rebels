@@ -5,7 +5,8 @@
   ],
   "key": {
     "s": {
-      "item": "minecraft:sand"
+      "item": "minecraft:sand",
+      "data": 32767
     }
   },
   "result": {

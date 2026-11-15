@@ -1,13 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "db",
+    "bp",
     "sp"
   ],
   "key": {
-    "d": {
-      "item": "rivalrebels:detonator"
-    },
     "b": {
       "item": "rivalrebels:battery"
     },
