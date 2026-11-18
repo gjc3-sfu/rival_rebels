@@ -10,8 +10,9 @@ import com.rivalrebels.common.blocks.autobuild.BlockMarioTrap;
 import com.rivalrebels.common.blocks.autobuild.BlockMineTrap;
 import com.rivalrebels.common.blocks.autobuild.BlockQuicksandTrap;
 import com.rivalrebels.common.blocks.autobuild.BlockTower;
-import com.rivalrebels.common.blocks.crate.AmmoCrate;
+import com.rivalrebels.common.blocks.crate.LootCrate;
 import com.rivalrebels.common.blocks.trap.ScorchedStone;
+import com.rivalrebels.common.blocks.trap.TimedBomb;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -48,7 +49,9 @@ public class RRBlocks {
     public static Block scorched_stone_w;
     public static Block conduit;
     public static Block ammo_crate;
+    public static Block weapon_crate;
     public static Block supply_crate;
+    public static Block explosives_crate;
 
     public static Block tower_crate;
     public static Block bunker_crate;
@@ -80,6 +83,7 @@ public class RRBlocks {
         plasma_explosion = new PlasmaExplosion(Material.PORTAL, "plasma_explosion").setLightLevel(1.0F).setBlockUnbreakable();
         toaster = new Toaster("toaster", Material.IRON).setSoundType(SoundType.ANVIL).setCreativeTab(RRItems.nuclear_rr).setHardness(4.0F);
         plastic_explosives = new PlasticExplosives("plastic_explosives", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(3.0F).setResistance(3.0F);
+        timed_bomb = new TimedBomb("timed_bomb", Material.IRON).setSoundType(SoundType.METAL).setCreativeTab(RRItems.nuclear_rr).setHardness(1.0F).setResistance(1.0F);
         green_camo = new PlacedCamo("green_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(2.0F).setResistance(25.0F);
         brown_camo = new PlacedCamo("brown_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(2.0F).setResistance(25.0F);
         grey_camo = new PlacedCamo("grey_camo", Material.CLAY).setSoundType(SoundType.CLOTH).setHardness(2.0F).setResistance(25.0F);
@@ -99,7 +103,10 @@ public class RRBlocks {
         scorched_stone_w = new ScorchedStone("scorched_stone_w", Material.ROCK).setCreativeTab(RRItems.nuclear_rr).setUnlocalizedName("scorched_stone_w").setHardness(1.5F).setResistance(10.0F);
 
         // crates:
-        ammo_crate = new AmmoCrate("ammo_crate", Material.WOOD).setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
+        ammo_crate = new LootCrate("ammo_crate", Material.WOOD, "ammunition_crate").setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
+        weapon_crate = new LootCrate("weapon_crate", Material.WOOD, "weapon_crate").setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
+        supply_crate = new LootCrate("supply_crate", Material.WOOD, "supply_crate").setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
+        explosives_crate = new LootCrate("explosives_crate", Material.WOOD, "explosives_crate").setSoundType(SoundType.WOOD).setCreativeTab(RRItems.nuclear_rr).setHardness(2.0F);
 
         // Flags:
         flag_troll = new BlockFlag("flag_troll", Material.CLOTH).setSoundType(SoundType.CLOTH).setCreativeTab(RRItems.hydro_rr).setHardness(0.0F);

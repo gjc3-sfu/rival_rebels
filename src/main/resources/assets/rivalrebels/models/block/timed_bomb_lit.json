@@ -1,0 +1,7 @@
+{
+  "parent": "rivalrebels:block/timed_bomb",
+  "textures": {
+    "particle": "rivalrebels:blocks/timed_bomb_light_on",
+    "up": "rivalrebels:blocks/timed_bomb_light_on"
+  }
+}

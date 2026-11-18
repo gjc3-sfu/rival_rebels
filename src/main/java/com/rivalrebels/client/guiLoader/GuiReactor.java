@@ -16,6 +16,9 @@ import com.rivalrebels.client.guihelper.Vector;
 import com.rivalrebels.client.oldstuff.Tessellator;
 import com.rivalrebels.common.container.ReactorContainer;
 import com.rivalrebels.common.init.RRBlocks;
+import com.rivalrebels.common.init.RRItems;
+import com.rivalrebels.common.items.RRItemCore;
+import com.rivalrebels.common.items.RRItemRod;
 import com.rivalrebels.common.noise.RivalRebelsSimplexNoise;
 import com.rivalrebels.common.packet.PacketDispatcher;
 import com.rivalrebels.common.tileentity.ReactorTileEntity;
@@ -31,7 +34,14 @@ public class GuiReactor extends GuiContainer {
 
     protected ReactorTileEntity tile_reactor_ref;
 
-    private Block[] toggleable_machines = new Block[]{RRBlocks.reactive, RRBlocks.reactive};
+    private Block[] toggleable_machines = new Block[]{RRBlocks.reactive, RRBlocks.reactive}; // toggle options
+    private boolean[] enabledmachines = new boolean[this.toggleable_machines.length]; // Source of truth
+    
+    // The machine list rendering garbage
+    private boolean[] prevenabledmachines = new boolean[this.toggleable_machines.length];
+    private Block[] machines = new Block[]{null, null, null, null}; 
+    private boolean[] onmachines = new boolean[this.machines.length];
+    
 
     private static ResourceLocation texture = new ResourceLocation(ModInfo.modid, "textures/gui/reactor.png");
     private GuiCustomButton power_button;
@@ -43,7 +53,8 @@ public class GuiReactor extends GuiContainer {
     public GuiReactor(IInventory player_inventory, IInventory reactor_inv) {
         super(new ReactorContainer(player_inventory, reactor_inv));
         this.ySize = 200;
-
+        
+        RivalRebelsSimplexNoise.refresh();
     }
 
     public void initGui() {
@@ -192,30 +203,79 @@ public class GuiReactor extends GuiContainer {
         int X = 89 + this.width / 2;
         int Y = 0 + this.height / 2;
 
-        /* 
-        // Show 4 slots
+        
+        // Populate the four visible rows from the scrolled machine list.
         for (int i = 0; i < 4; i++) {
-            if (off + i >= this.toggleable_machines.length) {
-                this.machines[i] = null;
-            } else {
-                boolean current = new Rectangle(X, Y, 15, 15).isVecInside(new Vector(mouseX, mouseY)); // whether it's in the bound
-                if (off + i < this.toggleable_machines.length && off + i >= 0) {
-                this.machines[i] = this.toggleable_machines[off + i];
-                this.onmachines[i] = this.enabledmachines[off + i];
-                if (Mouse.isButtonDown(0) && current) {
-                    this.enabledmachines[off + i] = !this.prevenabledmachines[off + i];
-                } else {
-                    this.prevenabledmachines[off + i] = this.enabledmachines[off + i];
-                }
-                } else {
+            int machineIndex = off + i;
+            if (machineIndex >= this.toggleable_machines.length) {
                 this.machines[i] = null;
                 this.onmachines[i] = false;
-                }
+            } else {
+                this.machines[i] = this.toggleable_machines[machineIndex];
+                this.onmachines[i] = this.enabledmachines[machineIndex];
 
-                Y += 18;
+                boolean mouseOverRow = new Rectangle(X, Y, 15, 15)
+                    .isVecInside(new Vector(mouseX, mouseY));
+                if (Mouse.isButtonDown(0) && mouseOverRow) {
+                    // This GUI is drawn every frame; reuse the cached state so a held click does not flip repeatedly.
+                    this.enabledmachines[machineIndex] = !this.prevenabledmachines[machineIndex];
+                } else {
+                    this.prevenabledmachines[machineIndex] = this.enabledmachines[machineIndex];
+                }
             }
+
+            Y += 18;
         }
-        */
+
+        //this.drawDock();
+        long time = System.currentTimeMillis();
+        if (this.tile_reactor_ref.on && this.tile_reactor_ref.fuel != null && this.tile_reactor_ref.core != null) {
+            float radius = 10.0F;
+            if (this.tile_reactor_ref.fuel.getTagCompound() != null) {
+                radius += (
+                    ((RRItemRod)this.tile_reactor_ref.fuel.getItem()).power * ((RRItemCore)this.tile_reactor_ref.core.getItem()).EFFICIENCY
+                        - this.tile_reactor_ref.fuel.getTagCompound().getInteger("fuelLeft")
+                )
+                / (((RRItemRod)this.tile_reactor_ref.fuel.getItem()).power * ((RRItemCore)this.tile_reactor_ref.core.getItem()).EFFICIENCY)
+                * 30.0F;
+            }
+
+            this.melttick = 30.0F;
+            float brightness = 0.0F;
+            if (this.tile_reactor_ref.core.getItem() == RRItems.copper_core) {
+                brightness = -0.4F;
+            }
+
+            if (this.tile_reactor_ref.core.getItem() == RRItems.tungsten_core) {
+                brightness = -0.25F;
+            }
+
+            if (this.tile_reactor_ref.core.getItem() == RRItems.titanium_core) {
+                brightness = -0.1F;
+            }
+
+            if (this.tile_reactor_ref.fuel.getItem() == RRItems.nuclear_rod) {
+                this.drawNoiseSphere(0.9F, 1.0F, 0.1F, 0.0F, 1.0F, 0.1F, this.frame, 4, (int)radius, (int)(50.0F - radius), this.resolution, 0.02F, brightness);
+            }
+
+            if (this.tile_reactor_ref.fuel.getItem() == RRItems.hydro_rod) {
+                this.drawNoiseSphere(1.0F, 1.0F, 1.0F, 0.7F, 0.0F, 1.0F, this.frame, 4, (int)radius, (int)(50.0F - radius), this.resolution, 0.02F, brightness);
+            }
+
+            if (this.tile_reactor_ref.fuel.getItem() == RRItems.redstone_rod) {
+                this.drawNoiseSphere(1.0F, 0.8F, 0.0F, 1.0F, 0.0F, 0.0F, this.frame, 4, (int)radius, (int)(50.0F - radius), this.resolution, 0.02F, brightness);
+            }
+        } else if (this.ter.melt || this.ter.on && this.ter.fuel == null) {
+            if (this.melttick > 1.0F) {
+                this.melttick -= 0.03F;
+            }
+
+            this.drawNoiseSphere(
+                1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, this.frame, 4, (int)(20.0 + Math.sin(this.frame / this.melttick) * 20.0), 10, this.resolution, 0.02F, 0.0F
+            );
+        } else if (this.tile_reactor_ref.fuel != null && this.tile_reactor_ref.core != null) {
+        }
+        
 
     }
 

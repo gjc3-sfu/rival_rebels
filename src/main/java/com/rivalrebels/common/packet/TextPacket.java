@@ -5,9 +5,11 @@ import com.rivalrebels.common.init.FileRW;
 import io.netty.buffer.ByteBuf;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -55,16 +57,15 @@ public class TextPacket implements IMessage {
             else
             {
                 String[] s = m.text.split(" ");
-                StringBuilder strb = new StringBuilder();
+                ITextComponent message = new TextComponentString("");
+                if (m.isFormatted) {
+                    message.setStyle(new Style().setColor(m.format));
+                }
                 for (String value : s) {
-                    strb.append(I18n.translateToLocal(value));
-                    strb.append(" ");
+                    message.appendSibling(new TextComponentTranslation(value));
+                    message.appendSibling(new TextComponentString(" "));
                 }
-                if(m.isFormatted){
-                    Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentString(m.format + strb.toString()), false);
-                } else {
-                    Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentString(strb.toString()), false);
-                }
+                Minecraft.getMinecraft().player.sendStatusMessage(message, false);
             }
             return null;
         }

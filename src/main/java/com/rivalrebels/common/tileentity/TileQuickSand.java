@@ -6,27 +6,42 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TileQuickSand extends TileEntity {
     public IBlockState getBlock(){
+        IBlockState block = findBlock(new HashSet<BlockPos>());
+        return block == null ? Blocks.SAND.getDefaultState() : block;
+    }
+
+    private IBlockState findBlock(Set<BlockPos> visited) {
+        if (pos == null || world == null || !visited.add(pos)) return null;
+
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        IBlockState[] n = new IBlockState[6];
-        n[0] = world.getBlockState(new BlockPos(x + 1, y, z));
-        n[1] = world.getBlockState(new BlockPos(x - 1, y, z));
-        n[2] = world.getBlockState(new BlockPos(x, y + 1, z));
-        n[3] = world.getBlockState(new BlockPos(x, y - 1, z));
-        n[4] = world.getBlockState(new BlockPos(x, y, z + 1));
-        n[5] = world.getBlockState(new BlockPos(x, y, z - 1));
+        BlockPos[] neighborPos = new BlockPos[] {
+                new BlockPos(x + 1, y, z),
+                new BlockPos(x - 1, y, z),
+                new BlockPos(x, y + 1, z),
+                new BlockPos(x, y - 1, z),
+                new BlockPos(x, y, z + 1),
+                new BlockPos(x, y, z - 1)
+        };
+        IBlockState[] n = new IBlockState[neighborPos.length];
+        for (int i = 0; i < neighborPos.length; i++) {
+            n[i] = world.getBlockState(neighborPos[i]);
+        }
 
         int popularity1 = 0;
         int popularity2 = 0;
-        IBlockState mode = Blocks.SAND.getDefaultState();
+        IBlockState mode = null;
         IBlockState array_item = null;
         for (int i = 0; i < 6; i++)
         {
             array_item = n[i];
-            if (array_item == null || !array_item.isOpaqueCube() || array_item == RRBlocks.mine.getDefaultState() || array_item == RRBlocks.mario.getDefaultState() /*|| array_item == RivalRebels.mario || array_item == RivalRebels.amario || array_item == RivalRebels.quicksand || array_item == RivalRebels.aquicksand*/) continue;
+            if (array_item == null || !array_item.isOpaqueCube() || isMimicBlock(array_item)) continue;
             for (IBlockState iBlockState : n) {
                 if (array_item == iBlockState) popularity1++;
                 if (popularity1 >= popularity2) {
@@ -36,6 +51,22 @@ public class TileQuickSand extends TileEntity {
             }
             popularity1 = 0;
         }
-        return mode;
+        if (popularity2 > 0) return mode;
+
+        for (int i = 0; i < n.length; i++) {
+            if (n[i].getBlock() != RRBlocks.quicksand) continue;
+            TileEntity neighbor = world.getTileEntity(neighborPos[i]);
+            if (neighbor instanceof TileQuickSand) {
+                IBlockState neighborBlock = ((TileQuickSand) neighbor).findBlock(visited);
+                if (neighborBlock != null) return neighborBlock;
+            }
+        }
+        return null;
+    }
+
+    private boolean isMimicBlock(IBlockState state) {
+        return state.getBlock() == RRBlocks.mine
+                || state.getBlock() == RRBlocks.mario
+                || state.getBlock() == RRBlocks.quicksand;
     }
 }

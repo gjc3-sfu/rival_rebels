@@ -17,9 +17,11 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraft.util.text.translation.I18n;
 
 public class M202 extends RRItem {
 
@@ -74,11 +76,23 @@ public class M202 extends RRItem {
             }
         }else if (!world.isRemote)
         {
-            player.sendStatusMessage(new TextComponentString("§cOut of ammunition".substring(1)), true);
+            player.sendStatusMessage(
+                new TextComponentTranslation("rivalrebels.message.out_of_ammunition")
+                    .setStyle(new Style().setColor(TextFormatting.RED)),
+                true
+            );
         }
         if (message && world.isRemote)
         {
-            player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.Orders")+" "+I18n.translateToLocal("RivalRebels.message.use")+" [R]."), false);
+            player.sendStatusMessage(
+                new TextComponentTranslation("rivalrebels.orders")
+                    .setStyle(new Style().setColor(TextFormatting.DARK_RED))
+                    .appendSibling(new TextComponentTranslation("rivalrebels.message.use")
+                        .setStyle(new Style().setColor(TextFormatting.RED)))
+                    .appendSibling(new TextComponentString(" [R].")
+                        .setStyle(new Style().setColor(TextFormatting.RED))),
+                false
+            );
             message = false;
         }
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);

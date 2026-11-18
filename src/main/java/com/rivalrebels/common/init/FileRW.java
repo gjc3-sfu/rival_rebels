@@ -100,7 +100,6 @@ public class FileRW {
         char[] buffer = new char[bytes.length];
         for (int i = 0; i < bytes.length; i++) {
             buffer[i] = (char) bytes[i];
-         //   if(buffer[i] == 'ﾧ') buffer[i] = '§';
         }
         return new String(buffer);
     }

@@ -38,7 +38,7 @@ public class RenderFlamethrower extends ItemRenderBase {
             GL11.glRotatef(1.0f, 0, 1, 0);
             GL11.glRotatef(6.0f, 0, 0, 1);
 
-            ModelDebugTransform.apply();
+            //ModelDebugTransform.apply();
 
 
         

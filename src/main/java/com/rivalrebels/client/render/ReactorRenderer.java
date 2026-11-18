@@ -64,9 +64,9 @@ public class ReactorRenderer extends TileEntitySpecialRenderer<ReactorTileEntity
         GL11.glTranslatef((float)d + 0.5F, (float)d1 + 1.1875F, (float)d2 + 0.5F);
         GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(laptop_texture);
-        laptopmodell.renderModel((float)(-tile.slide));
+        laptopmodell.renderModel((float)(-tile.laptop_lid_slide));
         Minecraft.getMinecraft().renderEngine.bindTexture(screen_texture);
-        laptopmodell.renderScreen((float)(-tile.slide));
+        laptopmodell.renderScreen((float)(-tile.laptop_lid_slide));
         GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glTranslatef((float)d + 0.5F, (float)d1 + 0.5F, (float)d2 + 0.5F);

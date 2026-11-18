@@ -7,7 +7,10 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,7 +42,8 @@ public class RRModelMoveDebug extends CommandBase {
 
             if (command.equals("reset")) {
                 ModelDebugTransform.reset();
-                sender.sendMessage(new TextComponentString("§aTransforms reset!"));
+                sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.transforms_reset")
+                    .setStyle(new Style().setColor(TextFormatting.GREEN)));
                 return;
             }
 
@@ -55,7 +59,8 @@ public class RRModelMoveDebug extends CommandBase {
         }
 
         if (args.length != 3) {
-            sender.sendMessage(new TextComponentString("§cUsage: " + getUsage(sender)));
+            sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.usage", getUsage(sender))
+                .setStyle(new Style().setColor(TextFormatting.RED)));
             return;
         }
 
@@ -67,7 +72,8 @@ public class RRModelMoveDebug extends CommandBase {
         try {
             value = Float.parseFloat(args[2]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(new TextComponentString("§cInvalid number!"));
+            sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.invalid_number")
+                .setStyle(new Style().setColor(TextFormatting.RED)));
             return;
         }
 
@@ -76,12 +82,14 @@ public class RRModelMoveDebug extends CommandBase {
         boolean add = operation.equals("add");
 
         if (!translate && !rotate && !add) {
-            sender.sendMessage(new TextComponentString("§cOperation must be translate, rotate, or add!"));
+            sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.invalid_operation")
+                .setStyle(new Style().setColor(TextFormatting.RED)));
             return;
         }
 
         if (!axis.equals("x") && !axis.equals("y") && !axis.equals("z")) {
-            sender.sendMessage(new TextComponentString("§cAxis must be x, y, or z!"));
+            sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.invalid_axis")
+                .setStyle(new Style().setColor(TextFormatting.RED)));
             return;
         }
 
@@ -121,9 +129,12 @@ public class RRModelMoveDebug extends CommandBase {
             }
         }
 
-        sender.sendMessage(new TextComponentString(
-            "§a" + operation + " " + axis + " = " + getValue(translate || add, axis)
-        ));
+        sender.sendMessage(new TextComponentTranslation(
+            "rivalrebels.command.model.updated",
+            operation,
+            axis,
+            getValue(translate || add, axis)
+        ).setStyle(new Style().setColor(TextFormatting.GREEN)));
     }
 
     private float getValue(boolean translation, String axis) {
@@ -145,47 +156,60 @@ public class RRModelMoveDebug extends CommandBase {
     }
 
     private void printStatus(ICommandSender sender) {
-        sender.sendMessage(new TextComponentString("§e--- Model Transform ---"));
+        sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.title")
+            .setStyle(new Style().setColor(TextFormatting.YELLOW)));
 
-        sender.sendMessage(new TextComponentString(
-            "§bTranslation: §f"
-            + ModelDebugTransform.translateX + ", "
-            + ModelDebugTransform.translateY + ", "
-            + ModelDebugTransform.translateZ
-        ));
+        sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.translation_label")
+            .setStyle(new Style().setColor(TextFormatting.AQUA))
+            .appendSibling(new TextComponentString(
+                " " + ModelDebugTransform.translateX + ", "
+                    + ModelDebugTransform.translateY + ", "
+                    + ModelDebugTransform.translateZ
+            ).setStyle(new Style().setColor(TextFormatting.WHITE))));
 
-        sender.sendMessage(new TextComponentString(
-            "§bRotation: §f"
-            + ModelDebugTransform.rotateX + ", "
-            + ModelDebugTransform.rotateY + ", "
-            + ModelDebugTransform.rotateZ
-        ));
+        sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.rotation_label")
+            .setStyle(new Style().setColor(TextFormatting.AQUA))
+            .appendSibling(new TextComponentString(
+                " " + ModelDebugTransform.rotateX + ", "
+                    + ModelDebugTransform.rotateY + ", "
+                    + ModelDebugTransform.rotateZ
+            ).setStyle(new Style().setColor(TextFormatting.WHITE))));
     }
 
     private void printCode(ICommandSender sender) {
-        sender.sendMessage(new TextComponentString("§a--- Copy these into your renderer ---"));
+        sender.sendMessage(new TextComponentTranslation("rivalrebels.command.model.copy_renderer")
+            .setStyle(new Style().setColor(TextFormatting.GREEN)));
 
-        sender.sendMessage(new TextComponentString(
-            "§fGL11.glTranslatef("
-            + ModelDebugTransform.translateX + "f, "
-            + ModelDebugTransform.translateY + "f, "
-            + ModelDebugTransform.translateZ + "f);"
-        ));
+        sender.sendMessage(new TextComponentTranslation(
+            "rivalrebels.command.model.translate_code",
+            ModelDebugTransform.translateX,
+            ModelDebugTransform.translateY,
+            ModelDebugTransform.translateZ
+        ).setStyle(new Style().setColor(TextFormatting.WHITE)));
 
-        sender.sendMessage(new TextComponentString(
-            "§fGL11.glRotatef("
-            + ModelDebugTransform.rotateX + "f, 1, 0, 0);"
-        ));
+        sender.sendMessage(new TextComponentTranslation(
+            "rivalrebels.command.model.rotate_code",
+            ModelDebugTransform.rotateX,
+            1,
+            0,
+            0
+        ).setStyle(new Style().setColor(TextFormatting.WHITE)));
 
-        sender.sendMessage(new TextComponentString(
-            "§fGL11.glRotatef("
-            + ModelDebugTransform.rotateY + "f, 0, 1, 0);"
-        ));
+        sender.sendMessage(new TextComponentTranslation(
+            "rivalrebels.command.model.rotate_code",
+            ModelDebugTransform.rotateY,
+            0,
+            1,
+            0
+        ).setStyle(new Style().setColor(TextFormatting.WHITE)));
 
-        sender.sendMessage(new TextComponentString(
-            "§fGL11.glRotatef("
-            + ModelDebugTransform.rotateZ + "f, 0, 0, 1);"
-        ));
+        sender.sendMessage(new TextComponentTranslation(
+            "rivalrebels.command.model.rotate_code",
+            ModelDebugTransform.rotateZ,
+            0,
+            0,
+            1
+        ).setStyle(new Style().setColor(TextFormatting.WHITE)));
     }
 
     @Override

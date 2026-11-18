@@ -11,8 +11,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -59,7 +61,11 @@ public class Tesla extends RRItem {
         float rate = Math.abs(degree - 90) / 90.0F;
         if (!player.capabilities.isCreativeMode && !player.inventory.hasItemStack(new ItemStack(RRItems.battery)) && !RRConfigx.infinite_ammo) {
             if (!world.isRemote) {
-                player.sendStatusMessage(new TextComponentString("§cOut of batteries".substring(1)), true);
+                player.sendStatusMessage(
+                    new TextComponentTranslation("rivalrebels.message.out_of_batteries")
+                        .setStyle(new Style().setColor(TextFormatting.RED)),
+                    true
+                );
             }
         } else {
 
@@ -67,7 +73,15 @@ public class Tesla extends RRItem {
         }
 
         if (message && world.isRemote) {
-            player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.Orders")+" "+I18n.translateToLocal("RivalRebels.message.use")+" [R]."), false);
+            player.sendStatusMessage(
+                new TextComponentTranslation("rivalrebels.orders")
+                    .setStyle(new Style().setColor(TextFormatting.DARK_RED))
+                    .appendSibling(new TextComponentTranslation("rivalrebels.message.use")
+                        .setStyle(new Style().setColor(TextFormatting.RED)))
+                    .appendSibling(new TextComponentString(" [R].")
+                        .setStyle(new Style().setColor(TextFormatting.RED))),
+                false
+            );
             message = false;
         }
 

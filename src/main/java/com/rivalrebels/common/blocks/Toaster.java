@@ -16,7 +16,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import com.rivalrebels.common.explosion.RivalRebelsExplosion;
 import net.minecraft.world.World;
 
@@ -34,7 +36,15 @@ public class Toaster extends RRBlock {
             EntityItem item = new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, new ItemStack(Items.BREAD, 1));
             if(!worldIn.isRemote){
                 worldIn.spawnEntity(item);
-                if(worldIn.rand.nextInt(64) == 0) playerIn.sendStatusMessage(new TextComponentString("§7[".substring(1) + "§4Orders".substring(1) + "§7]".substring(1) + " " + "§cShift-click (Sneak) to pack up toaster.".substring(1)), false);
+                if (worldIn.rand.nextInt(64) == 0) {
+                    playerIn.sendStatusMessage(
+                        new TextComponentTranslation("rivalrebels.orders")
+                            .setStyle(new Style().setColor(TextFormatting.DARK_RED))
+                            .appendSibling(new TextComponentTranslation("rivalrebels.message.pack_up_toaster")
+                                .setStyle(new Style().setColor(TextFormatting.RED))),
+                        false
+                    );
+                }
             }
         } else if(playerIn.isSneaking()){
             worldIn.setBlockToAir(pos);

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "rivalrebels:timed_bomb"
+    },
+    "lit=true": {
+      "model": "rivalrebels:timed_bomb_lit"
+    }
+  }
+}

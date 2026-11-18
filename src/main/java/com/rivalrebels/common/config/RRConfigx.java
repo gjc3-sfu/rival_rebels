@@ -17,6 +17,8 @@ public class RRConfigx {
     public static int plasmoid_decay;
     public static int m202_explosion_size;
     public static int m202_rocket_decay;
+    public static int timed_bomb_fuse_seconds;
+    public static int timed_bomb_explosion_size;
     public static int bunker_radius;
     public static List<BlockTransformation> blockTransformations = new ArrayList<>();
     public static List<Block> autobuild_unmutable = new ArrayList<>();
@@ -74,6 +76,24 @@ public class RRConfigx {
             1,
             10000000,
             "Max lifetime in ticks of m202-rr rockets"
+        );
+
+        timed_bomb_fuse_seconds = config.getInt(
+            "timed_bomb_fuse_seconds",
+            Configuration.CATEGORY_GENERAL,
+            25,
+            10,
+            300,
+            "Fuse duration in seconds for timed bombs"
+        );
+
+        timed_bomb_explosion_size = config.getInt(
+            "timed_bomb_explosion_size",
+            Configuration.CATEGORY_GENERAL,
+            6,
+            1,
+            20,
+            "Explosion strength of timed bombs"
         );
     
         bunker_radius = config.getInt(

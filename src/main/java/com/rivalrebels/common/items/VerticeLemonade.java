@@ -15,8 +15,11 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class VerticeLemonade extends RRItem{
@@ -47,7 +50,7 @@ public class VerticeLemonade extends RRItem{
             stack.shrink(1);
             this.consume(world, player, EXPERIMENTAL);
             if(handIn == EnumHand.OFF_HAND){
-                player.sendStatusMessage(new TextComponentString("you have reached a secret message, that is all"), false);
+                player.sendStatusMessage(new TextComponentTranslation("rivalrebels.message.secret"), false);
             }
         }
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
@@ -61,7 +64,7 @@ public class VerticeLemonade extends RRItem{
 
             if (entity instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer)entity;
-                player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.pill.success")), false);
+                player.sendStatusMessage(statusMessage("rivalrebels.pill.success"), false);
             }
            
             entity.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 10, 20));
@@ -79,7 +82,7 @@ public class VerticeLemonade extends RRItem{
                 // 20% - Unexpected results
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer)entity;
-                    player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.experimental_pill.unexpected_results")), false);
+                    player.sendStatusMessage(statusMessage("rivalrebels.experimental_pill.unexpected_results"), false);
                 }
                 entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 1500, 0)); // nausea lvl 21 doesn't do anything special
                 entity.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 1500, 0)); //' ' '
@@ -92,7 +95,7 @@ public class VerticeLemonade extends RRItem{
                 // 10% - Test subject perished
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer)entity;
-                    player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.experimental_pill.perished")), false);
+                    player.sendStatusMessage(statusMessage("rivalrebels.experimental_pill.perished"), false);
                 }
                 RivalRebelsDamageSource damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.CYANIDE, null, null);
                 entity.attackEntityFrom(damage, 2000.0F);
@@ -100,7 +103,7 @@ public class VerticeLemonade extends RRItem{
                 // 10% - Uber-Soldat
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer)entity;
-                    player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.experimental_pill.super")), false);
+                    player.sendStatusMessage(statusMessage("rivalrebels.experimental_pill.super"), false);
                 }
                 entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 450, 20)); // Invincibility
                 entity.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 500, 20));
@@ -119,7 +122,7 @@ public class VerticeLemonade extends RRItem{
                 // 60% - Experiment success
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer)entity;
-                    player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.experimental_pill.success")), false);
+                    player.sendStatusMessage(statusMessage("rivalrebels.experimental_pill.success"), false);
                 }
                 entity.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 10, 20));
                 if (entity instanceof EntityPlayer) {
@@ -130,14 +133,19 @@ public class VerticeLemonade extends RRItem{
 
             }
 
-
-
-
-
-
-
         }
         
+    }
+
+    private ITextComponent statusMessage(String key) {
+        return new TextComponentString("[")
+            .setStyle(new Style().setColor(TextFormatting.GRAY))
+            .appendSibling(new TextComponentTranslation("rivalrebels.status")
+                .setStyle(new Style().setColor(TextFormatting.GOLD)))
+            .appendSibling(new TextComponentString("] ")
+                .setStyle(new Style().setColor(TextFormatting.GRAY)))
+            .appendSibling(new TextComponentTranslation(key)
+                .setStyle(new Style().setColor(TextFormatting.YELLOW)));
     }
 
     @Override

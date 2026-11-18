@@ -12,6 +12,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 public class RivalRebelsDamageSource extends EntityDamageSourceIndirect  {
 
     public static DamageSource plasmaexplosion = new DamageSource("plasma_explosion").setExplosion();
+    public static DamageSource timebomb = new DamageSource("timebomb").setExplosion();
     public static DamageSource cuchillo = new DamageSource("cuchillo");
     public static DamageSource charge = new DamageSource("charge");
     public static DamageSource cooked = new DamageSource("cooked").setFireDamage();

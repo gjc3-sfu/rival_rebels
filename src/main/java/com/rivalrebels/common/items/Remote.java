@@ -10,7 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -33,7 +35,13 @@ public class Remote extends RRItem {
                     stack.getTagCompound().setInteger("remotez", pos.getZ());
                 }
                 if (!worldIn.isRemote) {
-                    player.sendStatusMessage(new TextComponentString("§7[".substring(1) + "§4Orders".substring(1) + "§7]".substring(1) + "§cShift-click (Sneak) to detonate.".substring(1)), false);
+                    player.sendStatusMessage(
+                        new TextComponentTranslation("rivalrebels.orders")
+                            .setStyle(new Style().setColor(TextFormatting.DARK_RED))
+                            .appendSibling(new TextComponentTranslation("rivalrebels.message.detonate")
+                                .setStyle(new Style().setColor(TextFormatting.RED))),
+                        false
+                    );
                 }
                 worldIn.playSound(null, pos, RRSounds.explosives_place, SoundCategory.AMBIENT, 1f, 1f);
                 if (!player.capabilities.isCreativeMode) {

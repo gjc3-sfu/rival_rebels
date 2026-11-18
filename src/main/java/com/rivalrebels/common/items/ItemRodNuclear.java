@@ -12,6 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemRodNuclear extends RRItemRod {
+
+    private final static int POWER = 3000000;
+
     public ItemRodNuclear(String name) {
         super(name);
     }
@@ -29,6 +32,8 @@ public class ItemRodNuclear extends RRItemRod {
             }
         }
     }
+
+    
 
 
 }

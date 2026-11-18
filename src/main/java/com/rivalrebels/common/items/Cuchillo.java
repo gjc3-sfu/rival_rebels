@@ -43,15 +43,16 @@ public class Cuchillo extends ItemTool implements IHasModel{
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int i) {
         if(player instanceof EntityPlayer) {
-            if (((EntityPlayer)player).capabilities.isCreativeMode || ((EntityPlayer)player).inventory.hasItemStack(new ItemStack(RRItems.knife))) {
+            EntityPlayer entityPlayer = (EntityPlayer) player;
+            if (entityPlayer.capabilities.isCreativeMode || !stack.isEmpty()) {
                 float f = (getMaxItemUseDuration(stack) - i) / 20.0F;
                 f = (f * f + f * 2) * 0.3333f;
                 if (f < 0.1D) return;
                 if (f > 1.0F) f = 1.0F;
-                if (!((EntityPlayer)player).capabilities.isCreativeMode)
-                    ((EntityPlayer)player).inventory.decrStackSize(((EntityPlayer)player).inventory.currentItem, 1);
+                if (!entityPlayer.capabilities.isCreativeMode)
+                    stack.shrink(1);
                 worldIn.playSound(null, player.posX, player.posY, player.posZ, RRSounds.knife_throw, SoundCategory.AMBIENT, 1f, 1f);
-                if (!worldIn.isRemote) worldIn.spawnEntity(new EntityCuchillo(worldIn, (EntityPlayer) player, 0.5f + f));
+                if (!worldIn.isRemote) worldIn.spawnEntity(new EntityCuchillo(worldIn, entityPlayer, 0.5f + f));
             }
         }
     }

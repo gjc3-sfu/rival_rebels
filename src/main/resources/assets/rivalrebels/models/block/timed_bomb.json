@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "rivalrebels:blocks/timed_bomb_light_off",
+    "down": "rivalrebels:blocks/timed_bomb_side_casing",
+    "up": "rivalrebels:blocks/timed_bomb_light_off",
+    "north": "rivalrebels:blocks/timed_bomb_side_casing",
+    "south": "rivalrebels:blocks/timed_bomb_side_casing",
+    "west": "rivalrebels:blocks/timed_bomb_side_bolted",
+    "east": "rivalrebels:blocks/timed_bomb_side_bolted"
+  }
+}

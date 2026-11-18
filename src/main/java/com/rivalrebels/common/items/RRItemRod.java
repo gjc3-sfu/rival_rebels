@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 public class RRItemRod extends RRToolItem {
-   public int power;
+   //public int power;
 
    public RRItemRod(String name) {
       super(name, ToolMaterial.DIAMOND, new HashSet<Block>());
@@ -31,5 +31,9 @@ public class RRItemRod extends RRToolItem {
 
    public boolean isDamageable() {
       return true;
+   }
+
+   public int get_max_power() {
+      return 0;
    }
 }

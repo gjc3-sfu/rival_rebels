@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.rivalrebels.RivalRebels;
 import com.rivalrebels.common.blocks.autobuild.BlockAutoBuild;
+import com.rivalrebels.common.blocks.trap.TimedBomb;
 import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.packet.PacketDispatcher;
 import com.rivalrebels.common.packet.TextPacket;
@@ -19,8 +20,11 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class Pliers extends RRItem{
@@ -85,8 +89,7 @@ public class Pliers extends RRItem{
 
             // Handle block actions & progress feedback
             if (blockType == RRBlocks.plastic_explosives) {
-                player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.defuse") + " " + (session.progress * 100 / clicks_required) + I18n.translateToLocal("RivalRebels.percent")), false);
-                //PacketDispatcher.packetsys.sendTo(new TextPacket("RivalRebels.Defuse " + (session.progress * 100 / clicks_required) + "§7'/."), (EntityPlayerMP)player);
+                player.sendStatusMessage(progressMessage("rivalrebels.defuse", session.progress * 100 / clicks_required), false);
                 if (session.progress >= clicks_required) {
                 EntityItem defused_bomb_entity = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(RRBlocks.plastic_explosives, 1));
                 world.spawnEntity(defused_bomb_entity);
@@ -96,22 +99,18 @@ public class Pliers extends RRItem{
                 }
             } 
             else if (blockType == RRBlocks.timed_bomb) {
-                //PacketDispatcher.packetsys.sendTo(new TextPacket("RivalRebels.Defuse " + (session.progress * 100 / clicks_required) + "§7'/."), (EntityPlayerMP)player);
-                player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.defuse") + " " + (session.progress * 100 / clicks_required) + I18n.translateToLocal("RivalRebels.percent")), false);
+                player.sendStatusMessage(progressMessage("rivalrebels.defuse", session.progress * 100 / clicks_required), false);
                 if (session.progress >= clicks_required) {
                     EntityItem defused_bomb_entity = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(RRBlocks.timed_bomb, 1));
-                    world.spawnEntity(defused_bomb_entity);
-                    world.setBlockToAir(pos);
-                    //world.setBlock(x, y + 1, z, Blocks.air); this is to remove the tick, which won't be in my port
-                    activeWorkSessions.remove(playerId);
-                    return EnumActionResult.SUCCESS;
+                    if (blockType instanceof TimedBomb && ((TimedBomb) blockType).defuse(world, pos)) {
+                        world.spawnEntity(defused_bomb_entity);
+                        activeWorkSessions.remove(playerId);
+                        return EnumActionResult.SUCCESS;
+                    }
                 }
             } 
             else if (blockType instanceof BlockAutoBuild) {
-                //PacketDispatcher.packetsys.sendTo(
-                //    new TextPacket("RivalRebels.Status RivalRebels.building " + (session.progress * 100 / clicks_required) + "§7'/."), (EntityPlayerMP)player
-                //);
-                player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("RivalRebels.building") + " " + (session.progress * 100 / clicks_required) + I18n.translateToLocal("RivalRebels.percent")), false);
+                player.sendStatusMessage(progressMessage("rivalrebels.building", session.progress * 100 / clicks_required), false);
                 if (session.progress >= clicks_required) {
                     world.setBlockToAir(pos);
                     ((BlockAutoBuild) blockType).build(world, pos);
@@ -120,9 +119,6 @@ public class Pliers extends RRItem{
                 }
             } 
             else if (blockType == RRBlocks.supply_crate && world.getBlockState(new BlockPos(pos.getX(), pos.getY()-1, pos.getZ())).getBlock() == RRBlocks.supply_crate) {
-                //PacketDispatcher.packetsys.sendTo(
-                //new TextPacket("RivalRebels.Status RivalRebels.building ToKaMaK " + (session.progress * 100 / clicks_required) + "§7'/."), (EntityPlayerMP)player
-                //);
                 if (session.progress >= clicks_required) {
                     world.setBlockToAir(pos);
                     BlockPos below = new BlockPos(pos.getX(), pos.getY()-1, pos.getZ());
@@ -140,6 +136,19 @@ public class Pliers extends RRItem{
         }
 
         return EnumActionResult.PASS;
+    }
+
+    private ITextComponent progressMessage(String labelKey, int progress) {
+        return new TextComponentString("[")
+            .setStyle(new Style().setColor(TextFormatting.GRAY))
+            .appendSibling(new TextComponentTranslation(labelKey)
+                .setStyle(new Style().setColor(TextFormatting.GOLD)))
+            .appendSibling(new TextComponentString("]")
+                .setStyle(new Style().setColor(TextFormatting.GRAY)))
+            .appendSibling(new TextComponentString(" " + progress)
+                .setStyle(new Style().setColor(TextFormatting.YELLOW)))
+            .appendSibling(new TextComponentTranslation("rivalrebels.percent")
+                .setStyle(new Style().setColor(TextFormatting.GRAY)));
     }
 
 

@@ -1,6 +1,7 @@
 package com.rivalrebels.common.explosion;
 
 import com.rivalrebels.RivalRebels;
+import com.rivalrebels.common.blocks.trap.TimedBomb;
 import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.entity.EntityDebris;
 import com.rivalrebels.common.init.RRBlocks;
@@ -137,6 +138,9 @@ public class RivalRebelsExplosion {
             world.setBlockToAir(new BlockPos(xx, yy, zz));
             world.playSound(null, xx, yy, zz, RRSounds.generic_explosion, SoundCategory.AMBIENT, 0.5f, 0.3f);
             new RivalRebelsExplosion(world, x + 0.5f, y + 0.5f, z + 0.5f, 5, false, false, RivalRebelsDamageSource.charge);
+            return;
+        } else if (block == RRBlocks.timed_bomb) {
+            ((TimedBomb) block).explode_fast(world, new BlockPos(xx, yy, zz));
             return;
         } else if (block == Blocks.TNT) {
             // Explosive 2

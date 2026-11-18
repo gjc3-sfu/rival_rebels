@@ -8,7 +8,7 @@ import com.rivalrebels.common.init.RRConfigOptions;
 import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.items.IHasModel;
-import com.rivalrebels.common.items.RRItemHydrogen;
+import com.rivalrebels.common.items.RRItemHydrogenRod;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +20,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -42,7 +44,11 @@ public class PlasmaCannonItem extends ItemTool implements IHasModel {
         boolean has_hydrogen = player.inventory.mainInventory.stream().anyMatch(s -> !s.isEmpty() && s.getItem() == RRItems.hydro_rod);
         if (!player.capabilities.isCreativeMode && !has_hydrogen && !RRConfigx.infinite_ammo) {
             if (!world.isRemote) {
-                player.sendStatusMessage(new TextComponentString("§cOut of Hydrogen".substring(1)), true);
+                player.sendStatusMessage(
+                    new TextComponentTranslation("rivalrebels.message.out_of_hydrogen")
+                        .setStyle(new Style().setColor(TextFormatting.RED)),
+                    true
+                );
             }
         } else {
             player.setActiveHand(hand);
@@ -75,7 +81,7 @@ public class PlasmaCannonItem extends ItemTool implements IHasModel {
             ItemStack stack = player.inventory.mainInventory.get(i);
 
             if (!stack.isEmpty() && stack.getItem() == RRItems.hydro_rod) {
-                int durability_left = RRItemHydrogen.MAX_DURABILITY - stack.getMetadata();
+                int durability_left = RRItemHydrogenRod.MAX_DURABILITY - stack.getMetadata();
                 if (durability_left < uses) {
                     uses = uses - durability_left;
 

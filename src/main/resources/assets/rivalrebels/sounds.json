@@ -91,6 +91,21 @@
   "autobuild_deploy": {
     "category": "ambient",
     "sounds": [{"name": "rivalrebels:autobuild/deploy"}, "rivalrebels:autobuild/deploy_1", "rivalrebels:autobuild/deploy_2"]
+  },
+
+  "reactor_startup": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:reactor/startup"}, "rivalrebels:reactor/startup"]
+  },
+
+  "reactor_hum": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:reactor/hum"}, "rivalrebels:reactor/hum"]
+  },
+
+  "reactor_warning": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:reactor/warning"}, "rivalrebels:reactor/warning"]
   }
   
 }

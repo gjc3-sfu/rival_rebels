@@ -175,7 +175,7 @@ public class NukeCrate extends RRBlock {
                 world.setBlockState(pos, RRBlocks.nuke.getDefaultState().withProperty(NukeBlock.meta, orientation));
                 return true;
             } else if (!world.isRemote) {
-                PacketDispatcher.wrapper.sendTo(new TextPacket(TextFormatting.RED, "RivalRebels.Orders RivalRebels.message.use " + RRItems.pliers.getUnlocalizedName() + ".name"), (EntityPlayerMP) playerIn);
+                PacketDispatcher.wrapper.sendTo(new TextPacket(TextFormatting.RED, "rivalrebels.orders rivalrebels.message.use " + RRItems.pliers.getUnlocalizedName() + ".name"), (EntityPlayerMP) playerIn);
             }
         }
         return false;

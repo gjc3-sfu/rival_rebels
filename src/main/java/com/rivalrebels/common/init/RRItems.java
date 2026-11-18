@@ -31,6 +31,7 @@ public class RRItems {
     public static Item lord_vertice_lemonade;
     public static Item plasma_cannon;
     public static Item pliers;
+    public static Item sapper_shovel;
     public static Item fuse;
     public static Item antennae;
     public static Item gas_grenade;
@@ -59,9 +60,9 @@ public class RRItems {
 
     public static void initItems() {
         empty_rod = new RRItem("rod").setModelName(ModInfo.modid + ":rod").setCreativeTab(nuclear_rr);
-        nuclear_rod = new ItemRodNuclear("nuke_rod").setModelName(ModInfo.modid + ":nuke_rod").setCreativeTab(nuclear_rr).setContainerItem(empty_rod).setMaxStackSize(1);
-        hydro_rod = new RRItemRod("hydrogen_rod").setModelName(ModInfo.modid + ":hydrogen_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
-        redstone_rod = new RRItemRod("redstone_rod").setModelName(ModInfo.modid + ":redstone_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
+        nuclear_rod = new ItemRodNuclear("nuclear_rod").setModelName(ModInfo.modid + ":nuclear_rod").setCreativeTab(nuclear_rr).setContainerItem(empty_rod).setMaxStackSize(1);
+        hydro_rod = new RRItemHydrogenRod("hydrogen_rod").setModelName(ModInfo.modid + ":hydrogen_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
+        redstone_rod = new RRItemRedstoneRod("redstone_rod").setModelName(ModInfo.modid + ":redstone_rod").setContainerItem(empty_rod).setCreativeTab(nuclear_rr).setMaxStackSize(1);
         battery = new BatteryItem("battery").setModelName(ModInfo.modid + ":" + "battery").setCreativeTab(nuclear_rr);
         //lord_vertice_lemonade = new VerticeLemonade("vertice_lemonade").setModelName(ModInfo.modid + ":lemonade").setCreativeTab(nuclear_rr);
         //nuclear_lemonade = new RRItem("nuclear_lemonade").setModelName(ModInfo.modid + ":nuke_lemon").setCreativeTab(nuclear_rr);
@@ -76,6 +77,7 @@ public class RRItems {
         
         
         pliers = new Pliers("pliers").setModelName(ModInfo.modid + ":pliers").setCreativeTab(nuclear_rr);
+        sapper_shovel = new ItemSapperShovel("sapper_shovel").setModelName(ModInfo.modid + ":sapper_shovel").setCreativeTab(nuclear_rr);
         fuse = new RRItem("fuse").setModelName(ModInfo.modid + ":fuse").setCreativeTab(nuclear_rr);
         antennae = new RRItem("antennae").setModelName(ModInfo.modid + ":radio").setCreativeTab(nuclear_rr);
         detonator = new Remote("detonator").setModelName(ModInfo.modid + ":detonator").setCreativeTab(nuclear_rr);
@@ -89,9 +91,9 @@ public class RRItems {
         einsten = new Einsten("einsten").setModelName(ModInfo.modid + ":einsten").setCreativeTab(nuclear_rr).setMaxStackSize(1);
         gas_grenade = new GasGrenade("gas_grenade").setModelName(ModInfo.modid + ":gas_grenade").setCreativeTab(nuclear_rr).setMaxStackSize(6);
 
-        copper_core = new RRItemCore("copper_core").setModelName(ModInfo.modid + ":copper_core").setCreativeTab(nuclear_rr);
-        tungsten_core = new RRItemCore("tungsten_core").setModelName(ModInfo.modid + ":tungsten_core").setCreativeTab(nuclear_rr);
-        titanium_core = new RRItemCore("titanium_core").setModelName(ModInfo.modid + ":titanium_core").setCreativeTab(nuclear_rr);
+        copper_core = new RRItemCore("copper_core", 0.25f, 4).setModelName(ModInfo.modid + ":copper_core").setCreativeTab(nuclear_rr);
+        tungsten_core = new RRItemCore("tungsten_core", 0.5f, 2).setModelName(ModInfo.modid + ":tungsten_core").setCreativeTab(nuclear_rr);
+        titanium_core = new RRItemCore("titanium_core", 1.0f, 1).setModelName(ModInfo.modid + ":titanium_core").setCreativeTab(nuclear_rr);
 
         chip = new ChipItem("chip").setModelName(ModInfo.modid + ":chip").setCreativeTab(nuclear_rr);
 

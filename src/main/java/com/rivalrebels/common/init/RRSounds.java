@@ -29,6 +29,9 @@ public class RRSounds {
     public static SoundEvent einsten_fire_B;
     public static SoundEvent einsten_pop;
     public static SoundEvent autobuild_deploy;
+    public static SoundEvent reactor_startup;
+    public static SoundEvent reactor_hum;
+    public static SoundEvent reactor_warning;
 
     public static void init() {
         gulp = new SoundEvent(new ResourceLocation(ModInfo.modid, "gulp")).setRegistryName("gulp");
@@ -57,5 +60,9 @@ public class RRSounds {
         einsten_pop = new SoundEvent(new ResourceLocation(ModInfo.modid, "einsten_pop")).setRegistryName("einsten_pop");
 
         autobuild_deploy = new SoundEvent(new ResourceLocation(ModInfo.modid, "autobuild_deploy")).setRegistryName("autobuild_deploy");
+
+        reactor_startup = new SoundEvent(new ResourceLocation(ModInfo.modid, "reactor_startup")).setRegistryName("reactor_startup");
+        reactor_hum = new SoundEvent(new ResourceLocation(ModInfo.modid, "reactor_hum")).setRegistryName("reactor_hum");
+        reactor_warning = new SoundEvent(new ResourceLocation(ModInfo.modid, "reactor_warning")).setRegistryName("reactor_warning");
     }
 }

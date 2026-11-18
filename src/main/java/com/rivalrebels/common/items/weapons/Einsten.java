@@ -6,7 +6,7 @@ import com.rivalrebels.common.entity.EntityLaserBurst;
 import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.items.RRItem;
-import com.rivalrebels.common.items.RRItemHydrogen;
+import com.rivalrebels.common.items.RRItemHydrogenRod;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,8 +16,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class Einsten extends RRItem {
@@ -58,7 +59,11 @@ public class Einsten extends RRItem {
 
 
         } else if (!world.isRemote) {
-            player.sendStatusMessage(new TextComponentString("§cOut of redstone rods".substring(1)), true);
+            player.sendStatusMessage(
+                new TextComponentTranslation("rivalrebels.message.out_of_redstone_rods")
+                    .setStyle(new Style().setColor(TextFormatting.RED)),
+                true
+            );
         }
 
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
@@ -73,7 +78,7 @@ public class Einsten extends RRItem {
                 ItemStack stack = player.inventory.mainInventory.get(i);
 
                 if (!stack.isEmpty() && stack.getItem() == RRItems.redstone_rod) {
-                    int durability_left = RRItemHydrogen.MAX_DURABILITY - stack.getMetadata();
+                    int durability_left = RRItemHydrogenRod.MAX_DURABILITY - stack.getMetadata();
                     if (durability_left < uses) {
                         uses = uses - durability_left;
 
