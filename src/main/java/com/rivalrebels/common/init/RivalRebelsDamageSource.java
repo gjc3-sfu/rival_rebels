@@ -58,6 +58,10 @@ public class RivalRebelsDamageSource extends EntityDamageSourceIndirect  {
             this.setExplosion();
         }
 
+        if (rr_type == RR_damage_sources.GAS) {
+            this.setDamageBypassesArmor();
+        }
+
         if (rr_type == RR_damage_sources.CYANIDE) {
             this.setDamageAllowedInCreativeMode(); // because it's funny
             this.setDamageBypassesArmor();
