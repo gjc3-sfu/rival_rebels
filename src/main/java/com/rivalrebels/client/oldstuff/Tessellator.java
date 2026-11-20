@@ -10,6 +10,7 @@ import java.util.PriorityQueue;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -259,6 +260,11 @@ public class Tessellator
      */
     public void startDrawing(int glMode)
     {
+        this.startDrawing(glMode, DefaultVertexFormats.POSITION_TEX);
+    }
+
+    public void startDrawing(int glMode, VertexFormat vertexFormat)
+    {
        /* if (this.isDrawing)
         {
             throw new IllegalStateException("Already tesselating!");
@@ -274,7 +280,7 @@ public class Tessellator
             this.hasBrightness = false;
             this.isColorDisabled = false;
         }*/
-    	net.minecraft.client.renderer.Tessellator.getInstance().getBuffer().begin(glMode, DefaultVertexFormats.POSITION_TEX);
+        net.minecraft.client.renderer.Tessellator.getInstance().getBuffer().begin(glMode, vertexFormat);
     }
 
     /**

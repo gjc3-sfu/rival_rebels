@@ -312,6 +312,11 @@ public class EntityGasGrenade extends Entity {
 
     private void pop()
     {
+        if (world.isRemote)
+        {
+            return;
+        }
+
         world.playSound(null, posX, posY, posZ, RRSounds.gas_fizz, SoundCategory.AMBIENT, 1.0F, 1.0F);
         for (int x = -4; x <= 4; x++)
         {

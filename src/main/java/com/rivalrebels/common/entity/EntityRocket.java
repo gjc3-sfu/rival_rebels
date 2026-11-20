@@ -93,6 +93,10 @@ public class EntityRocket extends Entity {
 
 
     public void explode(RayTraceResult mop) {
+        if (this.world.isRemote) {
+            return;
+        }
+
         if (mop != null && mop.entityHit instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)mop.entityHit;
             NonNullList<ItemStack> armorSlots = player.inventory.armorInventory;

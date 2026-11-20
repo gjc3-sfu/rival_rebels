@@ -95,27 +95,28 @@ public class EntityCuchillo extends Entity {
     public void onUpdate()
     {
         super.onUpdate();
-        ticksExisted++;
         if (!inGround)
         {
-            Vec3d vec31 = new Vec3d(posX, posY, posZ);
-            Vec3d vec3 = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
-            RayTraceResult mop = world.rayTraceBlocks(vec31, vec3, false, true, false);
-            vec31 = new Vec3d(posX, posY, posZ);
-            if (mop != null) vec3 = new Vec3d(mop.hitVec.x, mop.hitVec.y, mop.hitVec.z);
-            else vec3 = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
+            Vec3d rayStart = new Vec3d(posX, posY, posZ);
+            Vec3d rayEnd = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
+            RayTraceResult mop = world.rayTraceBlocks(rayStart, rayEnd, false, true, false);
+            rayStart = new Vec3d(posX, posY, posZ);
+            if (mop != null) rayEnd = new Vec3d(mop.hitVec.x, mop.hitVec.y, mop.hitVec.z);
+            else rayEnd = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
 
-            List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().contract(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
-            double d0 = Double.MAX_VALUE;
-            for (Entity value : list) {
-                Entity entity = (Entity) value;
-                if (entity.canBeCollidedWith() && (ticksExisted >= 5 || entity != shootingEntity)) {
-                    RayTraceResult mop1 = entity.getEntityBoundingBox().expand(0.5f, 0.5f, 0.5f).calculateIntercept(vec31, vec3);
-                    if (mop1 != null) {
-                        double d1 = vec31.squareDistanceTo(mop1.hitVec);
-                        if (d1 < d0) {
-                            mop = new RayTraceResult(entity, mop1.hitVec);
-                            d0 = d1;
+            if (!world.isRemote) {
+                List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(motionX, motionY, motionZ).grow(1.0D, 1.0D, 1.0D));
+                double d0 = Double.MAX_VALUE;
+                for (Entity value : list) {
+                    Entity entity = (Entity) value;
+                    if (entity.canBeCollidedWith() && (ticksExisted >= 10 || entity != shootingEntity)) {
+                        RayTraceResult mop1 = entity.getEntityBoundingBox().grow(0.5f, 0.5f, 0.5f).calculateIntercept(rayStart, rayEnd);
+                        if (mop1 != null) {
+                            double d1 = rayStart.squareDistanceTo(mop1.hitVec);
+                            if (d1 < d0) {
+                                mop = new RayTraceResult(entity, mop1.hitVec);
+                                d0 = d1;
+                            }
                         }
                     }
                 }

@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -116,13 +117,18 @@ public class Flare extends RRBlock{
     public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
         if (RRConfigOptions.flare_explode) {
             world.setBlockToAir(pos);
-            new RivalRebelsExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 3, true, false, RivalRebelsDamageSource.flare);
+            DamageSource damage = new DamageSource("fire").setFireDamage();
+            new RivalRebelsExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 3, true, false, damage);
             world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 0.5f, 0.3f, false);
         }
     }
 
     @Override
     public void onEntityCollidedWithBlock(World par1World, BlockPos pos, IBlockState state, Entity par5Entity) {
+        if (par1World.isRemote) {
+            return;
+        }
+
         par5Entity.attackEntityFrom(RivalRebelsDamageSource.flare, 1);
         par5Entity.setFire(5);
     }

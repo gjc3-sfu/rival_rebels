@@ -111,7 +111,7 @@ public class EntityElectricityRaytrace extends Entity {
         Vec3d rayStart = new Vec3d(this.posX, this.posY, this.posZ);
         Vec3d rayEnd = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
         RayTraceResult MOP = this.world.rayTraceBlocks(rayStart, rayEnd, false, true, false);
-        rayStart = new Vec3d(this.posX, this.posY, this.posZ);
+        rayStart = new Vec3d(this.posX, this.posY, this.posZ); // TODO: remove this redundant line after making sure it really is reduntant
         if (MOP != null) {
             rayEnd = new Vec3d(MOP.hitVec.x, MOP.hitVec.y, MOP.hitVec.z);
         } else {
@@ -217,25 +217,27 @@ public class EntityElectricityRaytrace extends Entity {
                     this.world.spawnEntity(new EntityElectricityLink(this.world, this, this.getDistance(MOP.entityHit)));
                 }
 
-                RivalRebelsDamageSource damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.ELECTRICITY, this, this.shootingEntity);
+                if (!this.world.isRemote) {
+                    RivalRebelsDamageSource damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.ELECTRICITY, this, this.shootingEntity);
 
-                if (MOP.entityHit instanceof EntityPlayer) {
-                    EntityPlayer entityPlayerHit = (EntityPlayer)MOP.entityHit;
-                    NonNullList<ItemStack> armorSlots = entityPlayerHit.inventory.armorInventory;
-                    int armorSlotIndex = this.world.rand.nextInt(4);
-                    if (!armorSlots.get(armorSlotIndex).isEmpty()) {
-                        armorSlots.get(armorSlotIndex).damageItem(14, entityPlayerHit);
-                        entityPlayerHit.attackEntityFrom(damage, 1.0F);
+                    if (MOP.entityHit instanceof EntityPlayer) {
+                        EntityPlayer entityPlayerHit = (EntityPlayer)MOP.entityHit;
+                        NonNullList<ItemStack> armorSlots = entityPlayerHit.inventory.armorInventory;
+                        int armorSlotIndex = this.world.rand.nextInt(4);
+                        if (!armorSlots.get(armorSlotIndex).isEmpty()) {
+                            armorSlots.get(armorSlotIndex).damageItem(14, entityPlayerHit);
+                            entityPlayerHit.attackEntityFrom(damage, 1.0F);
+                        } else {
+                            entityPlayerHit.attackEntityFrom(
+                                damage, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1) / (armorSlotIndex + 1)
+                            );
+                        }
+                    } else if (false/*MOP.entityHit instanceof EntityB2Spirit*/) {
+                        MOP.entityHit
+                        .attackEntityFrom(damage, RivalRebels.teslaDecay / 1.5F / ((int)MOP.entityHit.getDistance(this) + 1));
                     } else {
-                        entityPlayerHit.attackEntityFrom(
-                            damage, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1) / (armorSlotIndex + 1)
-                        );
+                        MOP.entityHit.attackEntityFrom(damage, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1));
                     }
-                } else if (false/*MOP.entityHit instanceof EntityB2Spirit*/) {
-                    MOP.entityHit
-                    .attackEntityFrom(damage, RivalRebels.teslaDecay / 1.5F / ((int)MOP.entityHit.getDistance(this) + 1));
-                } else {
-                    MOP.entityHit.attackEntityFrom(damage, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1));
                 }
             }
         } else if (!this.world.isRemote) {

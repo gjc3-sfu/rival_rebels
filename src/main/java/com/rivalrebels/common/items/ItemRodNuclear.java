@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class ItemRodNuclear extends RRItemRod {
 
-    private final static int POWER = 3000000;
+    private final static int MAX_POWER = 3000000;
 
     public ItemRodNuclear(String name) {
         super(name);
@@ -21,7 +21,7 @@ public class ItemRodNuclear extends RRItemRod {
 
     @Override
     public void onUpdate(ItemStack item, World world, Entity entity, int par4, boolean par5) {
-        if (entity instanceof EntityPlayer) {
+        if (!world.isRemote && entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)entity;
             Random rand = new Random();
             if (player.inventory.getStackInSlot(player.inventory.currentItem) != null
@@ -31,6 +31,11 @@ public class ItemRodNuclear extends RRItemRod {
                 player.attackEntityFrom(RivalRebelsDamageSource.radiation, rand.nextInt(4));
             }
         }
+    }
+
+    @Override 
+    public int get_max_power() {
+        return MAX_POWER;
     }
 
     

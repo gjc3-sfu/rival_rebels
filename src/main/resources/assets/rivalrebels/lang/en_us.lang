@@ -1,5 +1,5 @@
 item.rod.name=Rod
-item.nuke_rod.name=Nuclear Rod
+item.nuclear_rod.name=Nuclear Rod
 item.hydrogen_rod.name=Hydrogen Rod
 item.redstone_rod.name=Redstone Rod
 item.fuel.name=Fuel
@@ -42,18 +42,6 @@ rivalrebels.message.pack_up_toaster=Shift-click (Sneak) to pack up toaster.
 rivalrebels.message.detonate=Shift-click (Sneak) to detonate.
 rivalrebels.message.rrconfig_result=The game %s render the old nuke model
 rivalrebels.message.rrconfig_usage=Usage: /rrconfig enable_old_nuke | more commands coming soon
-rivalrebels.command.model.transforms_reset=Transforms reset!
-rivalrebels.command.model.usage=Usage: %s
-rivalrebels.command.model.invalid_number=Invalid number!
-rivalrebels.command.model.invalid_operation=Operation must be translate, rotate, or add!
-rivalrebels.command.model.invalid_axis=Axis must be x, y, or z!
-rivalrebels.command.model.updated=%1$s %2$s = %3$s
-rivalrebels.command.model.title=--- Model Transform ---
-rivalrebels.command.model.translation_label=Translation:
-rivalrebels.command.model.rotation_label=Rotation:
-rivalrebels.command.model.copy_renderer=--- Copy these into your renderer ---
-rivalrebels.command.model.translate_code=GL11.glTranslatef(%1$sf, %2$sf, %3$sf);
-rivalrebels.command.model.rotate_code=GL11.glRotatef(%1$sf, %2$s, %3$s, %4$s);
 tile.conduit.name=Conduit
 tile.nuke.name=Nuke
 tile.steel.name=Steel

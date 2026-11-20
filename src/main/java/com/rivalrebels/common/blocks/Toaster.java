@@ -59,7 +59,7 @@ public class Toaster extends RRBlock {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!playerIn.isSneaking()){
             if(!worldIn.isRemote){
-                new RivalRebelsExplosion(worldIn, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, 4, false, true, RivalRebelsDamageSource.plasmaexplosion);
+                //new RivalRebelsExplosion(worldIn, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, 4, false, true, RivalRebelsDamageSource.plasmaexplosion);
             }
             return true;
 

@@ -33,6 +33,9 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 public class ReactorTileEntity extends TileEntity implements IInventory, ITickable {
 
@@ -59,6 +62,69 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
 
     private boolean reactive_scan = false; // Has the reactor done it's initial scan for reactive blocks to power
     private static final int MAX_SCAN_BLOCKS_PER_TICK = 2000;
+
+    public float current_tick_consumption = 0;
+    public float core_power_left;
+
+    public void toggleOn() {
+        if (this.core != null && !this.core.isEmpty()
+                && this.fuel != null && !this.fuel.isEmpty()) {
+            this.on = !this.on;
+            this.overrun_timer = -1;
+            this.markDirty();
+            IBlockState state = this.world.getBlockState(this.getPos());
+            this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
+        }
+    }
+
+    public void ejectCore() {
+        this.eject = true;
+        this.markDirty();
+        IBlockState state = this.world.getBlockState(this.getPos());
+        this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        this.on = compound.getBoolean("on");
+        this.eject = compound.getBoolean("eject");
+        this.fuel = compound.hasKey("fuel")
+            ? new ItemStack(compound.getCompoundTag("fuel"))
+            : ItemStack.EMPTY;
+        this.core = compound.hasKey("core")
+            ? new ItemStack(compound.getCompoundTag("core"))
+            : ItemStack.EMPTY;
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setBoolean("on", this.on);
+        compound.setBoolean("eject", this.eject);
+        if (this.fuel != null && !this.fuel.isEmpty()) {
+            compound.setTag("fuel", this.fuel.writeToNBT(new NBTTagCompound()));
+        }
+        if (this.core != null && !this.core.isEmpty()) {
+            compound.setTag("core", this.core.writeToNBT(new NBTTagCompound()));
+        }
+        return compound;
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(this.getPos(), 0, this.getUpdateTag());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet) {
+        this.readFromNBT(packet.getNbtCompound());
+    }
 
 
     private class BlockScan {
@@ -126,25 +192,25 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
 
             while (iter.hasNext()) {
                 EntityPlayer player = (EntityPlayer)iter.next();
-                if (player.getDistanceSq(this.getPos().getX() + 0.5F, this.getPos().getY() + 0.5F, this.getPos().getZ() + 0.5F) <= 9.0) {
-                player_close_flag = true;
-                break;
+                if (player.getDistanceSq(this.getPos().getX() + 0.5F, this.getPos().getY() + 0.5F, this.getPos().getZ() + 0.5F) <= 9.0 && !player.isInvisible()) {
+                    player_close_flag = true;
+                    break;
                 }
             }
 
             if (player_close_flag) {
                 if (this.laptop_lid_slide < 89.995) {
-                this.laptop_lid_phase += 0.05;
+                    this.laptop_lid_phase += 0.05;
                 }
             } else if (this.laptop_lid_slide > 0.004) {
                 this.laptop_lid_phase -= 0.05;
             }
         }
 
-        double lasttickconsumed = 0.0;
+        this.current_tick_consumption = 0.0F;
 
         // If there is no core, turn the reactor off
-        if (this.core == null) {
+        if (this.core.isEmpty()) {
             this.on = false;
             this.overrun_timer = -1;
             this.melt_tick = -1;
@@ -184,10 +250,19 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
         */
     }
 
+    private void set_begin_meltdown() { // Starts a meltdown if not already melting down
+        if (this.melt_tick == -1) {
+            this.melt_tick = 300;
+        }
+    }
 
+
+    public boolean is_melting_down() {
+        return this.melt_tick != -1;
+    }
 
     private void handle_no_fuel() {
-        if (this.fuel == null) {
+        if (this.fuel.isEmpty() || this.fuel == null) {
 
             if (this.overrun_timer == -1) {
                 this.overrun_timer = 100;
@@ -201,7 +276,9 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
                     this.on = false;
                     this.overrun_timer = -1;
                 } else {
-                    this.melt_tick = 300; // Start the meltdown
+                    this.set_begin_meltdown();
+                    this.overrun_timer = -1;
+                    
                 }
             }
         } else {
@@ -218,7 +295,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
 
 
 
-            if (this.core != null) {
+            if (!this.core.isEmpty()) {
 
 
                 if (world.isRemote) {
@@ -237,19 +314,19 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
                 }
 
 
-            if (this.melt_tick % 20 == 0) {
-                world.playSound(null, this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5, RRSounds.reactor_warning, SoundCategory.AMBIENT, 1f, 1);
-            }
+                if (this.melt_tick % 20 == 0) {
+                    world.playSound(null, this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5, RRSounds.reactor_warning, SoundCategory.AMBIENT, 1f, 1);
+                }
 
-            
+                
 
-            this.on = true;
-            this.melt_tick--;
-            if (this.melt_tick == 0) {
-                this.meltDown(10);
-            } else if (this.melt_tick == 299) {
-                //PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.WARNING RivalRebels.meltdown"));
-            }
+                this.on = true;
+                this.melt_tick--;
+                if (this.melt_tick == 0) {
+                    this.meltDown(10);
+                } else if (this.melt_tick == 299) {
+                    //PacketDispatcher.packetsys.sendToAll(new TextPacket("RivalRebels.WARNING RivalRebels.meltdown"));
+                }
 
 
 
@@ -262,7 +339,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
     }
 
     private void handle_ejection() {
-        if (this.eject && this.core != null) {
+        if (this.eject && !this.core.isEmpty()) {
             this.overrun_timer = -1;
             this.world
             .spawnEntity(new EntityItem(this.world, this.getPos().getX() + 0.5, this.getPos().getY() + 1, this.getPos().getZ() + 0.5, this.core));
@@ -275,9 +352,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
 
     private void handle_power() {
 
-        float current_tick_consumption = 0;
-
-        if (this.on && this.core != null && this.fuel != null && this.core.getItem() instanceof RRItemCore && this.fuel.getItem() instanceof RRItemRod) {
+        if (this.on && !this.core.isEmpty() && !this.fuel.isEmpty() && this.core.getItem() instanceof RRItemCore && this.fuel.getItem() instanceof RRItemRod) {
             if (!this.prevOn && this.on) {
                 // Startup sound
                 world.playSound(null, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), RRSounds.reactor_startup, SoundCategory.AMBIENT, 1f, 1);
@@ -285,7 +360,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
                 // humming
                 this.sound_counter++;
                 if (this.on && this.sound_counter % 39 == 0) {
-                    world.playSound(null, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), RRSounds.reactor_warning, SoundCategory.AMBIENT, 0.9f, 0.77f);
+                    world.playSound(null, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), RRSounds.reactor_hum, SoundCategory.AMBIENT, 0.9f, 0.77f);
                     this.sound_counter = 0;
                 }
             }
@@ -298,7 +373,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
 
 
             float already_consumed = this.fuel.getTagCompound().getInteger("fuelConsumed");
-            float core_power_left = running_rod.get_max_power() - already_consumed;
+            this.core_power_left = running_rod.get_max_power() - already_consumed;
             float available_power = core_power_left / core.DENOMINATOR;
 
             float available_power_start = available_power;
@@ -367,7 +442,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
                     double f4 = f2 * f2;
                     double f8 = f4 * f4;
                     if (this.world.rand.nextFloat() < f8) {
-                        this.melt_tick = 300; // Start melting down timer
+                        this.set_begin_meltdown();
                     }
                 }
             } else {

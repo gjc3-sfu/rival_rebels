@@ -159,7 +159,7 @@ public class Tesla extends RRItem {
         }
 
 
-        if (entity.isWet()) {
+        if (!world.isRemote && entity.isWet()) {
             RivalRebelsDamageSource damage = new RivalRebelsDamageSource(RivalRebelsDamageSource.RR_damage_sources.ELECTRICITY, null, null);
             if (entity instanceof EntityPlayer) {
                 if (!(((EntityPlayer)entity).capabilities.isCreativeMode)) {

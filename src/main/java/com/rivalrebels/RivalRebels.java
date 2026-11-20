@@ -5,16 +5,13 @@ import com.rivalrebels.common.command.RRModelMoveDebug;
 import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.init.*;
 import com.rivalrebels.common.packet.PacketDispatcher;
-import com.rivalrebels.common.tileentity.TileEntityTimedBomb;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,6 @@ public class RivalRebels {
         instance = this;
         RRSounds.init();
         RRBlocks.initBlocks();
-        GameRegistry.registerTileEntity(TileEntityTimedBomb.class, new ResourceLocation(ModInfo.modid, "timed_bomb"));
         RRItems.initItems();
         RREntities.registerEntities();
         proxy.registerRenderStuff(event);
@@ -57,7 +53,6 @@ public class RivalRebels {
     @SuppressWarnings(value = "unused")
     @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
-        RivalRebelsRecipes.init();
 
     }
 

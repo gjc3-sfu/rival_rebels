@@ -26,7 +26,8 @@ public class GuiCustomButton extends net.minecraft.client.gui.GuiButton {
       this.toggleable = isToggle;
    }
 
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
+    @Override
+    public void drawButton(Minecraft par1Minecraft, int par2, int par3, float partialTicks) {
         boolean current = Mouse.isButtonDown(0) && this.bbox.isVecInside(new Vector(par2, par3));
         this.wasPressed = false;
         if (this.toggleable && current && !this.mouseDown) {

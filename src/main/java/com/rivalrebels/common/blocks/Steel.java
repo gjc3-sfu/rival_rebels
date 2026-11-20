@@ -45,6 +45,7 @@ public class Steel extends RRBlock {
                 entity.motionY = 0.25;
                 entity.fallDistance = 0;
             } else if (entity.onGround) {
+                
             } else if (entity.collidedVertically) {
                 entity.motionY = 0.08;
                 entity.fallDistance = 0;
