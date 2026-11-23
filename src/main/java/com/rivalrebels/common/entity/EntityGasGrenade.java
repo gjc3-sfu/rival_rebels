@@ -144,17 +144,17 @@ public class EntityGasGrenade extends Entity {
     /**
      * Sets the velocity to the args. Args: x, y, z
      */
-    public void setVelocity(double par1, double par3, double par5)
+    public void setVelocity(double m_x, double m_y, double m_z)
     {
-        motionX = par1;
-        motionY = par3;
-        motionZ = par5;
+        motionX = m_x;
+        motionY = m_y;
+        motionZ = m_z;
 
         if (prevRotationPitch == 0.0F && prevRotationYaw == 0.0F)
         {
-            float var7 = MathHelper.sqrt(par1 * par1 + par5 * par5);
-            prevRotationYaw = rotationYaw = (float) (Math.atan2(par1, par5) * 180.0D / Math.PI);
-            prevRotationPitch = rotationPitch = (float) (Math.atan2(par3, var7) * 180.0D / Math.PI);
+            float var7 = MathHelper.sqrt(m_x * m_x + m_z * m_z);
+            prevRotationYaw = rotationYaw = (float) (Math.atan2(m_x, m_z) * 180.0D / Math.PI);
+            prevRotationPitch = rotationPitch = (float) (Math.atan2(m_y, var7) * 180.0D / Math.PI);
             prevRotationPitch = rotationPitch;
             prevRotationYaw = rotationYaw;
             setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
@@ -187,6 +187,7 @@ public class EntityGasGrenade extends Entity {
             var3 = new Vec3d(var4.hitVec.x, var4.hitVec.y, var4.hitVec.z);
         }
 
+        //TODO: fix the same hitbox bug that was fixed in the throwing knife
         Entity var5 = null;
         List<Entity> var6 = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().contract(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
         double var7 = 0.0D;

@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.rivalrebels.common.init.RRBlocks;
 
-public class RRBlock extends Block implements IRRBlock {
+public class RRBlock extends Block {
     public static List<Block> list = new ArrayList<>();
 
 

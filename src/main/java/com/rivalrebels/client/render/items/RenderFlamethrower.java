@@ -1,4 +1,4 @@
-package com.rivalrebels.client.render;
+package com.rivalrebels.client.render.items;
 
 import com.rivalrebels.ModInfo;
 import com.rivalrebels.client.oldstuff.AdvancedModelLoader;

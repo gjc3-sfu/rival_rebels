@@ -106,6 +106,15 @@
   "reactor_warning": {
     "category": "ambient",
     "sounds": [{"name": "rivalrebels:reactor/warning"}, "rivalrebels:reactor/warning"]
+  },
+
+  "b2_spirit_ambient": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:b2_spirit/ambient"}, "rivalrebels:b2_spirit/ambient1", "rivalrebels:b2_spirit/ambient2"]
+  },
+
+  "b2_spirit_explode": {
+    "category": "ambient",
+    "sounds": [{"name": "rivalrebels:b2_spirit/explode"}, "rivalrebels:b2_spirit/explode1", "rivalrebels:b2_spirit/explode2"]
   }
-  
 }

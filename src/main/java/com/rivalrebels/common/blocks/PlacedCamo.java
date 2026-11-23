@@ -15,6 +15,7 @@ public class PlacedCamo extends RRBlock {
         //TODO Auto-generated constructor stub
     }
 
+    @Override 
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(RRBlocks.smart_camo);

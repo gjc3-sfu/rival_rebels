@@ -55,9 +55,9 @@ public class ReactorGuiPacket implements IMessage {
 
                 ReactorTileEntity reactor = (ReactorTileEntity)tileEntity;
                 if (message.type == 0) {
-                    //reactor.toggleOn();
+                    reactor.toggleOn();
                 } else if (message.type == 1) {
-                    //reactor.ejectCore();
+                    reactor.ejectCore();
                 }
             });
             return null;

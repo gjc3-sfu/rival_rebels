@@ -31,13 +31,13 @@ public class Toaster extends RRBlock {
     }
 
     @Override
-    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
-        if(!playerIn.isSneaking()){
-            EntityItem item = new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, new ItemStack(Items.BREAD, 1));
-            if(!worldIn.isRemote){
-                worldIn.spawnEntity(item);
-                if (worldIn.rand.nextInt(64) == 0) {
-                    playerIn.sendStatusMessage(
+    public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
+        if(!player.isSneaking()){
+            EntityItem item = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, new ItemStack(Items.BREAD, 1));
+            if(!world.isRemote){
+                world.spawnEntity(item);
+                if (world.rand.nextInt(64) == 0) {
+                    player.sendStatusMessage(
                         new TextComponentTranslation("rivalrebels.orders")
                             .setStyle(new Style().setColor(TextFormatting.DARK_RED))
                             .appendSibling(new TextComponentTranslation("rivalrebels.message.pack_up_toaster")
@@ -46,11 +46,11 @@ public class Toaster extends RRBlock {
                     );
                 }
             }
-        } else if(playerIn.isSneaking()){
-            worldIn.setBlockToAir(pos);
-            EntityItem item = new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(this));
-            if(!worldIn.isRemote){
-                worldIn.spawnEntity(item);
+        } else if(player.isSneaking()){
+            world.setBlockToAir(pos);
+            EntityItem item = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(this));
+            if(!world.isRemote){
+                world.spawnEntity(item);
             }
         }
     }

@@ -5,7 +5,6 @@ import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.init.RivalRebelsDamageSource;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

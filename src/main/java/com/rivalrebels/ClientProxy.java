@@ -3,11 +3,18 @@ package com.rivalrebels;
 import com.rivalrebels.client.guiLoader.GuiFlamethrower;
 import com.rivalrebels.client.guiLoader.GuiTesla;
 import com.rivalrebels.client.render.*;
+import com.rivalrebels.client.render.entity.B2SpiritFragRenderer;
+import com.rivalrebels.client.render.entity.B2SpiritRenderer;
+import com.rivalrebels.client.render.entity.RenderCuchillo;
+import com.rivalrebels.client.render.entity.RenderDebris;
+import com.rivalrebels.client.render.entity.RenderElectricityLink;
+import com.rivalrebels.client.render.entity.RenderFlameBallHighTemp;
+import com.rivalrebels.client.render.entity.RenderFlameBallLowTemp;
+import com.rivalrebels.client.render.entity.RenderFlameBallMediumTemp;
 import com.rivalrebels.client.render.items.RenderEinsten;
+import com.rivalrebels.client.render.items.RenderFlamethrower;
 import com.rivalrebels.client.render.items.RenderRocket;
-import com.rivalrebels.common.blocks.trap.ScorchedStone;
 import com.rivalrebels.common.entity.*;
-import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.tileentity.*;
 import net.minecraft.client.Minecraft;
@@ -70,6 +77,8 @@ public class ClientProxy extends CommonProxy{
         RenderingRegistry.registerEntityRenderingHandler(EntityPropulsionFX.class, FXParticleRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityLaserBurst.class, RenderLaserBurst::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityGore.class, RenderGore::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityB2Spirit.class, B2SpiritRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityB2SpiritFrag.class, B2SpiritFragRenderer::new);
     }
     public void registerModel(Item item, int meta, String variant){
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), variant));

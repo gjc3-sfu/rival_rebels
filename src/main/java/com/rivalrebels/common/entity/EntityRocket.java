@@ -2,14 +2,9 @@ package com.rivalrebels.common.entity;
 
 import java.util.List;
 
-import com.rivalrebels.RivalRebels;
-import com.rivalrebels.client.oldstuff.Vec3;
 import com.rivalrebels.common.config.RRConfigx;
-import com.rivalrebels.common.core.RRDamageSource;
 import com.rivalrebels.common.explosion.RivalRebelsExplosion;
 import com.rivalrebels.common.init.RRSounds;
-import com.rivalrebels.common.init.RivalRebelsDamageSource;
-import com.rivalrebels.common.init.RivalRebelsDamageSource.RR_damage_sources;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -18,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
@@ -27,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class EntityRocket extends Entity {

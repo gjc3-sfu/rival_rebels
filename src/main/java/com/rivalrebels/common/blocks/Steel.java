@@ -36,7 +36,7 @@ public class Steel extends RRBlock {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entity) {
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (entity instanceof EntityLivingBase) {
             if (entity.isSneaking() && !entity.collidedHorizontally) {
                 entity.motionY = 0.08;

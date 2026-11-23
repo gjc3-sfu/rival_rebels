@@ -4,6 +4,7 @@ import java.util.HashSet;
 import com.rivalrebels.common.init.RRItems;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
 public class RRItemRod extends RRToolItem {
@@ -35,5 +36,11 @@ public class RRItemRod extends RRToolItem {
 
    public int get_max_power() {
       return 0;
+   }
+
+   @Override 
+   public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+      //stack.damageItem(2, attacker);
+      return true;
    }
 }

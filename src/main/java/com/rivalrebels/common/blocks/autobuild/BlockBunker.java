@@ -19,6 +19,7 @@ public class BlockBunker extends BlockAutoBuild {
         build(world, pos.getX(), pos.getY(), pos.getZ());
     }
 
+    // Copied from decompiled as far as I know it's a magical black box
     @Override
     public void build(World world, int x, int y, int z) {
         super.build(world, x, y, z);

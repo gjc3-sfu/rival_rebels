@@ -32,6 +32,8 @@ public class RRSounds {
     public static SoundEvent reactor_startup;
     public static SoundEvent reactor_hum;
     public static SoundEvent reactor_warning;
+    public static SoundEvent b2_ambient;
+    public static SoundEvent b2_explode;
 
     public static void init() {
         gulp = new SoundEvent(new ResourceLocation(ModInfo.modid, "gulp")).setRegistryName("gulp");
@@ -64,5 +66,9 @@ public class RRSounds {
         reactor_startup = new SoundEvent(new ResourceLocation(ModInfo.modid, "reactor_startup")).setRegistryName("reactor_startup");
         reactor_hum = new SoundEvent(new ResourceLocation(ModInfo.modid, "reactor_hum")).setRegistryName("reactor_hum");
         reactor_warning = new SoundEvent(new ResourceLocation(ModInfo.modid, "reactor_warning")).setRegistryName("reactor_warning");
+
+        b2_ambient = new SoundEvent(new ResourceLocation(ModInfo.modid, "b2_spirit_ambient")).setRegistryName("b2_spirit_ambient");
+        b2_explode = new SoundEvent(new ResourceLocation(ModInfo.modid, "b2_spirit_explode")).setRegistryName("b2_spirit_explode");
+
     }
 }

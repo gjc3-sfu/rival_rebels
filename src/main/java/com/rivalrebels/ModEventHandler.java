@@ -92,7 +92,10 @@ public class ModEventHandler {
 
             RRSounds.reactor_startup,
             RRSounds.reactor_hum,
-            RRSounds.reactor_warning
+            RRSounds.reactor_warning,
+
+            RRSounds.b2_ambient,
+            RRSounds.b2_explode
         );
     }
 }

@@ -46,8 +46,7 @@ public class Reactive extends RRBlock {
     }
 
     @Override
-    public boolean canDropFromExplosion(Explosion explosionIn)
-    {
+    public boolean canDropFromExplosion(Explosion explosionIn) {
         return false;
     }
 

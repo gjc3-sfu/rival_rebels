@@ -2,6 +2,7 @@ package com.rivalrebels;
 
 import com.rivalrebels.client.render.*;
 import com.rivalrebels.client.render.items.RenderEinsten;
+import com.rivalrebels.client.render.items.RenderFlamethrower;
 import com.rivalrebels.client.renderhelper.BakedModelNoGui;
 import com.rivalrebels.client.renderhelper.ItemRenderBase;
 import com.rivalrebels.common.blocks.Reactive;

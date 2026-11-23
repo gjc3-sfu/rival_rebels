@@ -63,8 +63,75 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
     private boolean reactive_scan = false; // Has the reactor done it's initial scan for reactive blocks to power
     private static final int MAX_SCAN_BLOCKS_PER_TICK = 2000;
 
-    public float current_tick_consumption = 0;
+    public float consumed_this_tick = 0;
     public float core_power_left;
+
+
+
+    private class BlockScan {
+
+        private int index = 0;
+
+        boolean scan(World world, BlockPos scanner_reactor_pos) {
+
+            int scanCount = 0;
+
+            while (index < 65 * 65 * 65
+                    && scanCount < MAX_SCAN_BLOCKS_PER_TICK) {
+
+                int current = index++;
+
+                int x = current / (65 * 65) - 32;
+                int y = (current / 65) % 65 - 32;
+                int z = current % 65 - 32;
+
+                if (x*x + y*y + z*z > 1024) {
+                    continue;
+                }
+
+                BlockPos pos = scanner_reactor_pos.add(x, y, z);
+                Block block = world.getBlockState(pos).getBlock();
+
+                if (block == RRBlocks.reactive) {
+                    // Check this reactive isn't already owned by another reactor
+                    // pos -> boolean
+                    if (block_2_owner.get(pos) != null) {
+                        // Unclaimed add to both
+                        block_2_owner.put(scanner_reactor_pos, pos);
+                        owner_2_block.get(scanner_reactor_pos).put(pos, new BlockCooldown());
+                        // Reminder TODO: when a reactor gets destroyed wipe it from the maps
+                    }
+                    
+                }
+
+                scanCount++;
+            }
+
+            return index >= 65 * 65 * 65;
+        }
+    }
+
+
+
+    // Power management of reactives because in the port reactives are no longer tile entities:
+    private static class BlockCooldown {
+        // Activation tick
+        int cooldown;
+
+        BlockCooldown() {
+            cooldown = 0;
+        }
+    }
+
+    // Cooldown trackers for reactives so they aren't powered all the time
+    private BlockScan running_scan = new BlockScan();
+
+    // Might be a bad way to do it
+    // also if I were to do this I need to make the reactor not movable by pistons
+    // Aint no way I'm storing this in nbt I'll just let it get rebuild again
+    private static HashMap<BlockPos, HashMap<BlockPos, BlockCooldown>> owner_2_block; //Global
+    private static HashMap<BlockPos, BlockPos> block_2_owner; //Global
+
 
     public void toggleOn() {
         if (this.core != null && !this.core.isEmpty()
@@ -77,6 +144,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
         }
     }
 
+    // When you press the button eject the core
     public void ejectCore() {
         this.eject = true;
         this.markDirty();
@@ -127,57 +195,11 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
     }
 
 
-    private class BlockScan {
 
-        private int index = 0;
 
-        boolean scan(World world, BlockPos reactorPos) {
 
-            int scanCount = 0;
 
-            while (index < 65 * 65 * 65
-                    && scanCount < MAX_SCAN_BLOCKS_PER_TICK) {
 
-                int current = index++;
-
-                int x = current / (65 * 65) - 32;
-                int y = (current / 65) % 65 - 32;
-                int z = current % 65 - 32;
-
-                if (x*x + y*y + z*z > 1024) {
-                    continue;
-                }
-
-                BlockPos pos = reactorPos.add(x, y, z);
-
-                Block block = world.getBlockState(pos).getBlock();
-
-                if (block == RRBlocks.reactive) {
-                    //reactive_cooldowns.put(pos, new BlockCooldown());
-                }
-
-                scanCount++;
-            }
-
-            return index >= 65 * 65 * 65;
-        }
-    }
-
-    // Power management of reactives because in the port reactives are no longer tile entities:
-    private static class BlockTracker {
-        // Activation tick
-        int cooldown;
-        ReactorTileEntity owner;
-
-        BlockTracker() {
-            cooldown = 0;
-        }
-    }
-
-    // Cooldown trackers for reactives so they aren't powered all the time
-    private BlockScan running_scan = new BlockScan();
-    //private static HashMap<BlockPos, BlockCooldown> reactive_cooldowns; //Global
-    private static int f;
     
 
     @Override
@@ -207,7 +229,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
             }
         }
 
-        this.current_tick_consumption = 0.0F;
+        this.consumed_this_tick = 0.0F;
 
         // If there is no core, turn the reactor off
         if (this.core.isEmpty()) {
@@ -219,6 +241,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
         // If a jettson eject has been ordered
         this.handle_ejection();
 
+        // Handle a melting down reactor
         this.handle_meltdown_state();
 
         this.prevOn = this.on;
@@ -250,7 +273,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
         */
     }
 
-    private void set_begin_meltdown() { // Starts a meltdown if not already melting down
+    private void start_meltdown() { // Starts a meltdown if not already melting down
         if (this.melt_tick == -1) {
             this.melt_tick = 300;
         }
@@ -276,7 +299,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
                     this.on = false;
                     this.overrun_timer = -1;
                 } else {
-                    this.set_begin_meltdown();
+                    this.start_meltdown();
                     this.overrun_timer = -1;
                     
                 }
@@ -352,7 +375,7 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
 
     private void handle_power() {
 
-        if (this.on && !this.core.isEmpty() && !this.fuel.isEmpty() && this.core.getItem() instanceof RRItemCore && this.fuel.getItem() instanceof RRItemRod) {
+        if (this.on && !this.core.isEmpty() && !this.fuel.isEmpty() && (this.core.getItem() instanceof RRItemCore) && (this.fuel.getItem() instanceof RRItemRod)) {
             if (!this.prevOn && this.on) {
                 // Startup sound
                 world.playSound(null, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), RRSounds.reactor_startup, SoundCategory.AMBIENT, 1f, 1);
@@ -388,35 +411,38 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
             }
 
             // Power reactives:
+            // For each reactive this reactor owns:
+            // Power it
+
 
 
 
             for (TileEntity tile_ent : this.world.loadedTileEntityList) {
                 if (tile_ent != null && tile_ent instanceof IPowerable) {
-                    IPowerable tile_powerable = (IPowerable)tile_ent;
+                    IPowerable power_consumer = (IPowerable)tile_ent;
                     if (this.world.getTileEntity(tile_ent.getPos()) == null) {
                         double dist = tile_ent.getDistanceSq(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
                         if (dist < 1024.0) {
                             // Assign this reactor to the powerable tile
-                            tile_powerable.set_reactor_pos(tile_ent.getPos());
-                            tile_powerable.set_reactor_distance((float)Math.sqrt(dist));
+                            power_consumer.set_reactor_pos(tile_ent.getPos());
+                            power_consumer.set_reactor_distance((float)Math.sqrt(dist));
 
                             //this.machines.add(tile_powerable);
                         }
                     }
 
-                    if (tile_powerable.get_reactor_pos() == this.getPos()) {
+                    if (power_consumer.get_reactor_pos() == this.getPos()) {
 
                         //this.machines.add(tile_powerable);
                         //tile_powerable.powerGiven = power; // used for rendering do later
 
-                        int missing_power = tile_powerable.get_max_power_storage() - tile_powerable.get_power_contained();
+                        int missing_power = power_consumer.get_max_power_storage() - power_consumer.get_power_contained();
 
                         if (available_power > missing_power) {
                             available_power -= missing_power;
-                            tile_powerable.add_power(missing_power);
+                            power_consumer.add_power(missing_power);
                         } else {
-                            tile_powerable.add_power(available_power);
+                            power_consumer.add_power(available_power);
                             available_power = 0.0F;
                         }
 
@@ -428,9 +454,9 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
                 }
             }
 
-            current_tick_consumption = available_power_start - available_power;
+            consumed_this_tick = available_power_start - available_power;
 
-            float new_consumed = already_consumed + current_tick_consumption/core.EFFICIENCY;
+            float new_consumed = already_consumed + consumed_this_tick/core.EFFICIENCY;
             if (this.fuel.getTagCompound().hasKey("fuelConsumed")) {
                 int save_value = (Math.round(new_consumed) == 1) ? 0 : Math.round(new_consumed);
                 this.fuel.getTagCompound().setInteger("fuelConsumed", save_value);
@@ -442,13 +468,16 @@ public class ReactorTileEntity extends TileEntity implements IInventory, ITickab
                     double f4 = f2 * f2;
                     double f8 = f4 * f4;
                     if (this.world.rand.nextFloat() < f8) {
-                        this.set_begin_meltdown();
+                        this.start_meltdown();
                     }
                 }
             } else {
+                // Fresh rod:
                 this.fuel.getTagCompound().setInteger("fuelConsumed", 0);
+                //this.fuel.getTagCompound().setInteger("fuelConsumed", consumed_this_tick);
             }
 
+            // Fuel rod consumed
             if (this.fuel.getTagCompound().getInteger("fuelConsumed") >= available_power_start) {
                 this.last_rod_was_redstone = running_rod instanceof RRItemRedstoneRod;
                 this.overrun_timer = 300;

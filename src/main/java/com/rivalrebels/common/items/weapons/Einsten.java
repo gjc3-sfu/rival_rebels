@@ -7,6 +7,7 @@ import com.rivalrebels.common.init.RRItems;
 import com.rivalrebels.common.init.RRSounds;
 import com.rivalrebels.common.items.RRItem;
 import com.rivalrebels.common.items.RRItemHydrogenRod;
+import com.rivalrebels.common.items.RRItemRedstoneRod;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,7 +79,7 @@ public class Einsten extends RRItem {
                 ItemStack stack = player.inventory.mainInventory.get(i);
 
                 if (!stack.isEmpty() && stack.getItem() == RRItems.redstone_rod) {
-                    int durability_left = RRItemHydrogenRod.MAX_DURABILITY - stack.getMetadata();
+                    int durability_left = RRItemRedstoneRod.MAX_DURABILITY - stack.getMetadata();
                     if (durability_left < uses) {
                         uses = uses - durability_left;
 
@@ -108,7 +109,19 @@ public class Einsten extends RRItem {
     @Override
     public void onUsingTick(ItemStack is, EntityLivingBase player, int count) {
         if (count < 71980 && !player.world.isRemote) {
-            consumeRedstone(player, 1);
+            if (!player.world.isRemote && player instanceof EntityPlayer) {
+                EntityPlayer pplayer = (EntityPlayer) player;
+                if (!pplayer.capabilities.isCreativeMode
+                        && !RRConfigx.infinite_ammo) {
+                    if (!consumeRedstone(player, 1)) {
+                        player.stopActiveHand();
+                        return;
+                    }
+                }
+            }
+
+
+
             if (this.sound_alternate) {
 
                 player.world.playSound(null, player.posX, player.posY, player.posZ, RRSounds.einsten_fire_A, SoundCategory.AMBIENT, 0.5F, 0.3F);

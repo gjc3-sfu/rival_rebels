@@ -16,16 +16,16 @@ public class Jumper extends RRBlock{
         super(name, mat);
     }
     @Override
-    public void onEntityCollidedWithBlock(World par1World, BlockPos pos, IBlockState state, Entity par5Entity)
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
     {
-        if (par5Entity instanceof EntityLivingBase)
+        if (entity instanceof EntityLivingBase)
         {
-            par5Entity.motionY += 2;
-            par1World.playSound(null, pos, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.AMBIENT, 3F, 2);
+            entity.motionY += 2;
+            world.playSound(null, pos, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.AMBIENT, 3F, 2);
         }
     }
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         float f = 0.0625F;
         return new AxisAlignedBB(0, 0, 0, 1, 1 - f, 1);

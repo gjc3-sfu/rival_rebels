@@ -352,7 +352,7 @@ public class GuiReactor extends GuiContainer {
                 }
             }
 
-            this.frame = (float)(this.frame + (0.75 + this.tile_reactor_ref.current_tick_consumption / 100.0));
+            this.frame = (float)(this.frame + (0.75 + this.tile_reactor_ref.consumed_this_tick / 100.0));
             this.power_button.isPressed = this.tile_reactor_ref.on;
 
     }
@@ -370,7 +370,7 @@ public class GuiReactor extends GuiContainer {
         this.fontRenderer.drawString("ToKaMaK", 10, 8, 4473924);
         GL11.glPopMatrix();
         this.fontRenderer.drawString("Teslas: " + df.format(this.tile_reactor_ref.core_power_left), 120, 8, 16777215);
-        this.fontRenderer.drawString("Output/t: " + df.format(this.tile_reactor_ref.current_tick_consumption), 140, 18, 16777215);
+        this.fontRenderer.drawString("Output/t: " + df.format(this.tile_reactor_ref.consumed_this_tick), 140, 18, 16777215);
         int mousex = par1;
         int mousey = par2;
         int posx = (this.width - this.xSize) / 2;

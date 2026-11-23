@@ -3,7 +3,6 @@ package com.rivalrebels.common.entity;
 import java.util.List;
 
 import com.rivalrebels.RivalRebels;
-import com.rivalrebels.client.oldstuff.Vec3;
 import com.rivalrebels.common.core.BlackList;
 import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RivalRebelsDamageSource;
@@ -232,7 +231,7 @@ public class EntityElectricityRaytrace extends Entity {
                                 damage, RivalRebels.teslaDecay / ((int)MOP.entityHit.getDistance(this) + 1) / (armorSlotIndex + 1)
                             );
                         }
-                    } else if (false/*MOP.entityHit instanceof EntityB2Spirit*/) {
+                    } else if (MOP.entityHit instanceof EntityB2Spirit) {
                         MOP.entityHit
                         .attackEntityFrom(damage, RivalRebels.teslaDecay / 1.5F / ((int)MOP.entityHit.getDistance(this) + 1));
                     } else {

@@ -78,8 +78,7 @@ public class EntityDebris extends Entity {
     }
 
     @Override
-    public void onUpdate()
-    {
+    public void onUpdate() {
         if (ticksExisted == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) PacketDispatcher.wrapper.sendToAll(new EntityDebrisPacket(this));
         prevPosX = posX;
         prevPosY = posY;
@@ -96,8 +95,7 @@ public class EntityDebris extends Entity {
         if (!world.isRemote && world.getBlockState(new BlockPos(MathHelper.floor(posX), MathHelper.floor(posY), MathHelper.floor(posZ))).isOpaqueCube()) die(prevPosX, prevPosY, prevPosZ);
     }
 
-    public void die(double X, double Y, double Z)
-    {
+    public void die(double X, double Y, double Z) {
         int x = MathHelper.floor(X);
         int y = MathHelper.floor(Y);
         int z = MathHelper.floor(Z);

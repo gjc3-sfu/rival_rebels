@@ -205,11 +205,11 @@ public class EntityCuchillo extends Entity {
     }
 
     @Override
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
+    public void onCollideWithPlayer(EntityPlayer player)
     {
         if (!world.isRemote && inGround)
         {
-            if (!par1EntityPlayer.capabilities.isCreativeMode) par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(RRItems.knife, 1));
+            if (!player.capabilities.isCreativeMode) player.inventory.addItemStackToInventory(new ItemStack(RRItems.knife, 1));
             world.playSound(null, posX, posY, posZ, SoundEvents.BLOCK_LAVA_POP, SoundCategory.AMBIENT, 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             setDead();
         }

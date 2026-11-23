@@ -3,7 +3,6 @@ package com.rivalrebels.common.entity;
 import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.core.BlackList;
 import com.rivalrebels.common.init.RRBlocks;
-import com.rivalrebels.common.init.RRConfigOptions;
 import com.rivalrebels.common.tileentity.TileEntityPlasmaExplosion;
 
 import net.minecraft.block.Block;
@@ -26,7 +25,7 @@ public class EntityPlasmoid extends Entity {
     public int				rotation	= 45;
     public int				size		= 3;
     public float			slide		= 0;
-    boolean gravity = false;
+    private boolean gravity = false;
 
     @SuppressWarnings(value = "unused")
     public EntityPlasmoid(World world) {
@@ -70,7 +69,7 @@ public class EntityPlasmoid extends Entity {
     public EntityPlasmoid(World world, EntityPlayer thrower, float speed, boolean drop) {
         super(world);
         speed *= (gravity ? 3 : 1);
-        gravity = drop;
+        this.gravity = drop;
         this.thrower = thrower;
         setSize(0.5F, 0.5F);
         setLocationAndAngles(thrower.posX, thrower.posY + thrower.getEyeHeight(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch);
@@ -217,7 +216,7 @@ public class EntityPlasmoid extends Entity {
         BlockPos explosionPos = new BlockPos(posX, posY, posZ);
         if (!world.isRemote) {
             setDead();
-            int i = -1;
+            //int i = -1;
 
             world.setBlockState(new BlockPos(posX, posY, posZ), RRBlocks.plasma_explosion.getDefaultState());
         }

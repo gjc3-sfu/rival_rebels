@@ -21,6 +21,8 @@ public class RREntities {
         EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "fx_propulsion"), EntityPropulsionFX.class, "fx_propulsion", 10, RivalRebels.instance, 1000, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "laser_burst"), EntityLaserBurst.class, "laser_burst", 11, RivalRebels.instance, 1000, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "gore"), EntityGore.class, "gore", 12, RivalRebels.instance, 1000, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "b2_spirit"), EntityB2Spirit.class, "b2_spirit", 13, RivalRebels.instance, 1000, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(ModInfo.modid, "b2_spirit_frag"), EntityB2SpiritFrag.class, "b2_spirit_frag", 14, RivalRebels.instance, 1000, 1, true);
 
     }
 }
