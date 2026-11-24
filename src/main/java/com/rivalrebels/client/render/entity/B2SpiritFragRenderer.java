@@ -35,6 +35,7 @@ public class B2SpiritFragRenderer extends Render<EntityB2SpiritFrag> {
 
     public B2SpiritFragRenderer(RenderManager renderManager) {
         super(renderManager);
+        this.shadowSize = 0.0F; // no shadow
         try {
             //this.fragment_left = ModelFromObj.readObjFile("f.obj");
             //this.fragment_left.scale(3.0F, 3.0F, 3.0F);

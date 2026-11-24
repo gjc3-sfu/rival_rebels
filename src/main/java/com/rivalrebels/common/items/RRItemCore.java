@@ -1,7 +1,5 @@
 package com.rivalrebels.common.items;
 
-import net.minecraft.util.math.MathHelper;
-
 public class RRItemCore extends RRItem {
 
     final public float EFFICIENCY;

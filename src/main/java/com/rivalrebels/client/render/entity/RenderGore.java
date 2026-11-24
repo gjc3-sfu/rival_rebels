@@ -1,4 +1,4 @@
-package com.rivalrebels.client.render;
+package com.rivalrebels.client.render.entity;
 
 import org.lwjgl.opengl.GL11;
 

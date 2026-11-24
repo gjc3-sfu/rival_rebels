@@ -2,14 +2,12 @@ package com.rivalrebels.common.blocks;
 
 import com.rivalrebels.common.explosion.RivalRebelsExplosion;
 import com.rivalrebels.common.init.RRSounds;
-import com.rivalrebels.common.init.RivalRebelsDamageSource;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;

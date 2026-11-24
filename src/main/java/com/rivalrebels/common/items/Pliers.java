@@ -3,18 +3,13 @@ package com.rivalrebels.common.items;
 import java.util.HashMap;
 import java.util.UUID;
 
-import com.rivalrebels.RivalRebels;
 import com.rivalrebels.common.blocks.autobuild.BlockAutoBuild;
 import com.rivalrebels.common.blocks.trap.TimedBomb;
 import com.rivalrebels.common.init.RRBlocks;
-import com.rivalrebels.common.packet.PacketDispatcher;
-import com.rivalrebels.common.packet.TextPacket;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;

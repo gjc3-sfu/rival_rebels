@@ -14,8 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class EntityFlameBallMediumTemp extends EntityFlameBall {
-    public EntityFlameBallMediumTemp(World world)
-    {
+    public EntityFlameBallMediumTemp(World world) {
         super(world);
     }
 

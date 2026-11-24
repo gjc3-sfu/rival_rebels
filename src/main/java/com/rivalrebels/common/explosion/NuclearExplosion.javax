@@ -1,0 +1,136 @@
+package com.rivalrebels.common.explosion;
+
+import java.util.Random;
+
+import com.rivalrebels.RivalRebels;
+import com.rivalrebels.common.config.RRConfigx;
+import com.rivalrebels.common.init.RRBlocks;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+
+public class NuclearExplosion {
+    public NuclearExplosion(World world, int x, int y, int z, int strength) {
+        Side side = FMLCommonHandler.instance().getEffectiveSide();
+        if (side == Side.SERVER) {
+            this.createHole(world, x, y, z, strength, true);
+            this.fixLag(world, x, y, z, strength);
+        }
+    }
+
+    public NuclearExplosion(World world, int x, int y, int z, int strength, boolean breakobj) {
+        Side side = FMLCommonHandler.instance().getEffectiveSide();
+        if (side == Side.SERVER) {
+            this.createHole(world, x, y, z, strength, breakobj);
+            this.fixLag(world, x, y, z, strength);
+        }
+    }
+
+    private void createHole(World world, int x, int y, int z, int radius, boolean breakobj) {
+        Random rand = new Random();
+        int halfradius = radius / 2;
+        int onepointfiveradius = halfradius * 3;
+        int AOC = radius / RRConfigx.nuclear_bomb_strength;
+        int onepointfiveradiussqrd = onepointfiveradius * onepointfiveradius;
+        int twoAOC = AOC * 2;
+
+        for (int X = -onepointfiveradius; X <= onepointfiveradius; X++) {
+            int xx = x + X;
+            int XX = X * X;
+
+            for (int Z = -onepointfiveradius; Z <= onepointfiveradius; Z++) {
+                int ZZ = Z * Z + XX;
+                int zz = z + Z;
+
+                for (int Y = -onepointfiveradius; Y <= onepointfiveradius; Y++) {
+                    int YY = Y * Y + ZZ;
+                    int yy = y + Y;
+                    if (YY < onepointfiveradiussqrd) {
+                        BlockPos pos = new BlockPos(xx, yy, zz);
+                        Block block = world.getBlockState(pos).getBlock();
+                        if (block != Blocks.AIR) {
+                            int dist = (int)Math.sqrt(YY);
+                            if (dist < radius && block != Blocks.BEDROCK) {
+                                int varrand = 1 + dist - halfradius;
+                                if (dist < halfradius) {
+                                    if (breakobj && block == RivalRebels.omegaobj) {
+                                        RivalRebels.round.winSigma();
+                                        block = RRBlocks.plasma_explosion;
+                                    } else if (breakobj && block == RivalRebels.sigmaobj) {
+                                        RivalRebels.round.winOmega();
+                                        block = RRBlocks.plasma_explosion;
+                                    } else if (block == RRBlocks.reactive) {
+                                        for (int i = 0; i < (1 - dist / onepointfiveradius) * 4 + Math.random() * 2.0; i++) {
+                                            world.setBlockToAir(pos);
+                                        }
+                                    } else {
+                                        world.setBlockToAir(pos);
+                                        block = Blocks.AIR;
+                                    }
+                                } else if (varrand > 0) {
+                                    int randomness = halfradius - varrand / 2;
+                                    if (breakobj && block == RivalRebels.omegaobj) {
+                                        RivalRebels.round.winSigma();
+                                        block = RivalRebels.plasmaexplosion;
+                                    } else if (breakobj && block == RivalRebels.sigmaobj) {
+                                        RivalRebels.round.winOmega();
+                                        block = RivalRebels.plasmaexplosion;
+                                    } else if (block == RRBlocks.plasma_explosion) {
+                                        for (int i = 0; i < (1 - dist / onepointfiveradius) * 4 + Math.random() * 2.0; i++) {
+                                            world.setBlockToAir(pos);
+                                        }
+                                    } else if (block != Blocks.water
+                                        && block != Blocks.lava
+                                        && block != Blocks.flowing_water
+                                        && block != Blocks.flowing_lava) {
+                                        if (block == Blocks.stone && rand.nextInt(randomness) < randomness / 2) {
+                                            world.setBlock(xx, yy, zz, Blocks.cobblestone);
+                                            block = Blocks.cobblestone;
+                                        } else if (block == Blocks.grass || block == Blocks.dirt) {
+                                            world.setBlock(xx, yy, zz, RivalRebels.radioactivedirt);
+                                        } else if (block != Blocks.sand && block != Blocks.sandstone) {
+                                            if (rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0) {
+                                                world.setBlockToAir(pos);
+                                                block = Blocks.AIR;
+                                            }
+                                        } else {
+                                            world.setBlock(xx, yy, zz, RivalRebels.radioactivesand);
+                                        }
+                                    } else {
+                                        world.setBlockToAir(pos);
+                                        block = Blocks.AIR;
+                                    }
+                                }
+                            }
+
+                            if (dist < onepointfiveradius && block != Blocks.AIR && block != Blocks.bedrock) {
+                                if (Y < twoAOC && (dist >= onepointfiveradius || Y < AOC)) {
+                                if (world.getBlock(xx, yy - 1, zz) == Blocks.log) {
+                                    world.setBlock(xx, yy, zz, Blocks.fire);
+                                } else if (block == Blocks.grass || block == Blocks.dirt) {
+                                    world.setBlock(xx, yy, zz, RivalRebels.radioactivedirt);
+                                } else if (block == Blocks.sand || block == Blocks.sandstone) {
+                                    world.setBlock(xx, yy, zz, RivalRebels.radioactivesand);
+                                }
+                                } else {
+                                    world.setBlockToAir(pos);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        world.playSound(x, y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, null, 4.0F, (1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F) * 0.7F, true); // idk what distance decay is
+    }
+
+
+
+}

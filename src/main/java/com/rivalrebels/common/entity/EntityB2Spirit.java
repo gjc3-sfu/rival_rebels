@@ -1,20 +1,25 @@
 package com.rivalrebels.common.entity;
 
+import java.util.function.Supplier;
+
 import com.rivalrebels.common.init.RRSounds;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityB2Spirit extends Entity {
+public class EntityB2Spirit extends Entity implements IEntityAdditionalSpawnData {
 
     // Property fields
-    public int health;
-    private int ticksSinceStart = 0;
+    private int health;
+    private int tick_age = 0;
     private int timeLeft = -1;
 
 
@@ -23,16 +28,25 @@ public class EntityB2Spirit extends Entity {
     private double ty = 1.0;
     private double tz = 1.0;
 
-    // Behaviour fields
+    // AI Behaviour fields
     public boolean carpet = false; // Whether to spawn multiple on this pass
     public static int staticEntityIndex = 10;
     public int entityIndex = 10;
-    public static boolean randchance = true;
+    public static boolean randchance = true; // This seems useless
     public boolean dropOnlyOne = false;
-    public static boolean trash = true;
-    public static boolean will_leave = true;
-    public AI_mode mode = AI_mode.TO_TARGET;
-    Entity rhodes = null;
+    public static boolean trash = true; // Whether to litter the zone after the first pass
+    public static boolean will_leave = true; // Will eventually leave the area
+    private boolean leaving = false; // Whether the B2 is currently leaving
+    private AI_mode mode = AI_mode.TO_TARGET;
+    private Load_amount load_mode;
+
+    private boolean controller; // Whether this plane was called by a controller (no need to store in nbt)
+
+
+    private EntityLivingBase pilot;
+    // Mount Behaviour fields
+    
+    
 
     // Obsessed with enums
     private static enum AI_mode{
@@ -41,24 +55,30 @@ public class EntityB2Spirit extends Entity {
         U_TURN_RIGHT
     }
 
+    // Obsessed with enums
+    private static enum Load_amount {
+        SINGLE,
+        FEW,
+        CARPET
+    }
+
     public EntityB2Spirit(World world) {
         super(world);
         this.setSize(30.0F, 4.0F); // wide hitbox
         this.ignoreFrustumCheck = true;
         //this.getEntityBoundingBox().(-10.0, -3.0, -10.0, 10.0, 4.0, 10.0);
         this.health = 50;//RivalRebels.b2spirithealth;
-        if (!this.world.isRemote) {
-            this.startBombRun(this.tx - this.posX, this.tz - this.posZ);
-        }
     }
 
-    public EntityB2Spirit(World world, double x, double y, double z, double player_x, double player_y, double player_z, boolean c, boolean da) {
+    // Called by controller summon
+    public EntityB2Spirit(World world, double x, double y, double z, double player_x, double player_y, double player_z, boolean carpet, boolean drop_multiple, boolean controller) {
         this(world);
-        this.carpet = c;
+        this.carpet = carpet;
         this.tx = x;
         this.ty = y;
         this.tz = z;
-        this.dropOnlyOne = !da;
+        this.dropOnlyOne = !drop_multiple;
+        this.controller = controller;
         if (this.carpet) {
             this.entityIndex = 10;
             if (staticEntityIndex <= 23) {
@@ -71,9 +91,44 @@ public class EntityB2Spirit extends Entity {
             }
         }
 
+        
         if (!this.world.isRemote) {
-            this.startBombRun(this.tz - player_z, player_x - this.tx);
+            this.setInitialPosition_from_player(player_x, player_z);
         }
+        
+    }
+
+    private double[] normalize2d(double dx, double dz) {
+        double lengthSquared = dx * dx + dz * dz;
+        if (lengthSquared <= 0.0000001) {
+            return new double[] {0.0, 1.0};
+        }
+
+        double length = Math.sqrt(lengthSquared);
+        return new double[] {dx / length, dz / length};
+    }
+
+    private void setInitialHeading(double from_x, double from_y) {
+        double dx = this.tx - from_x;
+        double dz = this.tz - from_y;
+        double[] heading = this.normalize2d(dx, dz);
+        motionX = heading[0];
+        motionZ = heading[1];
+        rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0 / Math.PI);
+        this.prevRotationYaw = this.rotationYaw;
+    }
+
+    private void setInitialPosition_from_player(double player_x, double player_y) {
+
+        double dx = this.tx - player_x;
+        double dz = this.tz - player_y;
+
+        double[] outward = this.normalize2d(dx, dz);
+        this.setPosition(
+            this.tx + outward[0] * 80.0,
+            this.ty + 60.0,
+            this.tz + outward[1] * 80.0
+        );
     }
 
 
@@ -82,39 +137,55 @@ public class EntityB2Spirit extends Entity {
         this.lastTickPosX = this.posX;
         this.lastTickPosY = this.posY;
         this.lastTickPosZ = this.posZ;
+
         if (Math.random() > 0.8F) {
             // Ambient sound
             this.playSound(RRSounds.b2_ambient, 4.5F, 1.3F);
-            
         }
-
-        /* 
-        if (this.rhodeswing != null) {
-            this.motionX = this.rhodeswing.posX - this.posX;
-            this.motionY = this.rhodeswing.posY - this.posY;
-            this.motionZ = this.rhodeswing.posZ - this.posZ;
-            double t = Math.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-            this.motionX /= t;
-            this.motionY /= t;
-            this.motionZ /= t;
-            this.rotationYaw = this.rhodeswing.rotationYaw;
-            this.rotationPitch = (float)Math.min(t, 90.0);
-            if (t < 25.0 || this.ticksExisted > 100) {
-                this.rhodeswing.b2energy = 8000;
-                this.rhodeswing.freeze = false;
-                this.setDead();
-            }
-        }
-        */
 
         if (!this.world.isRemote) {
+
+
             double distfromtarget = Math.sqrt(
                 (this.tx - this.posX) * (this.tx - this.posX) + (this.tz - this.posZ) * (this.tz - this.posZ)
             );
-            this.ticksSinceStart++;
-            if (this.ticksSinceStart >= 60 && this.mode == AI_mode.TO_TARGET && distfromtarget < 200) {
-                if (this.carpet || (this.dropOnlyOne ? this.ticksSinceStart == 80 : this.ticksSinceStart % 40 == 0)) {
-                    this.dropBomb();
+            this.tick_age++;
+
+
+            /*  if I want readjusting steering
+            if (this.mode == AI_mode.TO_TARGET) {
+                double dx = this.tx - this.posX;
+                double dz = this.tz - this.posZ;
+                double[] heading = this.normalize2d(dx, dz);
+                this.motionX = heading[0];
+                this.motionZ = heading[1];
+                this.prevRotationYaw = this.rotationYaw;
+                this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0 / Math.PI);
+            }
+            */
+
+            // Decide whether to drop bomb(s)
+            if (this.tick_age >= 60 && this.mode == AI_mode.TO_TARGET && distfromtarget < 200) {
+                // Decide whether it's a carpet, single, or few
+
+                /*
+                switch (this.load_mode) {
+                    case CARPET:
+                        this.dropBomb(null);
+                        break;
+                    case FEW:
+                        if (this.tick_age % 40 == 0) this.dropBomb(null);
+                        break;
+                    case SINGLE:
+                        if (this.tick_age == 80) this.dropBomb(null);
+                        break;
+                    default:
+                        break;
+                    
+                }
+                */
+                if (this.carpet || (this.dropOnlyOne ? this.tick_age == 80 : this.tick_age % 40 == 0)) {
+                    this.dropBomb(null);
                 }
 
 
@@ -135,18 +206,21 @@ public class EntityB2Spirit extends Entity {
 
                 if (distfromtarget > 80.0 && is_getting_further) {
                     this.mode = this.world.rand.nextBoolean() ? AI_mode.U_TURN_LEFT : AI_mode.U_TURN_RIGHT;
+                    // Decide whether to start dropping trash after the first turn
                     if (trash) {
                         this.carpet = true;
                         //this.entityIndex = this.world.rand.nextInt(ItemRoda.rodaindex); I don't like the entity index system I'll fix it later
                     }
 
+                    // Decide whether to leave after this bombing run
                     if (will_leave) {
-                        if (this.ticksSinceStart > 1000 && this.world.rand.nextInt(4) == 1) {
-                            this.motionY = 2.0;
+                        if (this.tick_age > 1000 && this.world.rand.nextInt(4) == 1) {
+                            this.leaving = true;
                         }
 
+                        // Always leave if only one drop was ordered and trashing isn't on
                         if (!trash && this.dropOnlyOne) {
-                            this.motionY = 2.0;
+                            this.leaving = true;
                         }
                     }
                 }
@@ -161,10 +235,6 @@ public class EntityB2Spirit extends Entity {
 
                 this.motionX = MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI);
                 this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI);
-
-
-
-
 
 
 
@@ -191,15 +261,26 @@ public class EntityB2Spirit extends Entity {
                 }
             }
 
-            this.timeLeft--;
+
+            // hard leaving condition
+            if (timeLeft != -1) {
+                this.timeLeft--;
+            }
             if (this.timeLeft == 0) {
-                this.motionY = 2.0;
+                this.leaving = true;
             }
 
-            // Leave condition
-            if (this.posY > 256.0) {
-                this.setDead();
+            
+            // Leave Logic:
+
+            if (this.leaving) {
+                this.motionY = 2.0;
             }
+            if (this.posY > 256.0 && this.leaving) {
+                this.setDead(); // escaped
+            }
+
+
         }
 
         this.posX = this.posX + this.motionX;
@@ -210,35 +291,34 @@ public class EntityB2Spirit extends Entity {
     }
 
 
-    public void dropBomb() {
+    private void dropBomb(Supplier<? extends Entity> payload) {
         // just spawn tnt idk
+        Entity entity;
 
-        Entity tnt_entity = new EntityTNTPrimed(
-            world, 
-            this.posX + Math.random() * 4.0 - 2.0, 
-            this.posY - 3.5, 
-            this.posZ + Math.random() * 4.0 - 2.0, 
-            null
+        if (payload != null) {
+            entity = payload.get();
+        } else {
+            entity = new EntityTNTPrimed(
+                world, 
+                this.posX + Math.random() * 4.0 - 2.0, 
+                this.posY - 3.5, 
+                this.posZ + Math.random() * 4.0 - 2.0, 
+                null
+            );
+            // In case I want to preserve igniter information
+        }
+        
+        entity.setPosition(
+            this.posX + Math.random() * 4.0 - 2.0,
+            this.posY - 3.5,
+            this.posZ + Math.random() * 4.0 - 2.0
         );
 
         // maybe impulse the tnt downwards 1.5F
 
-        this.world.spawnEntity(tnt_entity);
+        this.world.spawnEntity(entity);
 
-        /* 
-        ItemRoda.spawn(
-            this.entityIndex,
-            this.worldObj,
-            this.posX + Math.random() * 4.0 - 2.0,
-            this.posY - 3.5,
-            this.posZ + Math.random() * 4.0 - 2.0,
-            this.motionX * 0.1F,
-            -1.0,
-            this.motionZ * 0.1F,
-            1.0,
-            0.0
-        );
-        */
+
     }
 
 
@@ -247,37 +327,12 @@ public class EntityB2Spirit extends Entity {
         return true;
     }
 
-    public void startBombRun(double x, double z) {
-        /* 
-        if (this.rhodes != null) {
-            this.tx = this.rhodes.posX;
-            this.ty = this.rhodes.posY;
-            this.tz = this.rhodes.posZ;
-            x = -this.rhodes.motionX;
-            z = -this.rhodes.motionZ;
-        }
-        */
-
-        double lengthSquared = x * x + z * z;
-        if (lengthSquared == 0.0) {
-            lengthSquared = 1;
-        }
-
-        double dist = 1.0 / Math.sqrt(lengthSquared);
-        x *= dist;
-        z *= dist;
-        this.motionX = -x;
-        this.motionZ = -z;
-        this.setPosition(this.tx + x * 80.0, this.ty + 60.0, this.tz + z * 80.0);
-        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0 / Math.PI);
-    }
-
     public void writeEntityToNBT(NBTTagCompound nbt) {
         nbt.setInteger("drop", this.entityIndex);
         nbt.setFloat("tx", (float)this.tx);
         nbt.setFloat("ty", (float)this.ty);
         nbt.setFloat("tz", (float)this.tz);
-        nbt.setInteger("age", this.ticksSinceStart);
+        nbt.setInteger("age", this.tick_age);
         nbt.setInteger("health", this.health);
         nbt.setInteger("duration", this.timeLeft);
     }
@@ -285,24 +340,32 @@ public class EntityB2Spirit extends Entity {
     public void readEntityFromNBT(NBTTagCompound nbt) {
         this.entityIndex = nbt.getInteger("drop");
         //this.carpet = this.entityIndex < ItemRoda.rodaindex;
-        this.tx = nbt.getFloat("tx");
-        this.ty = nbt.getFloat("ty");
-        this.tz = nbt.getFloat("tz");
-        this.ticksSinceStart = nbt.getInteger("age");
-        this.health = nbt.getInteger("health");
-        this.timeLeft = nbt.getInteger("duration");
-        if (this.ticksSinceStart == 0) {
-            double dx = this.tx - this.posX;
-            double dz = this.tz - this.posZ;
-            this.startBombRun(dx, dz);
+        if (nbt.hasKey("tx")) {
+            this.tx = nbt.getFloat("tx");
         }
+        if (nbt.hasKey("ty")) {
+            this.ty = nbt.getFloat("ty");
+        }
+        if (nbt.hasKey("tz")) {
+            this.tz = nbt.getFloat("tz");
+        }
+        if (nbt.hasKey("age")) {
+            this.tick_age = nbt.getInteger("age");
+        }
+        if (nbt.hasKey("health")) {
+            this.health = nbt.getInteger("health");
+        }
+        if (nbt.hasKey("duration")) {
+            this.timeLeft = nbt.getInteger("duration");
+        }
+        
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damageSource, float par2) {
-        super.attackEntityFrom(damageSource, par2);
+    public boolean attackEntityFrom(DamageSource damageSource, float amount) {
+        super.attackEntityFrom(damageSource, amount);
         if (!this.isDead && !this.world.isRemote) {
-            this.health = (int)(this.health - par2);
+            this.health = (int)(this.health - amount);
             if (this.health <= 0) {
                 this.setDead();
                 this.world.createExplosion((Entity)null, this.posX, this.posY, this.posZ, 6.0F, true);
@@ -310,6 +373,7 @@ public class EntityB2Spirit extends Entity {
                 this.world.spawnEntity(new EntityB2SpiritFrag(this.world, this, EntityB2SpiritFrag.FragType.RIGHT));
                 EntityZombie pz = new EntityZombie(this.world);
                 pz.setPosition(this.posX, this.posY, this.posZ);
+                pz.setCustomNameTag("Pilot");
                 this.world.spawnEntity(pz);
                 //RivalRebelsSoundPlayer.playSound(this, 0, 0, 30.0F, 1.0F); 30.0F seems very loud, I'll reduce it a bit
                 this.playSound(RRSounds.b2_explode, 10.0F, 1.0F);
@@ -317,6 +381,43 @@ public class EntityB2Spirit extends Entity {
         }
 
         return true;
+    }
+
+    @Override 
+    public boolean canBeCollidedWith() {
+        return true;
+    }
+
+    @Override
+    public boolean canBePushed() {
+        return false;
+    }
+
+
+    // This exists to solve this problem:
+    // If I set the initial yaw on the server the client doesn't see the change
+    // So the client incorrectly displays the play at 0 yaw for the initial leg of trip
+    // But if I remove the remote check, since the tick_age only exists on the server,
+    // The client's version is stuck at 0, so it runs this setheading method every tick
+    // which causes further display issues for the movement after the initial leg of trip
+    @Override
+    public void writeSpawnData(ByteBuf buffer) {
+
+        // Calculate heading before sending the spawn packet
+        if (this.tick_age == 0) {
+            this.setInitialHeading(this.posX, this.posZ);
+        }
+
+        buffer.writeFloat(this.rotationYaw);
+    }
+
+    @Override
+    public void readSpawnData(ByteBuf buffer) {
+
+        float yaw = buffer.readFloat();
+
+        this.rotationYaw = yaw;
+        this.prevRotationYaw = yaw;
     }
 
     @Override

@@ -12,6 +12,10 @@ public class RRConfigx {
 
     public static Configuration config;
 
+    private static final String CATEGORY_FIREARMS = "general";
+    private static final String CATEGORY_EXPLOSIVES = "explosives";
+    private static final String CATEGORY_NUCLEAR = "nuclear";
+
     public static boolean infinite_ammo;
     public static boolean old_pill_design;
     public static int plasmoid_decay;
@@ -20,11 +24,31 @@ public class RRConfigx {
     public static int timed_bomb_fuse_seconds;
     public static int timed_bomb_explosion_size;
     public static int bunker_radius;
-    public static List<BlockTransformation> blockTransformations = new ArrayList<>();
+    public static int nuclear_bomb_strength;
+    public static int b2_spirit_health;
+
+    // Block transformations the flamethrower's melting tool performs
+    public static List<BlockTransformation> flamethrower_block_transformations = new ArrayList<>();
+
+    // Blocks that autobuild cannot replace
     public static List<Block> autobuild_unmutable = new ArrayList<>();
+    private static String[] autobuild_unmutable_BlockIDs = new String[0];
+
+    // Blocks that cannot be moved by RR displacing explostions (or are handled separately)
     public static List<Block> explosion_unmovable = new ArrayList<>();
-    private static String[] autobuildIrreplacableBlockIds = new String[0];
-    private static String[] explosionUnmovableBlockIds = new String[0];
+    private static String[] explosion_unmovable_BlockIDs = new String[0];
+
+
+
+    // Blocks that are immune to the inner Nuke radius
+    public static List<Block> inner_nuke_immune = new ArrayList<>();
+
+    
+    // Block transformations that the middle nuke induces, excluded blocks are completely destroyed with probability
+    public static List<BlockTransformation> middle_nuke_transformations = new ArrayList<>();
+
+
+
     private static boolean blockRegistryReady;
 
     public static void init(File configFile) {
@@ -105,7 +129,25 @@ public class RRConfigx {
             "Radius of bunker deployables"
         );
 
-        autobuildIrreplacableBlockIds = config.getStringList(
+        nuclear_bomb_strength = config.getInt(
+            "nuclear_bomb_strength",
+            Configuration.CATEGORY_GENERAL,
+            10,
+            2,
+            30,
+            "Ordinal strength of nuclear explosions"
+        );
+
+       b2_spirit_health = config.getInt(
+            "b2_spirit_health",
+            Configuration.CATEGORY_GENERAL,
+            1000,
+            1,
+            100000,
+            "Ordinal strength of nuclear explosions"
+        );
+
+        autobuild_unmutable_BlockIDs = config.getStringList(
             "autobuild_irreplacable_blocks",
             Configuration.CATEGORY_GENERAL,
             new String[] {
@@ -115,16 +157,18 @@ public class RRConfigx {
 
                 // Protected blocks
                 "minecraft:chest",
-                "minecraft:trapped_chest"
+                "minecraft:trapped_chest",
+                "minecraft:command_block"
             },
             "List of blocks autobuild is not allowed to overwrite"
         );
 
-        explosionUnmovableBlockIds = config.getStringList(
+        explosion_unmovable_BlockIDs = config.getStringList(
             "explosion_unmovable",
             Configuration.CATEGORY_GENERAL,
             new String[] {
-                "minecraft:bedrock"
+                "minecraft:bedrock",
+                "minecraft:command_block"
             },
             "List of blocks Rival Rebels displacing explosions cannot move"
         );
@@ -250,7 +294,7 @@ public class RRConfigx {
             "Flamethrower block transformations: inputBlock,outputBlock,heatResistance"
         );
 
-        blockTransformations.clear();
+        flamethrower_block_transformations.clear();
 
         for (String entry : transformations) {
             try {
@@ -271,7 +315,7 @@ public class RRConfigx {
                 int resistance = Integer.parseInt(parts[2].trim());
 
                 if (input != null && output != null && resistance >= 0) {
-                    blockTransformations.add(
+                    flamethrower_block_transformations.add(
                         new BlockTransformation(input, output, resistance)
                     );
                 }
@@ -305,7 +349,7 @@ public class RRConfigx {
     private static void resolveAutobuildUnmutable() {
         autobuild_unmutable.clear();
 
-        for (String entry : autobuildIrreplacableBlockIds) {
+        for (String entry : autobuild_unmutable_BlockIDs) {
             try {
                 ResourceLocation id = new ResourceLocation(entry.trim());
                 if (!ForgeRegistries.BLOCKS.containsKey(id)) {
@@ -328,7 +372,7 @@ public class RRConfigx {
     private static void resolveExplosionUnmovable() {
         explosion_unmovable.clear();
 
-        for (String entry : explosionUnmovableBlockIds) {
+        for (String entry : explosion_unmovable_BlockIDs) {
             try {
                 ResourceLocation id = new ResourceLocation(entry.trim());
                 if (!ForgeRegistries.BLOCKS.containsKey(id)) {

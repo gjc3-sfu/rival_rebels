@@ -1,6 +1,5 @@
 package com.rivalrebels.common.explosion;
 
-import com.rivalrebels.RivalRebels;
 import com.rivalrebels.common.blocks.trap.TimedBomb;
 import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.entity.EntityDebris;
@@ -28,12 +27,9 @@ public class RivalRebelsExplosion {
         world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, x, y, z, 0, 0, 0);
         if (!world.isRemote)
         {
-            if (fire)
-            {
+            if (fire) {
                 fireSpread(world, x, y, z, strength);
-            }
-            else
-            {
+            } else {
                 createHole(world, x, y, z, strength * strength, crater, 4);
             }
             pushAndHurtEntities(world, x, y, z, strength, dmgsrc);
@@ -45,30 +41,22 @@ public class RivalRebelsExplosion {
         Random rand = new Random();
         int halfradius = radius / 2;
         int tworadius = radius * 2;
-        for (int X = -tworadius; X <= tworadius; X++)
-        {
-            for (int Y = -tworadius; Y <= tworadius; Y++)
-            {
-                for (int Z = -tworadius; Z <= tworadius; Z++)
-                {
+        for (int X = -tworadius; X <= tworadius; X++) {
+            for (int Y = -tworadius; Y <= tworadius; Y++) {
+                for (int Z = -tworadius; Z <= tworadius; Z++) {
                     int xx = (int) x + X;
                     int yy = (int) y + Y;
                     int zz = (int) z + Z;
                     Block block = world.getBlockState(new BlockPos(xx, yy, zz)).getBlock();
-                    if (block == Blocks.AIR)
-                    {
+                    if (block == Blocks.AIR) {
                         int dist = (int) Math.sqrt(X * X + Y * Y + Z * Z);
-                        if (dist < radius)
-                        {
+                        if (dist < radius) {
                             int varrand = 1 + dist - halfradius;
-                            if (dist < halfradius)
-                            {
+                            if (dist < halfradius) {
                                 world.setBlockState(new BlockPos(xx, yy, zz), Blocks.FIRE.getDefaultState());
                             }
-                            else if (varrand > 0)
-                            {
-                                if (rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0)
-                                {
+                            else if (varrand > 0) {
+                                if (rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0) {
                                     world.setBlockState(new BlockPos(xx, yy, zz), Blocks.FIRE.getDefaultState());
                                 }
                             }
@@ -79,43 +67,32 @@ public class RivalRebelsExplosion {
         }
     }
 
-    private void createHole(World world, double x, double y, double z, int radius, boolean crater, int delete)
-    {
+    private void createHole(World world, double x, double y, double z, int radius, boolean crater, int delete) {
         Random rand = new Random();
         int halfradius = radius >> 2;
         int tworadius = radius << 2;
-        for (int X = -tworadius; X <= tworadius; X++)
-        {
+        for (int X = -tworadius; X <= tworadius; X++) {
             int xx = (int) x + X;
-            for (int Y = -tworadius; Y <= tworadius; Y++)
-            {
+            for (int Y = -tworadius; Y <= tworadius; Y++) {
                 int yy = (int) y + Y;
-                for (int Z = -tworadius; Z <= tworadius; Z++)
-                {
+                for (int Z = -tworadius; Z <= tworadius; Z++) {
                     int zz = (int) z + Z;
                     Block block = world.getBlockState(new BlockPos(xx, yy, zz)).getBlock();
-                    if (block != null && block != Blocks.AIR && block != Blocks.BEDROCK)
-                    {
+                    if (block != null && block != Blocks.AIR && block != Blocks.BEDROCK) {
                         int dist = X * X + Y * Y + Z * Z;
-                        if (dist <= delete && block == RRBlocks.green_camo && block == RRBlocks.brown_camo && block == RRBlocks.grey_camo)
-                        {
+                        if (dist <= delete && block == RRBlocks.green_camo && block == RRBlocks.brown_camo && block == RRBlocks.grey_camo) {
                             world.setBlockToAir(new BlockPos(xx, yy, zz));
                         } else if (dist < radius) {
                             int varrand = 1 + dist - halfradius;
-                            if (dist < halfradius)
-                            {
+                            if (dist < halfradius) {
                                 breakBlock(world, xx, yy, zz, radius, x, y, z);
-                            }
-                            else if (varrand > 0)
-                            {
+                            } else if (varrand > 0) {
                                 if ((rand.nextInt(varrand) == 0 || rand.nextInt(varrand / 2 + 1) == 0))
                                 {
                                     breakBlock(world, xx, yy, zz, radius, x, y, z);
                                 }
                             }
-                        }
-                        else if (dist < tworadius)
-                        {
+                        } else if (dist < tworadius) {
                             if ((Y >= 2 || (dist < radius * 1.5 && Y >= 1)) && crater)
                             {
                                 breakBlock(world, xx, yy, zz, radius, x, y, z);

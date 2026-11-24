@@ -1,7 +1,6 @@
 package com.rivalrebels.common.blocks.autobuild;
 
 import com.rivalrebels.common.config.RRConfigx;
-import com.rivalrebels.common.core.BlackList;
 import com.rivalrebels.common.init.RRBlocks;
 import com.rivalrebels.common.init.RRSounds;
 

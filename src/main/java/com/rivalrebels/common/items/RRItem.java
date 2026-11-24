@@ -5,7 +5,6 @@ import com.rivalrebels.common.init.RRItems;
 
 public class RRItem extends Item implements IRRItem {
     private String model_name;
-    //public static List<Item> itemList = new ArrayList<>();
 
     public RRItem(String name){ // I don't like this constructor
         setUnlocalizedName(name);

@@ -183,7 +183,7 @@ public class EntityFlameBallHighTemp extends EntityFlameBall {
                 (int) posZ
             );
 
-            for (BlockTransformation transformation : RRConfigx.blockTransformations) {
+            for (BlockTransformation transformation : RRConfigx.flamethrower_block_transformations) {
 
                 if (block == Blocks.STONE_SLAB || block == Blocks.DOUBLE_STONE_SLAB) {
                     if (((state.getValue(BlockStoneSlab.VARIANT) == BlockStoneSlab.EnumType.NETHERBRICK) || (state.getValue(BlockStoneSlab.VARIANT) == BlockStoneSlab.EnumType.QUARTZ))) {
@@ -192,8 +192,8 @@ public class EntityFlameBallHighTemp extends EntityFlameBall {
                 }
 
                 if (block == transformation.inputBlock) {
-                    if (transformation.heatResistance != 0) {
-                        if (world.rand.nextInt(transformation.heatResistance) == 0) {
+                    if (transformation.probability != 0) {
+                        if (world.rand.nextInt(transformation.probability) == 0) {
 
                             if (block instanceof BlockContainer) {
                                 world.destroyBlock(burn_pos, true);

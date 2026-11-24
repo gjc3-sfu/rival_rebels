@@ -1,11 +1,11 @@
 package com.rivalrebels.common.items;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RRItemBlock extends ItemBlock {
     public String name;

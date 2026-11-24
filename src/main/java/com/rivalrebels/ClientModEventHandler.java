@@ -1,8 +1,10 @@
 package com.rivalrebels;
 
 import com.rivalrebels.client.render.*;
+import com.rivalrebels.client.render.items.RenderBattery;
 import com.rivalrebels.client.render.items.RenderEinsten;
 import com.rivalrebels.client.render.items.RenderFlamethrower;
+import com.rivalrebels.client.render.items.RenderFuel;
 import com.rivalrebels.client.renderhelper.BakedModelNoGui;
 import com.rivalrebels.client.renderhelper.ItemRenderBase;
 import com.rivalrebels.common.blocks.Reactive;
@@ -45,12 +47,14 @@ public class ClientModEventHandler {
                 RivalRebels.proxy.registerCustomModelName(rrItem, ((IRRItem)rrItem).getModelName(), 0, "inventory");
             }
         }
+        
         for(Item item : RRItemBlock.items){
             RRItemBlock rrItem = (RRItemBlock) item;
             if(rrItem != null){
                 RivalRebels.proxy.registerCustomModelName(rrItem, rrItem.getModelName(), 0, "inventory");
             }
         }
+        
         for(Item item : RivalRebels.model_items){
             if(item instanceof IHasModel){
                 RivalRebels.proxy.registerCustomModelName(item, ((IHasModel) item).getModelName(), 0, "inventory");
