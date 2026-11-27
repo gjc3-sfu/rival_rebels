@@ -2,6 +2,7 @@ package com.rivalrebels.common.entity;
 
 import java.util.function.Supplier;
 
+import com.rivalrebels.common.config.RRConfigx;
 import com.rivalrebels.common.init.RRSounds;
 
 import io.netty.buffer.ByteBuf;
@@ -11,6 +12,7 @@ import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -43,7 +45,8 @@ public class EntityB2Spirit extends Entity implements IEntityAdditionalSpawnData
     private boolean controller; // Whether this plane was called by a controller (no need to store in nbt)
 
 
-    private EntityLivingBase pilot;
+    //private 
+    private NBTTagCompound pilotNBT;
     // Mount Behaviour fields
     
     
@@ -66,13 +69,35 @@ public class EntityB2Spirit extends Entity implements IEntityAdditionalSpawnData
         super(world);
         this.setSize(30.0F, 4.0F); // wide hitbox
         this.ignoreFrustumCheck = true;
+        this.setEntityBoundingBox(
+            new AxisAlignedBB(
+                this.posX - 10.0,
+                this.posY - 3.0,
+                this.posZ - 10.0,
+                this.posX + 10.0,
+                this.posY + 4.0,
+                this.posZ + 10.0
+            )
+        );
+        this.health = RRConfigx.b2_spirit_health;//RivalRebels.b2spirithealth;
+        this.setEntityInvulnerable(false);
+    }
+
+    public EntityB2Spirit(World world, boolean player_controlled) {
+        super(world);
+        this.setSize(30.0F, 4.0F); // wide hitbox
+        this.ignoreFrustumCheck = true;
         //this.getEntityBoundingBox().(-10.0, -3.0, -10.0, 10.0, 4.0, 10.0);
-        this.health = 50;//RivalRebels.b2spirithealth;
+        this.health = RRConfigx.b2_spirit_health;//RivalRebels.b2spirithealth;
+        if (player_controlled) {
+
+        }
     }
 
     // Called by controller summon
     public EntityB2Spirit(World world, double x, double y, double z, double player_x, double player_y, double player_z, boolean carpet, boolean drop_multiple, boolean controller) {
         this(world);
+        this.health = RRConfigx.b2_spirit_health;
         this.carpet = carpet;
         this.tx = x;
         this.ty = y;
@@ -290,6 +315,10 @@ public class EntityB2Spirit extends Entity implements IEntityAdditionalSpawnData
         this.setPosition(this.posX, this.posY, this.posZ);
     }
 
+    private void ai_control() {
+
+    }
+
 
     private void dropBomb(Supplier<? extends Entity> payload) {
         // just spawn tnt idk
@@ -357,6 +386,10 @@ public class EntityB2Spirit extends Entity implements IEntityAdditionalSpawnData
         }
         if (nbt.hasKey("duration")) {
             this.timeLeft = nbt.getInteger("duration");
+        }
+        // nbt of pilot if null then it's player ridable
+        if (this.pilotNBT != null) {
+            nbt.setTag("Pilot", this.pilotNBT);
         }
         
     }

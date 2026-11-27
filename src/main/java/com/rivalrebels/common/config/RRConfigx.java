@@ -335,18 +335,18 @@ public class RRConfigx {
         }
 
         if (blockRegistryReady) {
-            resolveAutobuildUnmutable();
-            resolveExplosionUnmovable();
+            resolve_autobuild_unmutable();
+            resolve_explosion_unmovable();
         }
     }
 
     public static void onBlockRegistryReady() {
         blockRegistryReady = true;
-        resolveAutobuildUnmutable();
-        resolveExplosionUnmovable();
+        resolve_autobuild_unmutable();
+        resolve_explosion_unmovable();
     }
 
-    private static void resolveAutobuildUnmutable() {
+    private static void resolve_autobuild_unmutable() {
         autobuild_unmutable.clear();
 
         for (String entry : autobuild_unmutable_BlockIDs) {
@@ -369,7 +369,7 @@ public class RRConfigx {
         }
     }
 
-    private static void resolveExplosionUnmovable() {
+    private static void resolve_explosion_unmovable() {
         explosion_unmovable.clear();
 
         for (String entry : explosion_unmovable_BlockIDs) {

@@ -7,17 +7,25 @@ import java.util.Set;
 import com.rivalrebels.common.init.RRBlocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
 public class ItemSapperShovel extends RRToolItem {
 
+    private static final Set<Block> EFFECTIVE_BLOCKS = createEffectiveBlocks();
+
     public ItemSapperShovel(String name) {
-        super(name, 1.0F, -3.0F, ToolMaterial.IRON, createEffectiveBlocks());
+        super(name, 1.0F, -3.0F, ToolMaterial.IRON, EFFECTIVE_BLOCKS);
     }
 
     @Override
     public boolean isDamageable() {
         return true;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState blockIn) {
+        return EFFECTIVE_BLOCKS.contains(blockIn.getBlock()) || super.canHarvestBlock(blockIn);
     }
 
     private static Set<Block> createEffectiveBlocks() {

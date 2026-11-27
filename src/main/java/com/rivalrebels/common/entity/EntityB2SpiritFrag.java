@@ -27,7 +27,7 @@ public class EntityB2SpiritFrag extends Entity {
     private static final DataParameter<Byte> FRAG_TYPE =
         EntityDataManager.<Byte>createKey(EntityB2SpiritFrag.class, DataSerializers.BYTE);
     private boolean is_sliding;
-    private int health = 40;
+    private int health = 300;
 
     // Physics
     float motionyaw = 0.0F;
